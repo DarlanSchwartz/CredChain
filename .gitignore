@@ -1,10 +1,2 @@
 node_modules
 .idea
-
-#Hardhat files
-cache
-artifacts
-contracts
-scripts
-tasks
-test

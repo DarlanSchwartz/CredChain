@@ -15,8 +15,8 @@ export default function Sidebar() {
       </ItemsUp>
        
        <ItemsDown>
-        <a href="/finances"><ion-icon name="alert-circle-outline"></ion-icon>Documentação</a>
-        <a href="/loans"><ion-icon name="log-out-outline"></ion-icon>Sair</a>
+        <a href="/documentation"><ion-icon name="document-text-outline"></ion-icon>Documentação</a>
+        <a href="/logout"><ion-icon name="log-out-outline"></ion-icon>Sair</a>
        </ItemsDown>
         
     </SidebarContainer>

@@ -1,13 +1,13 @@
 import React from 'react'
-import Sidebar from './Components/Sidebar/Sidebar'
+import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
 
 export default function FinancesPage() {
   return (
     <Container>
-        
-    <Sidebar/>
-    <p>Finances</p>
+         <PageContentWrapper>
+      
+      </PageContentWrapper>
     </Container>
   )
 }

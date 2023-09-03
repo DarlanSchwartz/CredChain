@@ -1,22 +1,28 @@
 import React from 'react';
 import { styled } from 'styled-components';
+import { IoDocumentTextOutline} from 'react-icons/io5';
+import { IoExitOutline} from 'react-icons/io5';
+import { BiCube} from 'react-icons/bi';
+import { BsGrid} from 'react-icons/bs';
+import { FiCopy} from 'react-icons/fi';
+import { LuBarChart4} from 'react-icons/lu';
 
 export default function Sidebar() {
   return (
     <SidebarContainer>
       <ItemsUp>
       <a href="/score" className="icon-link">
-  <ion-icon name="bar-chart-outline"></ion-icon>Meu Score
+ <LuBarChart4/>Meu Score
 </a>
 
-        <a href="/finances"><ion-icon name="grid-outline"></ion-icon>Finanças</a>
-        <a href="/connect"><ion-icon name="cube-outline"></ion-icon>Conectar Redes</a>
-        <a href="/loans"><ion-icon name="copy-outline"></ion-icon>Empréstimo</a>
+        <a href="/finances"><BsGrid/>Finanças</a>
+        <a href="/connect"><BiCube/>Conectar Redes</a>
+        <a href="/loans"><FiCopy/>Empréstimo</a>
       </ItemsUp>
        
        <ItemsDown>
-        <a href="/documentation"><ion-icon name="document-text-outline"></ion-icon>Documentação</a>
-        <a href="/logout"><ion-icon name="log-out-outline"></ion-icon>Sair</a>
+        <a href="/documentation"><IoDocumentTextOutline/> Documentação</a>
+        <a href="/logout"><IoExitOutline/>Sair</a>
        </ItemsDown>
         
     </SidebarContainer>
@@ -35,6 +41,9 @@ const SidebarContainer = styled.div`
   align-items: start;
   flex-shrink: 0;
   padding: 120px 0px 50px 0px;
+  position: fixed;
+  left: 0;
+  top: 0;
 `;
 
 const ItemsUp = styled.div`

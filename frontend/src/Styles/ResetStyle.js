@@ -72,7 +72,7 @@ html, body, span, applet, object, iframe,
     }
 
     * {
-        font-family: 'Lato';
+        font-family: Plus Jakarta Sans;
         transition: all 200ms;
         box-sizing: border-box;
     }

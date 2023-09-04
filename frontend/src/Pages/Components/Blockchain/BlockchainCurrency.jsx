@@ -5,13 +5,13 @@ export default function BlockchainCurrency({ name, image, price, units, total_va
   return (
     <Container>
       <NameLogo>
-        <img src={image} alt="" />
-        <h1>{name}</h1>
+        <img src={image ? image : '/placeholder.svg'} alt={name} />
+        <h1>{name ? name : '-----'}</h1>
       </NameLogo>
       <MainInfo>
-        <p className='price'>R$ {price}</p>
-        <p className='units'>{units}</p>
-        <p className='total'>R$ {total_value}</p>
+        <p className='price'>{`${price ? 'R$ ' + price : '----'}`}</p>
+        <p className='units'>{`${units ? units : '---'}`}</p>
+        <p className='total'>{`${total_value ? 'R$ ' + total_value : '----'}`}</p>
       </MainInfo>
     </Container>
   )
@@ -72,10 +72,7 @@ const NameLogo = styled.div`
 `;
 
 const Container = styled.div`
-align-items: center;
-display: flex;
-justify-content: space-between;
-
-
-
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 `;

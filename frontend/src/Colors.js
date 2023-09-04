@@ -1,4 +1,4 @@
-export const MainPurpleColor = "#AD00FF";
+export const MainPurpleColor = "#ad00ff";
 export const MainPurpleColorDark = "#AD00FF";
 export const ModalColor = "rgba(0, 0, 0, 0.45)";
 export const BodyBackgroundColor = "#f7f7fb";

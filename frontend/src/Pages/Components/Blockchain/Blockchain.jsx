@@ -1,17 +1,13 @@
 import React from 'react'
 import { styled } from 'styled-components'
 import BlockchainCurrency from './BlockchainCurrency';
+import IndexBar from './IndexBar';
 
 export default function Blockchain({ name, currencies }) {
   return (
     <Container>
       <h1 className='title'>{name}</h1>
-      <Bar>
-        <p className='asset'>Ativo</p>
-        <p className='price'>Preço</p>
-        <p className='units'>Unidades</p>
-        <p className='total'>Valor Total</p>
-      </Bar>
+      <IndexBar/>
       <Currencies>
         {currencies.map(currency => {
           return (
@@ -36,41 +32,7 @@ const Currencies = styled.div`
   gap: 20px;
 `;
 
-const Bar = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid rgba(155, 155, 155, 0.27);
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  margin-top: 0.63rem;
 
-  p:first-child{
-    text-align: left;
-    padding-left: 70px;
-  }
-  .asset{
-    width:250px;
-  }
-  .price{
-    width: 100px;
-  }
-  .units{
-    width: 100px;
-  }
-  .total{
-    width: 120px;
-  }
-
-  p{
-    color: rgba(42, 42, 42, 0.60);
-    font-family: Plus Jakarta Sans;
-    font-size: 0.75rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1.5rem;
-  }
-`;
 
 const Container = styled.div`
   width: 100%;

@@ -15,14 +15,12 @@ export default function LoansPage({ connected = true }) {
       <Container>
         {!isConnected && <ConnectWalletFirst />}
         {isConnected &&
-
           <>
             <Collaterals />
             <InWalletCollaterals>
             <InWalletCollateralElement deposit_btn_click={()=> setShowModal(true)} name='Etherium' currency={{name:'Something',units:5000,totalValue:500.00}} />
             </InWalletCollaterals>
           </>
-
         }
       </Container>
       { showModal && 

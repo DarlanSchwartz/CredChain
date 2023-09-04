@@ -11,10 +11,10 @@ export default function Transactions() {
                 <a href="#">Ver mais</a>
             </Top>
             <List>
-                <Transaction />
-                <Transaction />
-                <Transaction />
-                <Transaction />
+                <Transaction name='Açougue do R..' value='-R$ 100'/>
+                <Transaction name='Supermercado' value='-R$ 120'/>
+                <Transaction name='Envio PIX' value='-R$ 15'/>
+                <Transaction name='Recebimento ETH' value='+0,5 ETH'/>
             </List>
         </Container>
     )
@@ -85,4 +85,5 @@ const Container = styled.div`
     flex-shrink: 0;
     border-radius: 14px;
     background: #FFF;
+    margin-right: 2.5rem;
 `;

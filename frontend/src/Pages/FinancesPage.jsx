@@ -28,7 +28,6 @@ const Main = styled.div`
 `;
 
 const Container = styled.div`
-  height: 100%;
   display: flex;
   margin-left: 310px;
   gap: 22px;

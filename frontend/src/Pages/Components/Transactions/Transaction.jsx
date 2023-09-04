@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from 'styled-components';
 
-export default function Transaction({ name, date, value }) {
+export default function Transaction({ name = "Transaction name", date, value = '-R$ 200' }) {
   return (
     <Container>
       <Left>
@@ -11,13 +11,11 @@ export default function Transaction({ name, date, value }) {
           </svg>
         </TransImage>
         <Texts>
-          <h1>Super</h1>
+          <h1>{name}</h1>
           <p>dia 23 de  Agosto de 2023</p>
         </Texts>
       </Left>
-      <h2>
-        -R$100
-      </h2>
+      <h2>{value}</h2>
     </Container>
   )
 }

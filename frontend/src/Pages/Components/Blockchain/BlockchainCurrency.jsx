@@ -5,13 +5,13 @@ export default function BlockchainCurrency({ name, image, price, units, total_va
   return (
     <Container>
       <NameLogo>
-        <img src="/drex.svg" alt="" />
-        <h1>Drex</h1>
+        <img src={image} alt="" />
+        <h1>{name}</h1>
       </NameLogo>
       <MainInfo>
-        <p className='price'>R$ 1.00</p>
-        <p className='units'>10.000.00</p>
-        <p className='total'>R$ 10.000.00</p>
+        <p className='price'>R$ {price}</p>
+        <p className='units'>{units}</p>
+        <p className='total'>R$ {total_value}</p>
       </MainInfo>
     </Container>
   )
@@ -23,7 +23,8 @@ const MainInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-left: 120px;
+  max-width: 423px;
+  
   p{
     color: #0D163A;
     font-family: Plus Jakarta Sans;
@@ -46,10 +47,12 @@ const MainInfo = styled.div`
 
 const NameLogo = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  flex-shrink: 0;
   gap: 1.31rem;
+  min-width: 260px;
+  max-width: 260px;
+  width: 100%;
 
   img{
     width: 3rem;
@@ -60,11 +63,11 @@ const NameLogo = styled.div`
 
   h1{
     color: #0D163A;
-font-family: Plus Jakarta Sans;
-font-size: 1rem;
-font-style: normal;
-font-weight: 400;
-line-height: 1.5rem; 
+    font-family: Plus Jakarta Sans;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5rem; 
   }
 `;
 

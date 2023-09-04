@@ -3,10 +3,53 @@ import { styled } from 'styled-components';
 import Blockchain from './Blockchain';
 
 export default function BlockchainList() {
+  const blockchains = [
+    {
+      name: "Real Digital",
+      currencies:[
+        {
+          name:'Drex',
+          price:'1.00',
+          units:'10.000.00',
+          totalValue:'10.000.00',
+          image:'/drex.svg'
+        },
+        {
+          name:'Titulo Público Federal',
+          price:'100.00',
+          units:'21.003',
+          totalValue:'2.100.30',
+          image:'/tesouro.svg'
+        }
+      ]
+    },
+    {
+      name: "Etherium",
+      currencies:[
+        {
+          name:'Ether',
+          price:'9300.00',
+          units:'0.5',
+          totalValue:'4650.00',
+          image:'/ETH.svg'
+        },
+        {
+          name:'stETH',
+          price:'9310.00',
+          units:'0.563909',
+          totalValue:'5250.00',
+          image:'/stETH.svg'
+        }
+      ]
+    },
+  ]
   return (
     <SCBlockchainList>
-        <Blockchain name={"Real Digital"} />
-        <Blockchain name={"Etherium"} />
+       {blockchains.map(blockchain =>{
+        return(
+          <Blockchain name={blockchain.name} currencies={blockchain.currencies} />
+        );
+       })}
     </SCBlockchainList>
   )
 }
@@ -19,4 +62,5 @@ const SCBlockchainList = styled.div`
     flex-direction: column;
     margin-top: 1.94rem;
     width: 100%;
+    margin-bottom: 40px;
 `;

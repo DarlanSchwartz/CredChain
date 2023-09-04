@@ -1,21 +1,36 @@
 import React from 'react'
 import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
+import Graph from './Components/Graph/Graph';
+import Transactions from './Components/Transactions/Transactions';
+import BlockchainList from './Components/Blockchain/BlockchainList';
 
 export default function FinancesPage() {
   return (
-    <Container>
-         <PageContentWrapper>
-      
-      </PageContentWrapper>
-    </Container>
+    <PageContentWrapper>
+      <Container>
+
+        <Main>
+          <Graph />
+          <BlockchainList/>
+        </Main>
+       
+        <Transactions />
+      </Container>
+    </PageContentWrapper>
   )
 }
+const Main = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+`;
 
 const Container = styled.div`
-
-height: 100%;
-min-height: 100%;
-display: flex;
-
+  height: 100%;
+  display: flex;
+  margin-left: 310px;
+  gap: 22px;
+  margin-top: 44px;
 `;

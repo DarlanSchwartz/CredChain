@@ -5,6 +5,7 @@ import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { LuSearch } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Header() {
   const navigate = useNavigate();
 
@@ -61,6 +62,7 @@ function goToHomePage() {
             alt="User"
           />
           <p>Nome e Último Nome</p>
+
           <div>
              <ArrowButton onClick={toggleMenu}>
                     {arrowUp ? <FiChevronUp color="#292D32" size={24} /> : <FiChevronDown color="#292D32" size={24} />}
@@ -76,7 +78,6 @@ function goToHomePage() {
                     </DropdownMenu>
                 )}
           </div>
-         
         </InfoUser>
       </Container>
     </SCHeader>
@@ -152,6 +153,7 @@ const ButtonBell = styled.button`
     height: 24px;
   }
 `;
+
 
 const StyledInput = styled.input`
   width: 100%;

@@ -10,10 +10,30 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import logo from "../../../Images/Logo.png";
 import { MainPurpleColor } from "../../../Colors";
+import Swal from "sweetalert2";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  function logout(){
+    Swal.fire({
+      title: `<span style="font-family: Plus Jakarta Sans, sans-serif;font-size: 20px;color:black">Deseja sair?</span>`,
+      showCancelButton: true,
+      confirmButtonColor: '#c9c9c9',
+      cancelButtonColor: `${MainPurpleColor}`,
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Cancelar',
+      width: 300,
+      heightAuto: false,
+      imageUrl: '/logout.svg',
+      imageWidth: 200,
+  }).then((result) => {
+      if (result.isConfirmed) {
+          navigate('/');
+      }
+  });
+  }
 
   function goToScore() {
     navigate("/score");
@@ -135,7 +155,7 @@ export default function Sidebar() {
         </button>
 
         <button
-          onClick={goToHomePage}
+          onClick={logout}
           style={{
             fontWeight: isLogoutActive ? "bold" : "",
             borderLeft: isLogoutActive ? `4px solid ${MainPurpleColor}` : "",

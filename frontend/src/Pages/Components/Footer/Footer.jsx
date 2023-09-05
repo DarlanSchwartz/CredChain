@@ -1,12 +1,12 @@
 import React from 'react'
 import { styled } from 'styled-components'
-import FooterLogo from './FooterLogo';
+import Logo from '../Logo';
 
 export default function Footer() {
     return (
         <FooterContainer>
             <div className='logo-cc'>
-                <FooterLogo />
+              <Logo />
                 <p>Copyright © 2023 CredChain Ltda.
                     All rights reserved.</p>
             </div>

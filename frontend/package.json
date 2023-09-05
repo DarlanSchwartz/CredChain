@@ -11,7 +11,8 @@
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.15.0",
     "styled-components": "^6.0.7",
-    "sweetalert2": "^11.7.27"
+    "sweetalert2": "^11.7.27",
+    "web3": "^4.1.1"
   },
   "devDependencies": {
     "react-scripts": "5.0.1"
@@ -27,9 +28,11 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
     ],
     "development": [
       "last 1 chrome version",

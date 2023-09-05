@@ -1,23 +1,16 @@
 import React from "react";
 import { styled } from "styled-components";
-import BackgroundDegrade from "../PictureMudarDepois/background.png";
 import { MainPurpleColor } from "../Colors";
-import ScoreImage from "../PictureMudarDepois/score.png";
-import Emprestimos from "../PictureMudarDepois/undraw_ether_re_y7ft.svg";
-import FooterBackgroundDegrade from "../PictureMudarDepois/footer-background.png";
-import FooterCellphone from "../PictureMudarDepois/phone-footer-background.png";
-import AppleIcon from "../PictureMudarDepois/apple.png";
-import AndroidIcon from "../PictureMudarDepois/android.png";
 import Footer from "./Components/Footer/Footer";
-import FooterLogo from "./Components/Footer/FooterLogo";
 import { useNavigate } from "react-router-dom";
+import Logo from "./Components/Logo";
 
 export default function HomePage() {
   const navigate = useNavigate();
   return (
     <Container>
       <Header>
-        <FooterLogo on_click={()=> navigate('/')}/>
+        <Logo on_click={()=> navigate('/')}/>
         <MenuItems>
           <Buttons>Documentação</Buttons>
           <Buttons>Cadastre-se</Buttons>
@@ -26,7 +19,7 @@ export default function HomePage() {
       </Header>
 
       <BackgroundContainer>
-        <ImageBackground src={BackgroundDegrade} />
+        <ImageBackground src="images/pictures/background.png" />
         <Register>
           <h1>
             Consulte seu score e consiga crédito através de ativos
@@ -38,13 +31,13 @@ export default function HomePage() {
           <button>Cadastre-se</button>
         </Register>
         <ScoreBackground>
-          <img src={ScoreImage} />
+          <img src="/images/pictures/score.png" />
         </ScoreBackground>
       </BackgroundContainer>
 
       <ContainerSecondPage>
         <Item>
-          <img src={Emprestimos} />
+          <img src="images/pictures/undraw_ether_re_y7ft.svg" />
           <h2>Empréstimos com Colateral</h2>
           <p>
             Colaterali-se financiamento e emprestimos utilizando stETH em Stake
@@ -53,7 +46,7 @@ export default function HomePage() {
         </Item>
 
         <Item>
-          <img src={Emprestimos} />
+        <img src="images/pictures/undraw_success_factors_re_ce93.svg" />
           <h2>Score para Tokenizar recebíveis</h2>
           <p>
             Conecte suas redes e bancos para ter um Score positivo para ajudar a
@@ -62,7 +55,7 @@ export default function HomePage() {
         </Item>
 
         <Item>
-          <img src={Emprestimos} />
+        <img src="images/pictures/undraw_revenue_re_2bmg.svg" />
           <h2>Cadastro positivo do seu CPF e CNPJ</h2>
           <p>
             Com cadastro positivo você pode ter acesso mais facilitado a credito
@@ -71,7 +64,7 @@ export default function HomePage() {
         </Item>
 
         <Item>
-          <img src={Emprestimos} />
+        <img src="images/pictures/undraw_reviews_lp8w.svg" />
           <h2>Rating para negócios</h2>
           <p>
             Saiba o risco de cada empresa na hora de realizar negócios e comprar
@@ -80,7 +73,7 @@ export default function HomePage() {
         </Item>
 
         <Item>
-          <img src={Emprestimos} />
+        <img src="images/pictures/undraw_investment_data_re_sh9x.svg" />
           <h2>Acompanhe todos seus ativos</h2>
           <p>
             Acompanhe todo seu patrimonio em qualquer rede blockchain existente
@@ -90,10 +83,10 @@ export default function HomePage() {
       </ContainerSecondPage>
 
       <ContainerThirdPage>
-        <FooterBackgDegrade src={FooterBackgroundDegrade} />
+        <FooterBackgDegrade src="images/pictures/footer-background.png" />
 
         <CellphoneImage>
-          <img src={FooterCellphone} />
+          <img src="/images/pictures/phone-footer-background.png" />
         </CellphoneImage>
 
         <InfosForDownload>
@@ -102,7 +95,7 @@ export default function HomePage() {
 
           <IconsForDownload>
             <DivApple>
-              <img src={AppleIcon} />
+              <img src="/images/pictures/apple.png"/>
               <div>
               <h4>Download on the</h4>
               <h3>App Store</h3>
@@ -111,7 +104,7 @@ export default function HomePage() {
             </DivApple>
 
             <DivAndroid>
-              <img src={AndroidIcon} />
+             <img src="/images/pictures/android.png"/>
               <div>
               <h4>GET IT ON</h4>
               <h3>Google Play</h3>
@@ -245,7 +238,8 @@ const ContainerSecondPage = styled.div`
 `;
 
 const Item = styled.div`
-  width: 380px;
+  width: 100%;
+  max-width: 500px;
   margin: 10px 40px 30px 40px;
   display: flex;
   flex-direction: column;

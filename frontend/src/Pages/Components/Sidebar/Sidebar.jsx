@@ -8,10 +8,9 @@ import { FiCopy } from "react-icons/fi";
 import { LuBarChart4 } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import logo from "../../../Images/Logo.png";
 import { MainPurpleColor } from "../../../Colors";
 import Swal from "sweetalert2";
-import FooterLogo from "../Footer/FooterLogo";
+import Logo from "../Logo";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -70,7 +69,7 @@ export default function Sidebar() {
   return (
     <SidebarContainer>
       <ItemsUp>
-        <FooterLogo on_click={()=> goToHomePage()}/>
+        <Logo on_click={()=> goToFinances()} />
         <button
           onClick={goToScore}
           style={{

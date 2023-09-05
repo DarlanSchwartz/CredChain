@@ -10,7 +10,10 @@ export default function HomePage() {
   return (
     <Container>
       <Header>
-        <Logo on_click={()=> navigate('/')}/>
+        <SizeLogo>
+          <Logo on_click={()=> navigate('/')}/>
+        </SizeLogo>
+        
         <MenuItems>
           <Buttons>Documentação</Buttons>
           <Buttons>Cadastre-se</Buttons>
@@ -126,6 +129,11 @@ const Container = styled.main`
   }
 `;
 
+const SizeLogo = styled.div`
+
+margin-left: 70px;
+`;
+
 const ImageBackground = styled.img`
   width: 100%;
   height: 90%;
@@ -170,7 +178,7 @@ const MenuItems = styled.div`
 `;
 
 const Buttons = styled.button`
-  color: rgb(32, 32, 32, 0.4);
+  color: #646464da;
   background-color: #ffffff;
 `;
 
@@ -183,12 +191,13 @@ const ButtonLogin = styled.button`
 
 const Register = styled.div`
   position: absolute;
-  top: 15%;
+  top: 25%;
   left: 0;
-  width: 650px;
+  width: 780px;
+ 
 
   h1 {
-    font-size: 48px;
+    font-size: 60px;
     color: #ffffff;
     font-weight: 600;
     padding-left: 70px;
@@ -196,12 +205,12 @@ const Register = styled.div`
   }
 
   p {
-    font-size: 24px;
+    font-size: 32px;
     color: #ffffff;
     font-weight: 400;
     margin-top: 20px;
     padding-left: 70px;
-    line-height: 30px;
+    line-height: 36px;
   }
 
   button {

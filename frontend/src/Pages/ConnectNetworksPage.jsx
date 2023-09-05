@@ -41,7 +41,7 @@ export default function ConnectNetworksPage() {
               symbol: 'ETH',
               decimals: 18
           },
-          rpcUrls: ['https://mainnet.infura.io/v3/YOUR-PROJECT-ID'],
+          rpcUrls: ['https://mainnet.infura.io/v3/604ad354539a45f5b33ff874e90fd3d7'],
           blockExplorerUrls: ['https://etherscan.io/']
       };
       

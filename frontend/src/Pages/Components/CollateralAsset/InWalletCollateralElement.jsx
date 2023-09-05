@@ -13,8 +13,6 @@ export default function InWalletCollateralElement({name = 'Currency name',curren
   )
 }
 
-
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;

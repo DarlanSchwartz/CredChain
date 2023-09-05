@@ -15,7 +15,7 @@ export default function Collaterals() {
         <>
         <h1 className='title'>Colaterais</h1>
          <IndexBar />
-          <BlockchainCurrency name={'WstETH'} price={'9310.00'} units={0.563909} total_value={5250.00} image={'/stETH.svg'} />
+          <BlockchainCurrency name={'WstETH'} price={'9310.00'} units={0.563909} total_value={5250.00} image={'/images/icons/stETH.svg'} />
           <button>Solicitar Empréstimo</button>
         </>
       }

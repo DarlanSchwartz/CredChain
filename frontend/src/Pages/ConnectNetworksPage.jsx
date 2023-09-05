@@ -62,8 +62,8 @@ function connectWallet(){}
         <ConnectedNetworks>
           <h1>Redes Conectadas</h1>
           <SCConnectedNetworksList>
-            <ConnectedNetworkElement name="Etherium" image={'/ETH.svg'} />
-            <ConnectedNetworkElement name="Rede Piloto RD" image={'/tesouro.svg'} />
+            <ConnectedNetworkElement name="Etherium" image={'/images/icons/ETH.svg'} />
+            <ConnectedNetworkElement name="Rede Piloto RD" image={'/images/icons/tesouro.svg'} />
           </SCConnectedNetworksList>
         </ConnectedNetworks>
         <SCConnectNewNetwork>
@@ -82,7 +82,7 @@ function connectWallet(){}
             <h2>Selecione sua carteira</h2>
             <WalletAndNetworkList>
               <WalletOrNetworkElement onClick={() => setSelectedWallet('metamask')} $selected={(selectedWallet == 'metamask').toString()}>
-                <img src="/metamask.svg" alt="" />
+                <img src="/images/icons/metamask.svg" alt="" />
                 <p>Metamask</p>
               </WalletOrNetworkElement>
               <NetworkPlaceholder />
@@ -92,11 +92,11 @@ function connectWallet(){}
             <h3>Selecione a rede</h3>
             <WalletAndNetworkList>
               <WalletOrNetworkElement onClick={() => setSelectedNetwork('etherium')} $selected={(selectedNetwork == 'etherium').toString()}>
-                <img src="/etherium.svg" alt="" />
+                <img src="/images/icons/etherium.svg" alt="" />
                 <p>Etherium</p>
               </WalletOrNetworkElement>
               <WalletOrNetworkElement onClick={() => setSelectedNetwork('piloto')} $selected={(selectedNetwork == 'piloto').toString()}>
-                <img src="/piloto.svg" alt="" />
+                <img src="/images/icons/piloto.svg" alt="" />
                 <p>Rede Piloto RD</p>
               </WalletOrNetworkElement>
               <NetworkPlaceholder />

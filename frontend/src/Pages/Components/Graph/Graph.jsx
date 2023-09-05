@@ -33,7 +33,7 @@ export default function Graph() {
           </select>
         </Right>
       </Header>
-      <img src="graph.svg" alt="" />
+      <img src="/images/pictures/graph.svg" alt="" />
     </GraphContainer>
   )
 }

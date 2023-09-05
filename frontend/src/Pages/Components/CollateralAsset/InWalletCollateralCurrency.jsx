@@ -2,7 +2,7 @@ import React from 'react'
 import { styled } from 'styled-components';
 import { MainPurpleColor } from '../../../Colors';
 
-export default function InWalletCollateralCurrency({ onClick, name ='name', image ='/stETH.svg', units = '10.000.00', total_value='0' }) {
+export default function InWalletCollateralCurrency({ onClick, name ='name', image ='/images/icons/stETH.svg', units = '10.000.00', total_value='0' }) {
   return (
     <Container>
       <NameLogo>

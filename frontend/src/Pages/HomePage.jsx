@@ -8,6 +8,7 @@ import FooterBackgroundDegrade from "../PictureMudarDepois/footer-background.png
 import FooterCellphone from "../PictureMudarDepois/phone-footer-background.png";
 import AppleIcon from "../PictureMudarDepois/apple.png";
 import AndroidIcon from "../PictureMudarDepois/android.png";
+import Footer from "./Components/Footer/Footer";
 
 export default function HomePage() {
   return (
@@ -116,6 +117,7 @@ export default function HomePage() {
           </IconsForDownload>
         </InfosForDownload>
       </ContainerThirdPage>
+      <Footer/>
     </Container>
   );
 }

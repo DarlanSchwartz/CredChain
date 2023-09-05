@@ -9,12 +9,15 @@ import FooterCellphone from "../PictureMudarDepois/phone-footer-background.png";
 import AppleIcon from "../PictureMudarDepois/apple.png";
 import AndroidIcon from "../PictureMudarDepois/android.png";
 import Footer from "./Components/Footer/Footer";
+import FooterLogo from "./Components/Footer/FooterLogo";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+  const navigate = useNavigate();
   return (
     <Container>
       <Header>
-        <img src="cred-chain-logo-aqui" />
+        <FooterLogo on_click={()=> navigate('/')}/>
         <MenuItems>
           <Buttons>Documentação</Buttons>
           <Buttons>Cadastre-se</Buttons>
@@ -209,7 +212,8 @@ const Register = styled.div`
   }
 
   button {
-    width: 150px;
+    width: 100%;
+    max-width: 150px;
     height: 55px;
     margin-left: 70px;
     margin-top: 30px;

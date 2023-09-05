@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import logo from "../../../Images/Logo.png";
 import { MainPurpleColor } from "../../../Colors";
 import Swal from "sweetalert2";
+import FooterLogo from "../Footer/FooterLogo";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ export default function Sidebar() {
   return (
     <SidebarContainer>
       <ItemsUp>
-        <img src={logo} onClick={goToHomePage} />
+        <FooterLogo on_click={()=> goToHomePage()}/>
         <button
           onClick={goToScore}
           style={{

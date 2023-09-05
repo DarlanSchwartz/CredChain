@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
 import ConnectedNetworkElement from './Components/ConnectWallet/ConnectedNetworkElement';
 import { MainPurpleColor } from '../Colors';
 import NetworkPlaceholder from './Components/Generic/NetworkPlaceholder';
+import Web3 from 'web3';
 
 
 export default function ConnectNetworksPage() {
   const [showModalConnect, setShowModalConnect] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('');
-
+  const [userAddress, setUserAddress] = useState(null);
   function closeModal() {
     setShowModalConnect(false);
     setSelectedWallet('');
@@ -21,9 +22,40 @@ export default function ConnectNetworksPage() {
     setShowModalConnect(true);
   }
 
-  function connectWallet(){
-    alert('Ainda não implementado!')
-  }
+  
+  const connectWallet = useCallback(async () => {
+    if (window.ethereum) {
+        window.web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+
+        const accounts = await window.web3.eth.getAccounts();
+        if (accounts.length > 0) {
+            setUserAddress(accounts[0])
+            console.log("Endereço da carteira conectada:", accounts[0]);
+        }
+        const network = {
+          chainId: '0x1',
+          chainName: 'Ethereum Mainnet',
+          nativeCurrency: {
+              name: 'Ether',
+              symbol: 'ETH',
+              decimals: 18
+          },
+          rpcUrls: ['https://mainnet.infura.io/v3/YOUR-PROJECT-ID'],
+          blockExplorerUrls: ['https://etherscan.io/']
+      };
+      
+
+        await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [network]
+        });
+        
+    } else {
+        alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
+    }
+}, []);
+
   return (
     <PageContentWrapper>
       <Container>

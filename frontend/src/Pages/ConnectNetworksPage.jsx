@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import ConnectedNetworkElement from './Components/ConnectWallet/ConnectedNetworkElement';
 import { MainPurpleColor } from '../Colors';
 import NetworkPlaceholder from './Components/Generic/NetworkPlaceholder';
-import Web3 from 'web3';
+//import Web3 from 'web3';
 
 
 export default function ConnectNetworksPage() {
@@ -21,40 +21,40 @@ export default function ConnectNetworksPage() {
   function openModal() {
     setShowModalConnect(true);
   }
-
+function connectWallet(){}
   
-  const connectWallet = useCallback(async () => {
-    if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
-        await window.ethereum.enable();
+//   const connectWallet = useCallback(async () => {
+//     if (window.ethereum) {
+//         window.web3 = new Web3(window.ethereum);
+//         await window.ethereum.enable();
 
-        const accounts = await window.web3.eth.getAccounts();
-        if (accounts.length > 0) {
-            setUserAddress(accounts[0])
-            console.log("Endereço da carteira conectada:", accounts[0]);
-        }
-        const network = {
-          chainId: '0x1',
-          chainName: 'Ethereum Mainnet',
-          nativeCurrency: {
-              name: 'Ether',
-              symbol: 'ETH',
-              decimals: 18
-          },
-          rpcUrls: ['https://mainnet.infura.io/v3/604ad354539a45f5b33ff874e90fd3d7'],
-          blockExplorerUrls: ['https://etherscan.io/']
-      };
+//         const accounts = await window.web3.eth.getAccounts();
+//         if (accounts.length > 0) {
+//             setUserAddress(accounts[0])
+//             console.log("Endereço da carteira conectada:", accounts[0]);
+//         }
+//         const network = {
+//           chainId: '0x1',
+//           chainName: 'Ethereum Mainnet',
+//           nativeCurrency: {
+//               name: 'Ether',
+//               symbol: 'ETH',
+//               decimals: 18
+//           },
+//           rpcUrls: ['https://mainnet.infura.io/v3/604ad354539a45f5b33ff874e90fd3d7'],
+//           blockExplorerUrls: ['https://etherscan.io/']
+//       };
       
 
-        await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [network]
-        });
+//         await window.ethereum.request({
+//             method: 'wallet_addEthereumChain',
+//             params: [network]
+//         });
         
-    } else {
-        alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
-    }
-}, []);
+//     } else {
+//         alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
+//     }
+// }, []);
 
   return (
     <PageContentWrapper>

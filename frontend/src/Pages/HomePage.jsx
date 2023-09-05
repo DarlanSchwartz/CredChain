@@ -223,11 +223,15 @@ const Register = styled.div`
 `;
 
 const ScoreBackground = styled.div`
-  width: 859px;
-  height: 630px;
-  position: absolute;
-  top: 18%;
-  left: 45%;
+    position: absolute;
+    top: 18%;
+    left: 45%;
+    min-width: 400px;
+    max-width: 859px;
+    max-height: 630px;
+    img{
+      width: 100%;
+    }
 `;
 
 const ContainerSecondPage = styled.div`

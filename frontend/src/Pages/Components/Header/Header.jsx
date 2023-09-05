@@ -106,7 +106,9 @@ const SearchContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  width: 717px;
+  width: 100%;
+  margin-left: 20px;
+  margin-right: 20px;
   max-width: 717px;
 `;
 
@@ -162,6 +164,8 @@ const StyledInput = styled.input`
   background-color: #ffffff;
   border-radius: 100px;
   padding-left: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
   font-size: 16px;
   padding-left: 40px;
   position: relative;
@@ -178,7 +182,7 @@ const SearchIcon = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 15px;
+  left: 35px;
 `;
 
 

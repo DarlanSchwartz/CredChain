@@ -7,6 +7,7 @@ import FinancesPage from './Pages/FinancesPage';
 import LoansPage from './Pages/LoansPage';
 import ScorePage from './Pages/ScorePage';
 import SignUpPage from './Pages/SignUpPage';
+import LoginPage from './Pages/LoginPage';
 
 export default function App() {
     const [user, setUser] = useState(null);
@@ -16,6 +17,7 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/signup" element={<SignUpPage />} />
+                    <Route path="/login" element={<LoginPage />} />
                     <Route path="/connect" element={<ConnectNetworksPage />} />
                     <Route path="/finances" element={<FinancesPage />} />
                     <Route path="/loans" element={<LoansPage />} />

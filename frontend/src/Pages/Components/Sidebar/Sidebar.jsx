@@ -26,7 +26,7 @@ export default function Sidebar() {
       cancelButtonText: 'Cancelar',
       width: 300,
       heightAuto: false,
-      imageUrl: '/logout.svg',
+      imageUrl: '/images/pictures/logout.svg',
       imageWidth: 200,
   }).then((result) => {
       if (result.isConfirmed) {

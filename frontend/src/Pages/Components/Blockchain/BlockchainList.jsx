@@ -12,14 +12,14 @@ export default function BlockchainList() {
           price:'1.00',
           units:'10.000.00',
           totalValue:'10.000.00',
-          image:'/drex.svg'
+          image:'/images/icons/drex.svg'
         },
         {
           name:'Titulo Público Federal',
           price:'100.00',
           units:'21.003',
           totalValue:'2.100.30',
-          image:'/tesouro.svg'
+          image:'/images/icons/tesouro.svg'
         }
       ]
     },
@@ -31,14 +31,14 @@ export default function BlockchainList() {
           price:'9300.00',
           units:'0.5',
           totalValue:'4650.00',
-          image:'/ETH.svg'
+          image:'/images/icons/ETH.svg'
         },
         {
           name:'stETH',
           price:'9310.00',
           units:'0.563909',
           totalValue:'5250.00',
-          image:'/stETH.svg'
+          image:'/images/icons/stETH.svg'
         }
       ]
     },

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { GoBell } from "react-icons/go";
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { LuSearch } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { MainPurpleColor } from "../../../Colors";
 
 
 export default function Header() {
@@ -17,6 +19,19 @@ export default function Header() {
     setArrowUp(!arrowUp);
 };
 
+useEffect(() => {
+  window.addEventListener('click', listenerOutsiteClick);
+  return () => {
+      window.removeEventListener('click', listenerOutsiteClick);
+  };
+}, []);
+
+function listenerOutsiteClick(event) {
+  if (!event.target.classList.contains('menu')) {
+    setMenuOpen(false);
+    setArrowUp(false);
+  }
+}
 function goToScore() {
   navigate("/score");
 }
@@ -41,6 +56,25 @@ function goToHomePage() {
   navigate("/");
 }
 
+function logout(){
+  Swal.fire({
+    title: `<span style="font-family: Plus Jakarta Sans, sans-serif;font-size: 20px;color:black">Deseja sair?</span>`,
+    showCancelButton: true,
+    confirmButtonColor: '#c9c9c9',
+    cancelButtonColor: `${MainPurpleColor}`,
+    confirmButtonText: 'Sim',
+    cancelButtonText: 'Cancelar',
+    width: 300,
+    heightAuto: false,
+    imageUrl: '/images/pictures/logout.svg',
+    imageWidth: 200,
+}).then((result) => {
+    if (result.isConfirmed) {
+        navigate('/');
+    }
+});
+}
+
   return (
     <SCHeader>
       <Container>
@@ -53,10 +87,10 @@ function goToHomePage() {
           </SearchContainer>
         </Main>
 
-        <InfoUser>
-          <ButtonBell>
+        <InfoUser className="menu"  $open={menuOpen}>
+          <ButtonBell className="menu" >
             <GoBell className="go-bell-icon" />
-          </ButtonBell>
+          </ButtonBell >
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJFiKHbkBQTYhaU1x1TGreeVViDrWp3pPQEf-zcX9Smb80kGgEUkTPeGp95adj2PrIYSI&usqp=CAU"
             alt="User"
@@ -64,17 +98,17 @@ function goToHomePage() {
           <p>Nome e Último Nome</p>
 
           <div>
-             <ArrowButton onClick={toggleMenu}>
-                    {arrowUp ? <FiChevronUp color="#292D32" size={24} /> : <FiChevronDown color="#292D32" size={24} />}
+             <ArrowButton className="menu"  onClick={toggleMenu}>
+                    {arrowUp ? <FiChevronUp className="menu"  color="#292D32" size={24} /> : <FiChevronDown className="menu" color="#292D32" size={24} />}
                 </ArrowButton>
                 {menuOpen && (
-                    <DropdownMenu>
-                        <MenuItem onClick={goToScore}>Meu Score</MenuItem>
-                        <MenuItem onClick={goToFinances}>Finanças</MenuItem>
-                        <MenuItem onClick={goToConnectPage}>Conectar Redes</MenuItem>
-                        <MenuItem onClick={goToLoansPage}>Empréstimo</MenuItem>
-                        <MenuItem onClick={goToDocumentation}>Documentação</MenuItem>
-                        <MenuItem onClick={goToHomePage}>Logout</MenuItem>
+                    <DropdownMenu className="menu">
+                        <MenuItem className="menu" onClick={goToScore}>Meu Score</MenuItem>
+                        <MenuItem className="menu" onClick={goToFinances}>Finanças</MenuItem>
+                        <MenuItem className="menu" onClick={goToConnectPage}>Conectar Redes</MenuItem>
+                        <MenuItem className="menu" onClick={goToLoansPage}>Empréstimo</MenuItem>
+                        <MenuItem className="menu" onClick={goToDocumentation}>Documentação</MenuItem>
+                        <MenuItem className="menu" onClick={logout}>Logout</MenuItem>
                     </DropdownMenu>
                 )}
           </div>
@@ -128,6 +162,7 @@ const InfoUser = styled.div`
   border-radius: 100px;
   background-color: #ffffff;
   margin-right: 2.5rem;
+  border-bottom-right-radius: ${(props) => props.$open ? 0 : '100px'};
 
   img {
     width: 100%;
@@ -147,8 +182,8 @@ const ButtonBell = styled.button`
   background-color: #ffffff;
   width: 100%;
   max-width: 100px;
-  height: 100%;
-  max-height: 48px;
+  height: 48px;
+
   border: 1px solid rgba(155, 155, 155, 0.27);
   border-radius: 100px;
   margin-right: 10px;
@@ -198,9 +233,10 @@ const ArrowButton = styled.div`
 
 const DropdownMenu = styled.div`
     position: absolute;
-    top: 11%;
-    right: 60px;
-    z-index: 10;
+    top: 6.4rem;
+    right: 2.5rem;
+    z-index: 1;
+    padding-top: 1rem;
 
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;

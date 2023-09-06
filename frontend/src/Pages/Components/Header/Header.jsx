@@ -86,7 +86,8 @@ function goToHomePage() {
 
 const SCHeader = styled.header`
   width: calc(100% - 280px);
-  height: 100px;
+  height: 100%;
+  max-height: 100px;
   margin-left: 280px;
 `;
 
@@ -107,17 +108,16 @@ const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  max-width: 717px;
   margin-left: 20px;
   margin-right: 20px;
-  max-width: 717px;
 `;
 
 const InfoUser = styled.div`
-  display: flex;
-  max-width: 350px;
-  max-height: 64px;
   width: 100%;
   height: 100%;
+  max-width: 350px;
+  max-height: 64px;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -126,12 +126,14 @@ const InfoUser = styled.div`
   flex-shrink: 0;
   border: none;
   border-radius: 100px;
-  background: #fff;
+  background-color: #ffffff;
   margin-right: 2.5rem;
 
   img {
-    width: 48px;
-    height: 48px;
+    width: 100%;
+    height: 100%;
+    max-width: 48px;
+    max-height: 48px;
     border-radius: 50%;
     margin-right: 10px;
   }
@@ -145,14 +147,17 @@ const ButtonBell = styled.button`
   background-color: #ffffff;
   width: 100%;
   max-width: 100px;
-  height: 48px;
+  height: 100%;
+  max-height: 48px;
   border: 1px solid rgba(155, 155, 155, 0.27);
   border-radius: 100px;
   margin-right: 10px;
 
   .go-bell-icon {
-    width: 24px;
-    height: 24px;
+    width: 100%;
+    height: 100%;
+    max-width: 24px;
+    max-height: 24px;
   }
 `;
 
@@ -160,14 +165,15 @@ const ButtonBell = styled.button`
 const StyledInput = styled.input`
   width: 100%;
   max-width: 717px;
+  max-height: 100%;
   height: 64px;
   background-color: #ffffff;
   border-radius: 100px;
-  padding-left: 40px;
   margin-left: 20px;
   margin-right: 20px;
   font-size: 16px;
   padding-left: 40px;
+
   position: relative;
   left: 5px;
   border: none;
@@ -192,11 +198,13 @@ const ArrowButton = styled.div`
 
 const DropdownMenu = styled.div`
     position: absolute;
-    top: 14%;
+    top: 11%;
     right: 60px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    width: 210px;
+
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 210px;
     border-radius: 0px 0px 20px 20px;
     background-color: #FFFFFF;
 `;

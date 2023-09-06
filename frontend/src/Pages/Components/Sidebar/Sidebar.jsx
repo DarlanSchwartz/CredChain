@@ -55,10 +55,6 @@ export default function Sidebar() {
     navigate("/documentation");
   }
 
-  function goToHomePage() {
-    navigate("/");
-  }
-
   const isScoreActive = location.pathname === "/score";
   const isFinancesActive = location.pathname === "/finances";
   const isConnectActive = location.pathname === "/connect";
@@ -69,7 +65,9 @@ export default function Sidebar() {
   return (
     <SidebarContainer>
       <ItemsUp>
+        <SizeLogo>
         <Logo on_click={()=> goToFinances()} />
+        </SizeLogo>
         <button
           onClick={goToScore}
           style={{
@@ -179,16 +177,24 @@ const SidebarContainer = styled.div`
   height: 100%;
   width: 100%;
   max-width: 280px;
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: start;
   flex-shrink: 0;
   padding: 0px 0px 10px 0px;
+
   position: fixed;
   left: 0;
   top: 0;
+`;
+
+const SizeLogo = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+margin: 50px 0px;
 `;
 
 const ItemsUp = styled.div`
@@ -196,14 +202,6 @@ const ItemsUp = styled.div`
   width: 100%;
   flex-direction: column;
   padding-left: 5px;
-
-  img {
-    width: 70%;
-    align-self: center;
-    margin-top: 30px;
-    margin-bottom: 70px;
-    cursor: pointer;
-  }
 
   button {
     background-color: #ffffff;
@@ -216,7 +214,8 @@ const ItemsUp = styled.div`
     align-items: center;
     width: 100%;
     margin-bottom: 10px;
-    height: 64px;
+    height: 100%;
+    min-height: 64px;
     padding-left: 20px;
   }
 
@@ -225,8 +224,10 @@ const ItemsUp = styled.div`
   }
 
   .icon-buttons {
-    width: 24px;
-    height: 24px;
+    max-width: 24px;
+    width: 100%;
+    max-height: 24px;
+    height: 100%;
     margin-right: 20px;
   }
 `;
@@ -248,7 +249,8 @@ const ItemsDown = styled.div`
     align-items: center;
     width: 100%;
     margin-bottom: 10px;
-    height: 64px;
+    height: 100%;
+    min-height: 64px;
     padding-left: 20px;
   }
 
@@ -257,8 +259,10 @@ const ItemsDown = styled.div`
   }
 
   .icon-buttons {
-    width: 24px;
-    height: 24px;
+    max-width: 24px;
+    width: 100%;
+    max-height: 24px;
+    height: 100%;
     margin-right: 20px;
   }
 `;

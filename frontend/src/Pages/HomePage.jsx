@@ -136,19 +136,22 @@ margin-left: 70px;
 
 const ImageBackground = styled.img`
   width: 100%;
-  height: 90%;
+  height: 100%;
+  max-height: 90%;
 `;
 
 const BackgroundContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 91%;
+  height: 100%;
+  max-height: 91%;
   margin-top: 90px;
 `;
 
 const Header = styled.header`
   width: 100%;
-  height: 90px;
+  height: 100%;
+  max-height: 90px;
   background-color: #ffffff;
   display: flex;
   flex-direction: row;
@@ -158,19 +161,15 @@ const Header = styled.header`
   position: fixed;
   top: 0;
   z-index: 2;
-
-  img {
-    width: 170px;
-    margin-left: 120px;
-  }
 `;
 
 const MenuItems = styled.div`
   button {
-    height: 50px;
+    height: 100%;
+    min-height: 50px;
     border-radius: 20px;
     border: none;
-    width: 150px;
+    width: 150px; //ajeitar esse depois
     font-size: 18px;
     font-weight: 500px;
     margin-left: 3px;
@@ -193,8 +192,9 @@ const Register = styled.div`
   position: absolute;
   top: 25%;
   left: 0;
-  width: 780px;
- 
+  width: 100%;
+  max-width: 780px;
+
 
   h1 {
     font-size: 60px;
@@ -216,7 +216,8 @@ const Register = styled.div`
   button {
     width: 100%;
     max-width: 150px;
-    height: 55px;
+    height: 100%;
+    min-height: 55px;
     margin-left: 70px;
     margin-top: 30px;
     border-radius: 20px;
@@ -224,7 +225,6 @@ const Register = styled.div`
     font-size: 20px;
     font-weight: bold;
     color: ${MainPurpleColor};
-    background-color: #ffffff;
   }
 `;
 
@@ -235,6 +235,7 @@ const ScoreBackground = styled.div`
     min-width: 400px;
     max-width: 859px;
     max-height: 630px;
+
     img{
       width: 100%;
     }
@@ -257,7 +258,8 @@ const Item = styled.div`
   padding: 10px;
 
   img {
-    height: 280px;
+    height: 100%;
+    max-height: 280px;
     margin-bottom: 30px;
   }
 
@@ -282,12 +284,15 @@ const ContainerThirdPage = styled.div`
 
 const FooterBackgDegrade = styled.img`
   width: 100%;
-  height: 700px;
+  height: 100%;
+  max-height: 700px;
 `;
 
 const CellphoneImage = styled.div`
-  width: 859px;
-  height: 630px;
+width: 100%;
+height: 100%;
+  max-width: 859px;
+  max-height: 630px;
   position: absolute;
 
   bottom: 10%;
@@ -298,7 +303,8 @@ const InfosForDownload = styled.div`
   position: absolute;
   top: 25%;
   right: 10%;
-  width: 650px;
+  width: 100%;
+  max-width: 650px;
 
   h1 {
     font-size: 60px;
@@ -316,8 +322,10 @@ const InfosForDownload = styled.div`
   }
 
   button {
-    width: 150px;
-    height: 55px;
+    width: 100%;
+    height: 100%;
+    max-width: 150px;
+    max-height: 55px;
     margin-left: 70px;
     margin-top: 30px;
     border-radius: 20px;
@@ -337,7 +345,8 @@ flex-direction: row;
 const DivApple = styled.div`
   display: flex;
   flex-direction: row;
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
   margin-right: 20px;
   padding: 10px 10px;
   border: none;
@@ -346,7 +355,8 @@ const DivApple = styled.div`
   cursor: pointer;
   
   img {
-    width: 30px;
+    width: 100%;
+    max-width: 30px;
     margin-right: 10px;
   }
 
@@ -369,7 +379,8 @@ const DivApple = styled.div`
 const DivAndroid = styled.div`
   display: flex;
   flex-direction: row;
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
   padding: 10px 10px;
   border: none;
   background-color: black;
@@ -377,7 +388,8 @@ const DivAndroid = styled.div`
   cursor: pointer;
 
   img {
-    width: 30px;
+    width: 100%;
+    max-width: 30px;
     margin-right: 10px;
   }
 

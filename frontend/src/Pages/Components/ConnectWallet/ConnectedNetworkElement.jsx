@@ -11,15 +11,17 @@ export default function ConnectedNetworkElement({image,name}) {
 }
 
 const SCConnectedNWElement = styled.div`
-min-height: 3rem;
-display: flex;
-align-items: center;
-gap: 0.88rem;
-width: 100%;
-img{
-  border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
-  flex-shrink: 0;
-}
+
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.88rem;
+  width: 100%;
+
+  img{
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    flex-shrink: 0;
+  }
 `;

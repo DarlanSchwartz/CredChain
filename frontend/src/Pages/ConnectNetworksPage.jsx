@@ -84,7 +84,10 @@ export default function ConnectNetworksPage() {
                 <img src="/images/icons/metamask.svg" alt="" />
                 <p>Metamask</p>
               </WalletOrNetworkElement>
-              <NetworkPlaceholder />
+              <WalletOrNetworkElement onClick={() => setSelectedWallet('ripio')} $selected={(selectedWallet == 'ripio').toString()}>
+                <img src="/images/icons/ripio.svg" alt="" />
+                <p>Ripio Wallet</p>
+              </WalletOrNetworkElement>
               <NetworkPlaceholder />
             </WalletAndNetworkList>
 
@@ -94,9 +97,9 @@ export default function ConnectNetworksPage() {
                 <img src="/images/icons/etherium.svg" alt="" />
                 <p>Etherium</p>
               </WalletOrNetworkElement>
-              <WalletOrNetworkElement onClick={() => setSelectedNetwork('piloto')} $selected={(selectedNetwork == 'piloto').toString()}>
-                <img src="/images/icons/piloto.svg" alt="" />
-                <p>Rede Piloto RD</p>
+              <WalletOrNetworkElement onClick={() => setSelectedNetwork('LaChain')} $selected={(selectedNetwork == 'LaChain').toString()}>
+                <img src="/images/icons/lachain.svg" alt="" />
+                <p>LaChain</p>
               </WalletOrNetworkElement>
               <NetworkPlaceholder />
             </WalletAndNetworkList>

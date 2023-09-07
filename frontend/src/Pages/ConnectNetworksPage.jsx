@@ -89,7 +89,7 @@ export default function ConnectNetworksPage() {
 
       {showModalConnect &&
 
-        <ModalContainer onClick={closeModal}>
+        <ModalContainer onMouseDown={closeModal}>
           <ConnectWalletContainer onClick={(e) => e.stopPropagation()}>
             <h2>Selecione sua carteira</h2>
             <WalletAndNetworkList>

@@ -19,7 +19,7 @@ export default function ConnectedNetworkElement({image,name}) {
       imageUrl:image,
       imageWidth: 200,
   }).then((result) => {
-
+    //TODO: REMOVER A REDE
   });
   }
 
@@ -27,7 +27,7 @@ export default function ConnectedNetworkElement({image,name}) {
     <SCConnectedNWElement>
       <img src={image} alt={name} />
       <h1>{name}</h1>
-      <BiTrashAlt className='icon' onClick={removeNetwork}/>
+      {!name.includes('Piloto') &&  <BiTrashAlt className='icon' onClick={removeNetwork}/>}
     </SCConnectedNWElement>
   )
 }

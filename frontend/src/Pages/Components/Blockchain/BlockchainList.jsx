@@ -45,9 +45,9 @@ export default function BlockchainList() {
   ]
   return (
     <SCBlockchainList>
-       {blockchains.map(blockchain =>{
+       {blockchains.map((blockchain,index) =>{
         return(
-          <Blockchain name={blockchain.name} currencies={blockchain.currencies} />
+          <Blockchain key={index} name={blockchain.name} currencies={blockchain.currencies} />
         );
        })}
     </SCBlockchainList>

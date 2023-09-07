@@ -28,7 +28,7 @@ export default function Graph() {
             </CoinTexts>
           </CoinInfo>
 
-          <select value="Semestre" name="period" id="period">
+          <select name="period" id="period">
             <option value="Semestre">Semestre</option>
           </select>
         </Right>
@@ -122,11 +122,13 @@ const GraphContainer = styled.div`
     display: flex;
     width: 100%;
     max-width: 717px;
-    min-height: 402px;
     padding: 20px;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
     border-radius: 14px;
     background: #FFF;
+    img{
+      width: 100%;
+    }
 `;

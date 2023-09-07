@@ -3,7 +3,6 @@ import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
 import VisualScore from './Components/Score/VisualScore';
 import { MainPurpleColor } from '../Colors';
-import PlaceholderRatingComponent from './Components/Score/PlaceholderRatingComponent';
 import Company from './Components/Score/Company';
 export default function ScorePage() {
   const [showModalConnect, setShowModalConnect] = useState(false);
@@ -152,7 +151,7 @@ const CheckboxElementContainer = styled.div`
     font-weight: 400;
     line-height: 1.5rem; /* 133.333% */
     span{
-      color: #AD00FF;
+      color: ${MainPurpleColor};
       font-family: Plus Jakarta Sans;
       font-size: 1.125rem;
       font-style: normal;
@@ -270,11 +269,11 @@ const RegisterCompanyForm = styled.form`
 
 const Container = styled.div`
   display: flex;
-  margin-left: 310px;
   gap: 22px;
   margin-top: 44px;
   flex-direction: column;
   gap: 1.5rem;
+  align-items: center;
 
 `;
 

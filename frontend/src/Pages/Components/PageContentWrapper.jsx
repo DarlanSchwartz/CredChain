@@ -18,4 +18,5 @@ const PageWrapper = styled.div`
     width: 100%;
     height: 100%;
     flex-direction: column;
+    padding-left: 300px;
 `;

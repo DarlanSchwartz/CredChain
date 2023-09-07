@@ -9,9 +9,10 @@ export default function Blockchain({ name, currencies }) {
       <h1 className='title'>{name}</h1>
       <IndexBar/>
       <Currencies>
-        {currencies.map(currency => {
+        {currencies.map((currency,index) => {
           return (
             <BlockchainCurrency
+              key={index}
               image={currency.image}
               name={currency.name}
               price={currency.price}

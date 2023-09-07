@@ -7,7 +7,7 @@ export default function Transaction({ name = "Transaction name", date, value = '
       <Left>
         <TransImage>
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
-            <circle cx="24" cy="24.25" r="24" fill="black" fill-opacity="0.2" />
+            <circle cx="24" cy="24.25" r="24" fill="black" fillOpacity="0.2" />
           </svg>
         </TransImage>
         <Texts>

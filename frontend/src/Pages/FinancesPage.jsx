@@ -22,14 +22,13 @@ export default function FinancesPage() {
 }
 const Main = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
   width: 100%;
+  align-items: center;
 `;
 
 const Container = styled.div`
   display: flex;
-  margin-left: 310px;
   gap: 22px;
   margin-top: 44px;
 `;

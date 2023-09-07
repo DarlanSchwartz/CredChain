@@ -3,29 +3,53 @@ import { styled } from 'styled-components';
 import IndexBar from '../Blockchain/IndexBar';
 import BlockchainCurrency from '../Blockchain/BlockchainCurrency';
 import { MainPurpleColor } from '../../../Colors';
+import CollateralSlideBar from './CollateralSlideBar';
 
-export default function Collaterals() {
-  const [myAssets, setMyAssets] = useState([]);
+export default function Collaterals({ assets, show_actions = true ,ask_loan_start_event}) {
+
 
   return (
     <SCCollaterals>
       {
-        myAssets && myAssets.length > 0 &&
+        assets && assets.length > 0 &&
 
         <>
-        <h1 className='title'>Colaterais</h1>
-         <IndexBar />
+          <h1 className='title'>Colaterais</h1>
+          <IndexBar />
           <BlockchainCurrency name={'WstETH'} price={'9310.00'} units={0.563909} total_value={5250.00} image={'/images/icons/stETH.svg'} />
-          <button>Solicitar Empréstimo</button>
+          <Actions>
+            <CollateralSlideBar value={80} />
+            {
+              show_actions &&
+              <div className='btns'>
+                <button onClick={()=> ask_loan_start_event(assets)}>Solicitar Empréstimo</button>
+                <button disabled>Sacar</button>
+              </div>
+            }
+          </Actions>
         </>
       }
 
       {
-        myAssets.length === 0 && <p className='none-assets'>Você não nenhum ativo depositado.</p>
+        (assets && assets.length === 0 || !assets) && <p className='none-assets'>Você não nenhum ativo depositado.</p>
       }
     </SCCollaterals>
   )
 }
+
+const Actions = styled.nav`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 1.94rem;
+  .btns{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.88rem;
+  }
+`;
 
 const SCCollaterals = styled.div`
   width: 100%;
@@ -61,10 +85,11 @@ const SCCollaterals = styled.div`
 
  
   button{
-    margin-top: 1.94rem;
     width: 100%;
-    max-width: 13.625rem;
-    min-height: 2.375rem;
+    max-width: fit-content;
+    padding-left: 1.4rem;
+    padding-right: 1.4rem;
+    height: 2.375rem;
     border-radius: 1.25rem;
     background-color: ${MainPurpleColor};
     border: 1px solid transparent;
@@ -75,10 +100,19 @@ const SCCollaterals = styled.div`
     line-height: 1.5rem;
     align-self: center;
 
-    &:hover{
-      color: ${MainPurpleColor};
-      border: 1px solid ${MainPurpleColor};
-      background-color: #FFF;
+    &:enabled{
+        &:hover{
+          color: ${MainPurpleColor};
+          border: 1px solid ${MainPurpleColor};
+          background-color: #FFF;
+      }
+    }
+
+    &:disabled{
+      background-color:white;
+      border: 1px solid #D9D9D9;
+      color:#D9D9D9;
+      cursor: not-allowed;
     }
   }
 `;

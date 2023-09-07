@@ -90,7 +90,7 @@ export default function ConnectNetworksPage() {
       {showModalConnect &&
 
         <ModalContainer onMouseDown={closeModal}>
-          <ConnectWalletContainer onClick={(e) => e.stopPropagation()}>
+          <ConnectWalletContainer onMouseDown={(e) => e.stopPropagation()}>
             <h2>Selecione sua carteira</h2>
             <WalletAndNetworkList>
               <WalletOrNetworkElement onClick={() => setSelectedWallet('metamask')} $selected={(selectedWallet == 'metamask').toString()}>
@@ -225,7 +225,6 @@ const ConnectedNetworks = styled.div`
   min-height: 7.625rem;
   border-radius: 0.875rem;
   background: #FFF;
-  margin-top: 4rem;
   padding: 1.56rem;
   padding-top: 0.63rem;
   h1{
@@ -306,7 +305,8 @@ const SCConnectedNetworksList = styled.div`
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
   gap: 2rem;
+  margin-top: 44px;
+  align-items: center;
 `;

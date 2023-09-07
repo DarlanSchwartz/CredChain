@@ -124,10 +124,9 @@ function logout(){
 }
 
 const SCHeader = styled.header`
-  width: calc(100% - 280px);
+  width: 100%;
   height: 100%;
   max-height: 100px;
-  margin-left: 280px;
 `;
 
 const Container = styled.div`
@@ -148,7 +147,6 @@ const SearchContainer = styled.div`
   align-items: center;
   width: 100%;
   max-width: 717px;
-  margin-left: 20px;
   margin-right: 20px;
 `;
 
@@ -209,7 +207,6 @@ const StyledInput = styled.input`
   height: 64px;
   background-color: #ffffff;
   border-radius: 100px;
-  margin-left: 20px;
   margin-right: 20px;
   font-size: 16px;
   padding-left: 40px;
@@ -219,16 +216,16 @@ const StyledInput = styled.input`
   border: none;
   outline: none;
 
-&:focus {
-  border: 1px solid rgba(155, 155, 155, 0.27);
-}
+  &:focus {
+    border: 1px solid rgba(155, 155, 155, 0.27);
+  }
 `;
 
 const SearchIcon = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 35px;
+  left: 25px;
 `;
 
 

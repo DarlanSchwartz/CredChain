@@ -30,6 +30,7 @@ export default function Sidebar() {
       imageWidth: 200,
   }).then((result) => {
       if (result.isConfirmed) {
+          localStorage.removeItem('token');
           navigate('/');
       }
   });
@@ -113,7 +114,7 @@ export default function Sidebar() {
               color: isConnectActive ? `${MainPurpleColor}` : "",
             }}
           />
-          Conectar Redes
+          Salvar Redes
         </button>
 
         <button

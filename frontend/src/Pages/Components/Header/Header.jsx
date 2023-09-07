@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { GoBell } from "react-icons/go";
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { LuSearch } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { MainPurpleColor } from "../../../Colors";
 
@@ -13,6 +13,7 @@ export default function Header() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [arrowUp, setArrowUp] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -70,7 +71,8 @@ function logout(){
     imageWidth: 200,
 }).then((result) => {
     if (result.isConfirmed) {
-        navigate('/');
+      localStorage.removeItem('token');
+      navigate('/');
     }
 });
 }
@@ -79,12 +81,15 @@ function logout(){
     <SCHeader>
       <Container>
         <Main>
-          <SearchContainer>
+          {
+            location.pathname.includes('/loans') &&
+            <SearchContainer>
             <StyledInput placeholder="Pesquise aqui" />
             <SearchIcon>
               <LuSearch />
             </SearchIcon>
           </SearchContainer>
+          }
         </Main>
 
         <InfoUser className="menu"  $open={menuOpen}>

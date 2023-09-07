@@ -43,11 +43,24 @@ export default function ConnectNetworksPage() {
           rpcUrls: ['https://mainnet.infura.io/v3/604ad354539a45f5b33ff874e90fd3d7'],
           blockExplorerUrls: ['https://etherscan.io/']
       };
+
+      const network2 = {
+        chainId: '274',
+        chainName: 'LaChain',
+        nativeCurrency: {
+            name: 'LaCoin',
+            symbol: 'LAC',
+            decimals: 12
+        },
+        rpcUrls: ['https://rpc2.mainnet.lachain.network'],
+        blockExplorerUrls: ['https://explorer.lachain.network']
+    };
+    
       
 
         await window.ethereum.request({
             method: 'wallet_addEthereumChain',
-            params: [network]
+            params: [network2]
         });
         
     } else {
@@ -59,14 +72,14 @@ export default function ConnectNetworksPage() {
     <PageContentWrapper>
       <Container>
         <ConnectedNetworks>
-          <h1>Redes Conectadas</h1>
+          <h1>Redes Salvas</h1>
           <SCConnectedNetworksList>
             <ConnectedNetworkElement name="Etherium" image={'/images/icons/ETH.svg'} />
             <ConnectedNetworkElement name="Rede Piloto RD" image={'/images/icons/tesouro.svg'} />
           </SCConnectedNetworksList>
         </ConnectedNetworks>
         <SCConnectNewNetwork>
-          <h1>Conectar nova rede</h1>
+          <h1>Salvar nova rede</h1>
           <button onClick={openModal}>Selecione a blockhain</button>
         </SCConnectNewNetwork>
       </Container>

@@ -17,10 +17,10 @@ export async function findCompanies(ownerId) {
 }
 
 
-export async function companyExists(cpnj) {
+export async function companyExists(cnpj) {
     const company = await db.query(
-      `SELECT 1 FROM companies WHERE "cpnj" = $1`,
-      [cpnj]
+      `SELECT 1 FROM companies WHERE "cnpj" = $1`,
+      [cnpj]
     );
 
     return company.rows.length > 0;

@@ -8,7 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { LoginContext } from '../Contexts/LoginContext';
 import RipioBanner from './Components/Banners/RipioBanner';
 import OpenFinance from './Components/Banners/OpenFinance';
-
+/*
+  cpf: joi.string().required(),
+  inscription: joi.string().trim().required(),
+  socialReason: joi.string().trim().required(),
+  fantasyName: joi.string().trim().required(),
+  phone: joi.number().required()
+*/
 
 export default function ScorePage() {
 
@@ -178,29 +184,25 @@ const CheckboxElementContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.69rem;
+  gap: 0.3rem;
 
   h2{
     color: #A8A8A8;
     font-family: Plus Jakarta Sans;
-    font-size: 1.125rem;
+    font-size:0.8rem;
     font-style: normal;
     font-weight: 400;
     line-height: 1.5rem; /* 133.333% */
     span{
       color: ${MainPurpleColor};
-      font-family: Plus Jakarta Sans;
-      font-size: 1.125rem;
-      font-style: normal;
       font-weight: 700;
-      line-height: 1.5rem;
       cursor: pointer;
     }
   }
 
   input[type=checkbox]{
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 0.8rem;
+    height: 0.8rem;
     border-radius: 0.125rem;
     border: 1px solid #999;
     background: #FFF;
@@ -216,8 +218,8 @@ const CheckboxesContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  gap: 2.25rem;
-  margin-top: 3.81rem;
+  gap: 1rem;
+  margin-top: 1rem;
 
 `;
 
@@ -225,14 +227,14 @@ const FieldsContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2.75rem ;
+  gap: 2rem ;
   margin-top: 3.56rem;
 `;
 
 const RegisterCompanyForm = styled.form`
   width: 100%;
-  max-width: 41.4375rem;
-  min-height: 44.5625rem;
+  max-width: 30rem;
+  min-height: 20rem;
   border-radius: 1.25rem;
   background: #FFF;
   padding: 2.13rem;
@@ -240,25 +242,24 @@ const RegisterCompanyForm = styled.form`
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: flex-start;
 
 
   input[type=text]{
       font-family: Plus Jakarta Sans;
       width: 100%;
       border: 0;
-      font-size: 1.5rem;
-      line-height: 1.5rem; 
+      font-size: 1rem;
+      line-height: 1rem; 
       font-style: normal;
       border-bottom: 1px solid lightgray;
-      height: 2.2rem;
+      height: 1.5rem;
       &:focus{
         outline: 0;
       }
       &::placeholder {
       color: #A8A8A8;
-     
       font-weight: 400;
-   
     }
   }
 
@@ -276,15 +277,15 @@ const RegisterCompanyForm = styled.form`
   #cadastrar{
     color: #FFF;
     font-family: Plus Jakarta Sans;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-style: normal;
     font-weight: 700;
     line-height: 1.5rem; /* 100% */
     margin-top: 1.62rem;
     border: 0;
     width: 100%;
-    max-width: 25.625rem;
-    min-height: 3.25rem;
+    max-width: 15rem;
+    min-height: 2rem;
     border-radius: 12rem;
     border: 1px solid transparent;
 

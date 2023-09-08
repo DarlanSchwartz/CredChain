@@ -36,14 +36,17 @@ const MainInfo = styled.div`
   }
 
   .price{
-    width: 100px;
+    width: 100%;
+    max-width: 100px;
   }
   .units{
-    width: 160px;
+    width: 100%;
+    max-width: 160px;
     padding-left: 20px;
   }
   .total{
-    width: 120px;
+    width: 100%;
+    max-width: 120px;
   }
 
   
@@ -107,4 +110,5 @@ const Container = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
+  width: 100%;
 `;

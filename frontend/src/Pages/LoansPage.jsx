@@ -16,46 +16,48 @@ export default function LoansPage({ connected = true }) {
   const [isConnected, setIsConnected] = useState(connected);
   const [showModal, setShowModal] = useState(false);
   const [askingForLoans, setAskingForLoans] = useState(false);
-  
+
   useEffect(() => {
     isLoged();
   })
-  
+
   function askForALoan(assets) {
     setAskingForLoans(true);
   }
   return (
     <PageContentWrapper>
       <PageContainer>
-      <Container>
-        {/*-------------NO NETWORKS FOUND--------------- */}
+        <Container>
+          {/*-------------NO NETWORKS FOUND--------------- */}
 
-        {!isConnected && !askingForLoans && <ConnectWalletFirst />}
+          {!isConnected && !askingForLoans && <ConnectWalletFirst />}
 
-        {/*-------------NETWORKS FOUND AND SHOW COLLATERALS--------------- */}
+          {/*-------------NETWORKS FOUND AND SHOW COLLATERALS--------------- */}
+          <Collaterals assets={[1]} ask_loan_start_event={askForALoan} show_actions={!askingForLoans} />
+          {isConnected && !askingForLoans &&
+            <>
 
-        {isConnected && !askingForLoans &&
-          <>
-            <Collaterals assets={[1]} ask_loan_start_event={askForALoan} />
-            <InWalletCollaterals >
-              <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Etherium' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} />
-            </InWalletCollaterals>
-          </>
-        }
-      </Container>
-      <RightCollumn>
-        <OpenFinance/>
-      </RightCollumn>
+              <InWalletCollaterals >
+                <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Etherium' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} />
+              </InWalletCollaterals>
+            </>
+          }
+          {askingForLoans &&
+
+            <AvailableOffers>
+              <Offer />
+            </AvailableOffers>
+          }
+        </Container>
+        {/*--------------ASKING FOR LOANS--------------- */}
+
+
+        <RightCollumn>
+          <OpenFinance />
+        </RightCollumn>
       </PageContainer>
 
-      {/*--------------ASKING FOR LOANS--------------- */}
 
-      {askingForLoans &&
-
-        <AvailableOffers>
-          <Offer />
-        </AvailableOffers>
-      }
 
       {/*--------------MODAL--------------- */}
 
@@ -116,6 +118,8 @@ const RightCollumn = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2.31rem;
+  width: 100%;
+  max-width:  21.375rem;
 `;
 
 const PageContainer = styled.div`
@@ -131,7 +135,7 @@ const AvailableOffers = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  
+  max-width: 45.375rem;
   gap: 1.56rem;
 `;
 
@@ -297,5 +301,7 @@ const Container = styled.div`
   gap: 22px;
   flex-direction: column;
   gap: 3.19rem;
+  max-width: 45.375rem;
+  width: 100%;
   align-items: center;
 `;

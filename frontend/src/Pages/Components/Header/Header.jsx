@@ -132,6 +132,7 @@ const SCHeader = styled.header`
 const Container = styled.div`
   display: flex;
   margin-top: 44px;
+  justify-content: space-between;
 `;
 
 const Main = styled.div`
@@ -146,8 +147,6 @@ const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 717px;
-  margin-right: 20px;
 `;
 
 const InfoUser = styled.div`

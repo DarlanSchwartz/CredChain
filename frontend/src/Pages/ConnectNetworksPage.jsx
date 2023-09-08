@@ -18,11 +18,11 @@ export default function ConnectNetworksPage() {
   const [selectedWallet, setSelectedWallet] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('');
   const [userAddress, setUserAddress] = useState(null);
-  
+
   useEffect(() => {
     isLoged();
   })
-  
+
   function closeModal() {
     setShowModalConnect(false);
     setSelectedWallet('');
@@ -32,74 +32,74 @@ export default function ConnectNetworksPage() {
   function openModal() {
     setShowModalConnect(true);
   }
-  
+
   const connectWallet = useCallback(async () => {
     if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
-        await window.ethereum.enable();
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
 
-        const accounts = await window.web3.eth.getAccounts();
-        if (accounts.length > 0) {
-            setUserAddress(accounts[0])
-            console.log("Endereço da carteira conectada:", accounts[0]);
-        }
-        const network = {
-          chainId: '0x1',
-          chainName: 'Ethereum Mainnet',
-          nativeCurrency: {
-              name: 'Ether',
-              symbol: 'ETH',
-              decimals: 18
-          },
-          rpcUrls: ['https://mainnet.infura.io/v3/604ad354539a45f5b33ff874e90fd3d7'],
-          blockExplorerUrls: ['https://etherscan.io/']
+      const accounts = await window.web3.eth.getAccounts();
+      if (accounts.length > 0) {
+        setUserAddress(accounts[0])
+        console.log("Endereço da carteira conectada:", accounts[0]);
+      }
+      const network = {
+        chainId: '0x1',
+        chainName: 'Ethereum Mainnet',
+        nativeCurrency: {
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        },
+        rpcUrls: ['https://mainnet.infura.io/v3/604ad354539a45f5b33ff874e90fd3d7'],
+        blockExplorerUrls: ['https://etherscan.io/']
       };
 
       const network2 = {
         chainId: '274',
         chainName: 'LaChain',
         nativeCurrency: {
-            name: 'LaCoin',
-            symbol: 'LAC',
-            decimals: 12
+          name: 'LaCoin',
+          symbol: 'LAC',
+          decimals: 12
         },
         rpcUrls: ['https://rpc2.mainnet.lachain.network'],
         blockExplorerUrls: ['https://explorer.lachain.network']
-    };
-    
-      
+      };
 
-        await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [network2]
-        });
-        
+
+
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [network2]
+      });
+
     } else {
-        alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
+      alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
     }
-}, []);
+  }, []);
 
   return (
     <PageContentWrapper>
-     <PageContainer>
-     <Container>
-        <ConnectedNetworks>
-          <h1>Redes Salvas</h1>
-          <SCConnectedNetworksList>
-            <ConnectedNetworkElement name="Etherium" image={'/images/icons/ETH.svg'} />
-            <ConnectedNetworkElement name="Rede Piloto RD" image={'/images/icons/tesouro.svg'} />
-          </SCConnectedNetworksList>
-        </ConnectedNetworks>
-        <SCConnectNewNetwork>
-          <h1>Salvar nova rede</h1>
-          <button onClick={openModal}>Selecione a blockhain</button>
-        </SCConnectNewNetwork>
-      </Container>
-      <RightCollumn>
+      <PageContainer>
+        <Container>
+          <ConnectedNetworks>
+            <h1>Redes Salvas</h1>
+            <SCConnectedNetworksList>
+              <ConnectedNetworkElement name="Etherium" image={'/images/icons/ETH.svg'} />
+              <ConnectedNetworkElement name="Rede Piloto RD" image={'/images/icons/tesouro.svg'} />
+            </SCConnectedNetworksList>
+          </ConnectedNetworks>
+          <SCConnectNewNetwork>
+            <h1>Salvar nova rede</h1>
+            <button onClick={openModal}>Selecione a blockhain</button>
+          </SCConnectNewNetwork>
+        </Container>
+        <RightCollumn>
           <OpenFinance />
           <RipioBanner />
         </RightCollumn>
-     </PageContainer>
+      </PageContainer>
 
       {/*----------------------------MODAL---------------------------MODAL-------------------*/}
 
@@ -336,8 +336,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
- 
   align-items: center;
   width: 100%;
+  max-width: 45.375rem;
   
 `;

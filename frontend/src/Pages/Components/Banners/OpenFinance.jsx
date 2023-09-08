@@ -14,8 +14,8 @@ export default function OpenFinance() {
 
 const Container = styled.div`
     width: 100%;
-    max-width: 21.375rem;
-    min-height: 19.125rem;
+    width: 21.375rem;
+    height: 19.125rem;
     border-radius: 1.25rem;
     background: #FFF;
     display: flex;

@@ -75,6 +75,7 @@ export default function LoansPage({ connected = true }) {
               </InWalletCollaterals>
             </>
           }
+
           {askingForLoans &&
 
             <AvailableOffers>

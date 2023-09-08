@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
 import ConnectedNetworkElement from './Components/ConnectWallet/ConnectedNetworkElement';
@@ -6,12 +6,15 @@ import { MainPurpleColor } from '../Colors';
 import NetworkPlaceholder from './Components/Generic/NetworkPlaceholder';
 import Web3 from 'web3';
 
-
 export default function ConnectNetworksPage() {
   const [showModalConnect, setShowModalConnect] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('');
   const [userAddress, setUserAddress] = useState(null);
+  const [message, setMessage] = useState('');
+  const [connect, setConnect] = useState(false);
+  const [connect2, setConnect2] = useState(false);
+
   function closeModal() {
     setShowModalConnect(false);
     setSelectedWallet('');
@@ -20,53 +23,88 @@ export default function ConnectNetworksPage() {
 
   function openModal() {
     setShowModalConnect(true);
-  }
-  
-  const connectWallet = useCallback(async () => {
     if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
-        await window.ethereum.enable();
-
-        const accounts = await window.web3.eth.getAccounts();
-        if (accounts.length > 0) {
-            setUserAddress(accounts[0])
-            console.log("Endereço da carteira conectada:", accounts[0]);
-        }
-        const network = {
-          chainId: '0x1',
-          chainName: 'Ethereum Mainnet',
-          nativeCurrency: {
-              name: 'Ether',
-              symbol: 'ETH',
-              decimals: 18
-          },
-          rpcUrls: ['https://mainnet.infura.io/v3/604ad354539a45f5b33ff874e90fd3d7'],
-          blockExplorerUrls: ['https://etherscan.io/']
-      };
-
-      const network2 = {
-        chainId: '274',
-        chainName: 'LaChain',
-        nativeCurrency: {
-            name: 'LaCoin',
-            symbol: 'LAC',
-            decimals: 12
-        },
-        rpcUrls: ['https://rpc2.mainnet.lachain.network'],
-        blockExplorerUrls: ['https://explorer.lachain.network']
-    };
-    
-      
-
-        await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [network2]
-        });
-        
+      if (window.ethereum.selectedAddress) {
+        console.log('O site já tem permissão para interagir com o MetaMask.');
+        // Adicione aqui a lógica para interagir com o MetaMask
+      } else {
+        console.log('O site ainda não tem permissão para interagir com o MetaMask.');
+        setConnect(false);
+        setConnect2(false);
+        // Adicione aqui a lógica para lidar com a falta de permissão
+      }
     } else {
-        alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
+      console.log('MetaMask não encontrado. Certifique-se de que o MetaMask está instalado.');
+      // Adicione aqui a lógica para lidar com o MetaMask não instalado
     }
+  }
+
+const connectWallet = useCallback(async () => {
+  if (window.ethereum) {
+    try {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+
+      const accounts = await window.web3.eth.getAccounts();
+      if (accounts.length > 0) {
+        setUserAddress(accounts[0]);
+        console.log("Endereço da carteira conectada:", accounts[0]);
+      }
+
+      // ID da rede que você deseja selecionar (certifique-se de que a rede já está adicionada)
+      const desiredNetworkId = '0x1';
+
+      // Alternar para a rede desejada
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: desiredNetworkId }]
+      });
+      setShowModalConnect(false); 
+      setConnect(true);
+      setConnect2(false);
+    } catch (error) {
+      console.error("Erro ao conectar à Ethereum:", error);
+      setConnect(false);
+    }
+  } else {
+    alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
+  }
 }, []);
+
+
+
+const addLaChain = async () => {
+  if (window.ethereum) {
+    try {
+      const ethereum = window.ethereum;
+      await ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: '0x112', // ID da rede LaChain
+            chainName: 'LaChain',
+            nativeCurrency: {
+              name: 'LaCoin',
+              symbol: 'LAC',
+              decimals: 18,
+            },
+            rpcUrls: ['https://rpc1.mainnet.lachain.network/'], // URL RPC da LaChain
+            blockExplorerUrls: ['https://explorer.lachain.network/'], // URL do explorador de blocos
+          },
+        ],
+      });
+      setMessage('LaChain foi adicionada com sucesso.');
+      setShowModalConnect(false);
+      setConnect(false);
+      setConnect2(true);
+    } catch (error) {
+      setMessage('Erro ao adicionar LaChain: ' + error.message);
+      setConnect2(false);
+    }
+  } else {
+    setMessage('Metamask não está instalada.');
+  }
+};
 
   return (
     <PageContentWrapper>
@@ -74,13 +112,13 @@ export default function ConnectNetworksPage() {
         <ConnectedNetworks>
           <h1>Redes Salvas</h1>
           <SCConnectedNetworksList>
-            <ConnectedNetworkElement name="Etherium" image={'/images/icons/ETH.svg'} />
+            <ConnectedNetworkElement name="Ethereum" image={'/images/icons/ETH.svg'} />
             <ConnectedNetworkElement name="Rede Piloto RD" image={'/images/icons/tesouro.svg'} />
           </SCConnectedNetworksList>
         </ConnectedNetworks>
         <SCConnectNewNetwork>
           <h1>Salvar nova rede</h1>
-          <button onClick={openModal}>Selecione a blockhain</button>
+          <button onClick={openModal}>Selecione a blockchain</button>
         </SCConnectNewNetwork>
       </Container>
 
@@ -106,17 +144,28 @@ export default function ConnectNetworksPage() {
 
             <h3>Selecione a rede</h3>
             <WalletAndNetworkList>
-              <WalletOrNetworkElement onClick={() => setSelectedNetwork('etherium')} $selected={(selectedNetwork == 'etherium').toString()}>
+              <WalletOrNetworkElement onClick={() => setSelectedNetwork('ethereum')} $selected={(selectedNetwork == 'ethereum').toString()}>
                 <img src="/images/icons/etherium.svg" alt="" />
-                <p>Etherium</p>
+                <p>Ethereum</p>
+                {connect &&
+                <h1>conectado</h1>
+                }
               </WalletOrNetworkElement>
               <WalletOrNetworkElement onClick={() => setSelectedNetwork('LaChain')} $selected={(selectedNetwork == 'LaChain').toString()}>
                 <img src="/images/icons/lachain.svg" alt="" />
                 <p>LaChain</p>
+                {connect2 &&
+                <h1>conectado</h1>
+                }
               </WalletOrNetworkElement>
               <NetworkPlaceholder />
             </WalletAndNetworkList>
+            {selectedWallet === 'metamask' && selectedNetwork === 'ethereum' &&
             <button onClick={connectWallet} disabled={selectedWallet == '' || selectedNetwork == ''}>Conectar</button>
+            }
+            {selectedWallet === 'metamask' && selectedNetwork === 'LaChain' &&
+            <button onClick={addLaChain} disabled={selectedWallet == '' || selectedNetwork == ''}>Conectar</button>
+            }
           </ConnectWalletContainer>
         </ModalContainer>
 
@@ -159,6 +208,11 @@ const WalletOrNetworkElement = styled.div`
   &:hover{
     border: 3px solid ${(props) => props.$selected == 'true' ? MainPurpleColor : 'black'};;
   }
+
+  h1{
+    color: #ad00ff;
+    font-size: 0.800rem;
+  }
 `;
 
 const WalletAndNetworkList = styled.div`
@@ -177,8 +231,10 @@ const ConnectWalletContainer = styled.div`
   padding: 2.05rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   h2,h3{
+    width: 32rem;
     color: #0D163A;
     font-family: Plus Jakarta Sans;
     font-size: 1rem;

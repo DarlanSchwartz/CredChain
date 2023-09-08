@@ -27,7 +27,7 @@ export default function LoansPage({ connected = true }) {
           <>
             <Collaterals assets={[1]} ask_loan_start_event={askForALoan} />
             <InWalletCollaterals >
-              <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Etherium' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} />
+              <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Ethereum' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} />
             </InWalletCollaterals>
           </>
         }

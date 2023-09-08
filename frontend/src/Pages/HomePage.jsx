@@ -11,9 +11,9 @@ export default function HomePage() {
     <Container>
       <Header>
         <SizeLogo>
-          <Logo on_click={()=> navigate('/')}/>
+          <Logo on_click={() => navigate('/')} />
         </SizeLogo>
-        
+
         <MenuItems>
           <Buttons>Documentação</Buttons>
           <Buttons>Cadastre-se</Buttons>
@@ -29,7 +29,7 @@ export default function HomePage() {
             colateralizados.
           </h1>
           <p>
-            Somos o primeiro Birô de Crédito on-chain e Multi chain do Brasil.
+            Somos o primeiro Birô de Crédito on-chain e multi-chain do Brasil.
           </p>
           <button>Cadastre-se</button>
         </Register>
@@ -41,46 +41,41 @@ export default function HomePage() {
       <ContainerSecondPage>
         <Item>
           <img src="images/pictures/undraw_ether_re_y7ft.svg" />
-          <h2>Empréstimos com Colateral</h2>
+          <h2>Empréstimos com colateral</h2>
           <p>
-            Colaterali-se financiamento e emprestimos utilizando stETH em Stake
-            na Lido Finance para tomar credito a bancos comerciais.
+            Colateralize financiamentos e empréstimos utilizando stETH como stake na Lido Finance para obter crédito junto a bancos comerciais.
           </p>
         </Item>
 
         <Item>
-        <img src="images/pictures/undraw_success_factors_re_ce93.svg" />
-          <h2>Score para Tokenizar recebíveis</h2>
+          <img src="images/pictures/undraw_success_factors_re_ce93.svg" />
+          <h2>Score para tokenizar recebíveis</h2>
           <p>
-            Conecte suas redes e bancos para ter um Score positivo para ajudar a
-            sua empresa antecipar recebíveis e ter acesso facilitado a crédito
+            Conecte suas redes e contas bancárias para obter uma pontuação positiva, ajudando assim sua empresa a antecipar recebíveis e ter acesso facilitado ao crédito.
           </p>
         </Item>
 
         <Item>
-        <img src="images/pictures/undraw_revenue_re_2bmg.svg" />
+          <img src="images/pictures/undraw_revenue_re_2bmg.svg" />
           <h2>Cadastro positivo do seu CPF e CNPJ</h2>
           <p>
-            Com cadastro positivo você pode ter acesso mais facilitado a credito
-            e serviços em bancos e instituições financeiras
+            Com o cadastro positivo, você pode ter acesso mais facilitado ao crédito e a serviços em bancos e instituições financeiras.
           </p>
         </Item>
 
         <Item>
-        <img src="images/pictures/undraw_reviews_lp8w.svg" />
+          <img src="images/pictures/undraw_reviews_lp8w.svg" />
           <h2>Rating para negócios</h2>
           <p>
-            Saiba o risco de cada empresa na hora de realizar negócios e comprar
-            ativos tokenizado com a mesma
+            Saiba o risco de cada empresa na hora de realizar negócios e comprar ativos tokenizados com a mesma.
           </p>
         </Item>
 
         <Item>
-        <img src="images/pictures/undraw_investment_data_re_sh9x.svg" />
-          <h2>Acompanhe todos seus ativos</h2>
+          <img src="images/pictures/undraw_investment_data_re_sh9x.svg" />
+          <h2>Acompanhe todos os seus ativos</h2>
           <p>
-            Acompanhe todo seu patrimonio em qualquer rede blockchain existente
-            e no sistema financeiro nacional
+            Acompanhe todo o seu patrimônio em qualquer rede blockchain existente e no sistema financeiro nacional.
           </p>
         </Item>
       </ContainerSecondPage>
@@ -94,29 +89,29 @@ export default function HomePage() {
 
         <InfosForDownload>
           <h1>Baixe já</h1>
-          <h2>nosso APP</h2>
+          <h2>nosso APP!</h2>
 
           <IconsForDownload>
             <DivApple>
-              <img src="/images/pictures/apple.png"/>
+              <img src="/images/pictures/apple.png" />
               <div>
-              <h4>Download on the</h4>
-              <h3>App Store</h3>
+                <h4>Download on the</h4>
+                <h3>App Store</h3>
               </div>
-             
+
             </DivApple>
 
             <DivAndroid>
-             <img src="/images/pictures/android.png"/>
+              <img src="/images/pictures/android.png" />
               <div>
-              <h4>GET IT ON</h4>
-              <h3>Google Play</h3>
+                <h4>GET IT ON</h4>
+                <h3>Google Play</h3>
               </div>
             </DivAndroid>
           </IconsForDownload>
         </InfosForDownload>
       </ContainerThirdPage>
-      <Footer/>
+      <Footer />
     </Container>
   );
 }
@@ -269,6 +264,7 @@ const Item = styled.div`
     color: #000000;
     text-align: center;
     margin-bottom: 30px;
+    width: 550px;
   }
   p {
     color: rgb(32, 32, 32, 0.4);

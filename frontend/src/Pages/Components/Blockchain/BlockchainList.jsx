@@ -24,7 +24,7 @@ export default function BlockchainList() {
       ]
     },
     {
-      name: "Etherium",
+      name: "Ethereum",
       currencies:[
         {
           name:'Ether',

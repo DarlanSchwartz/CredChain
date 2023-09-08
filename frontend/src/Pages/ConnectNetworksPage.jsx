@@ -6,6 +6,8 @@ import { MainPurpleColor } from '../Colors';
 import NetworkPlaceholder from './Components/Generic/NetworkPlaceholder';
 import Web3 from 'web3';
 import { LoginContext } from '../Contexts/LoginContext';
+import OpenFinance from './Components/Banners/OpenFinance';
+import RipioBanner from './Components/Banners/RipioBanner';
 
 
 export default function ConnectNetworksPage() {
@@ -79,7 +81,8 @@ export default function ConnectNetworksPage() {
 
   return (
     <PageContentWrapper>
-      <Container>
+     <PageContainer>
+     <Container>
         <ConnectedNetworks>
           <h1>Redes Salvas</h1>
           <SCConnectedNetworksList>
@@ -92,6 +95,11 @@ export default function ConnectNetworksPage() {
           <button onClick={openModal}>Selecione a blockhain</button>
         </SCConnectNewNetwork>
       </Container>
+      <RightCollumn>
+          <OpenFinance />
+          <RipioBanner />
+        </RightCollumn>
+     </PageContainer>
 
       {/*----------------------------MODAL---------------------------MODAL-------------------*/}
 
@@ -133,6 +141,20 @@ export default function ConnectNetworksPage() {
     </PageContentWrapper>
   )
 }
+const RightCollumn = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 2.31rem;
+`;
+
+const PageContainer = styled.div`
+ display: flex;
+  width: 100%;
+  gap: 2.31rem;
+  margin-top: 44px;
+  justify-content: space-between;
+  padding-right: 20px;
+`;
 
 const WalletOrNetworkElement = styled.div`
   display: flex;
@@ -246,8 +268,7 @@ const ConnectedNetworks = styled.div`
     text-align: left;
     width: 100%;
   }
-
-  `;
+`;
 
 const SCConnectNewNetwork = styled.div`
   display: flex;
@@ -308,7 +329,6 @@ const SCConnectedNetworksList = styled.div`
   gap: 2rem;
   width: 100%;
   padding-top: 0.81rem;
-
 `;
 
 
@@ -316,6 +336,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 44px;
+ 
   align-items: center;
+  width: 100%;
+  
 `;

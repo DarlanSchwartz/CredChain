@@ -7,6 +7,7 @@ import InWalletCollateralElement from './Components/CollateralAsset/InWalletColl
 import { MainPurpleColor } from '../Colors';
 import Offer from './Components/Collaterals/Offer';
 import { LoginContext } from '../Contexts/LoginContext';
+import OpenFinance from './Components/Banners/OpenFinance';
 
 export default function LoansPage({ connected = true }) {
 
@@ -25,6 +26,7 @@ export default function LoansPage({ connected = true }) {
   }
   return (
     <PageContentWrapper>
+      <PageContainer>
       <Container>
         {/*-------------NO NETWORKS FOUND--------------- */}
 
@@ -41,6 +43,10 @@ export default function LoansPage({ connected = true }) {
           </>
         }
       </Container>
+      <RightCollumn>
+        <OpenFinance/>
+      </RightCollumn>
+      </PageContainer>
 
       {/*--------------ASKING FOR LOANS--------------- */}
 
@@ -104,6 +110,22 @@ export default function LoansPage({ connected = true }) {
     </PageContentWrapper>
   )
 }
+
+
+const RightCollumn = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 2.31rem;
+`;
+
+const PageContainer = styled.div`
+ display: flex;
+  width: 100%;
+  gap: 2.31rem;
+  margin-top: 44px;
+  justify-content: space-between;
+  padding-right: 20px;
+`;
 
 const AvailableOffers = styled.div`
   display: flex;
@@ -273,7 +295,6 @@ const InWalletCollaterals = styled.div`
 const Container = styled.div`
   display: flex;
   gap: 22px;
-  margin-top: 44px;
   flex-direction: column;
   gap: 3.19rem;
   align-items: center;

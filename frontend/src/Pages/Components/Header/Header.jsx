@@ -164,7 +164,7 @@ const InfoUser = styled.div`
   border: none;
   border-radius: 100px;
   background-color: #ffffff;
-  margin-right: 2.5rem;
+  margin-right: 20px;
   border-bottom-right-radius: ${(props) => props.$open ? 0 : '100px'};
 
   img {

@@ -6,6 +6,8 @@ import { MainPurpleColor } from '../Colors';
 import Company from './Components/Score/Company';
 import { useNavigate } from "react-router-dom";
 import { LoginContext } from '../Contexts/LoginContext';
+import RipioBanner from './Components/Banners/RipioBanner';
+import OpenFinance from './Components/Banners/OpenFinance';
 
 
 export default function ScorePage() {
@@ -112,43 +114,64 @@ export default function ScorePage() {
 
   return (
     <PageContentWrapper>
-      <Container>
-        <VisualScore />
-        <MyEnterprise>
-          <h1>Minha Empresa</h1>
-          <button onClick={openModal}>+</button>
-        </MyEnterprise>
-        <Company name={"Minha Empresa"}/>
-        {
-          showModalConnect &&
-          <ModalContainer onMouseDown={closeModal}>
-            <RegisterCompanyForm onSubmit={register} onMouseDown={(e) => e.stopPropagation()}>
-              <h1 className='title'>Cadastre sua Empresa</h1>
-              <FieldsContainer>
-                <input value={cpnj} onChange={(e) => { setCnpj(formatCNPJ(e.target.value)); updateCanRegister(); }} minLength={18} maxLength={18} required ref={cpnjRef} type="text" placeholder='CNPJ' id='cnpj' name='cnpj' />
-                <input onChange={updateCanRegister} minLength={3} required ref={inscricaoRef} type="text" placeholder='Inscrição Estadual' id='inscricao' name='inscricao' />
-                <input onChange={updateCanRegister} minLength={3} required ref={razaoRef} type="text" placeholder='Razão Social' id='razao' name='razao' />
-                <input onChange={updateCanRegister} minLength={3} required ref={nome_fantasiaRef} type="text" placeholder='Nome Fantasia' id='nome_fantasia' name='nome_fantasia' />
-                <input value={phone} onChange={(e) => { setPhone(formatPhone(e.target.value)); updateCanRegister(); }} minLength={15} maxLength={15} required ref={phoneRef} type="text" placeholder='Telefone' id='phone' name='phone' />
-              </FieldsContainer>
-              <CheckboxesContainer>
-                <CheckboxElementContainer>
-                  <input onChange={updateCanRegister} ref={responsibleRef} type="checkbox" />
-                  <h2>Declaro ser responsável legal pela empresa</h2>
-                </CheckboxElementContainer>
-                <CheckboxElementContainer>
-                  <input onChange={updateCanRegister} ref={termsRef} type="checkbox" />
-                  <h2>Declaro que li e aceito os <span>termos</span></h2>
-                </CheckboxElementContainer>
-              </CheckboxesContainer>
-              <button disabled={!canRegister} id='cadastrar'>Cadastrar</button>
-            </RegisterCompanyForm>
-          </ModalContainer>
-        }
-      </Container>
+      <PageContainer>
+        <Container>
+          <VisualScore />
+          <MyEnterprise>
+            <h1>Minha Empresa</h1>
+            <button onClick={openModal}>+</button>
+          </MyEnterprise>
+          <Company name={"Minha Empresa"} />
+          {
+            showModalConnect &&
+            <ModalContainer onMouseDown={closeModal}>
+              <RegisterCompanyForm onSubmit={register} onMouseDown={(e) => e.stopPropagation()}>
+                <h1 className='title'>Cadastre sua Empresa</h1>
+                <FieldsContainer>
+                  <input value={cpnj} onChange={(e) => { setCnpj(formatCNPJ(e.target.value)); updateCanRegister(); }} minLength={18} maxLength={18} required ref={cpnjRef} type="text" placeholder='CNPJ' id='cnpj' name='cnpj' />
+                  <input onChange={updateCanRegister} minLength={3} required ref={inscricaoRef} type="text" placeholder='Inscrição Estadual' id='inscricao' name='inscricao' />
+                  <input onChange={updateCanRegister} minLength={3} required ref={razaoRef} type="text" placeholder='Razão Social' id='razao' name='razao' />
+                  <input onChange={updateCanRegister} minLength={3} required ref={nome_fantasiaRef} type="text" placeholder='Nome Fantasia' id='nome_fantasia' name='nome_fantasia' />
+                  <input value={phone} onChange={(e) => { setPhone(formatPhone(e.target.value)); updateCanRegister(); }} minLength={15} maxLength={15} required ref={phoneRef} type="text" placeholder='Telefone' id='phone' name='phone' />
+                </FieldsContainer>
+                <CheckboxesContainer>
+                  <CheckboxElementContainer>
+                    <input onChange={updateCanRegister} ref={responsibleRef} type="checkbox" />
+                    <h2>Declaro ser responsável legal pela empresa</h2>
+                  </CheckboxElementContainer>
+                  <CheckboxElementContainer>
+                    <input onChange={updateCanRegister} ref={termsRef} type="checkbox" />
+                    <h2>Declaro que li e aceito os <span>termos</span></h2>
+                  </CheckboxElementContainer>
+                </CheckboxesContainer>
+                <button disabled={!canRegister} id='cadastrar'>Cadastrar</button>
+              </RegisterCompanyForm>
+            </ModalContainer>
+          }
+        </Container>
+        <RightCollumn>
+          <OpenFinance />
+          <RipioBanner />
+        </RightCollumn>
+      </PageContainer>
     </PageContentWrapper>
   )
 }
+
+const RightCollumn = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 2.31rem;
+`;
+
+const PageContainer = styled.main`
+  display: flex;
+  width: 100%;
+  gap: 2.31rem;
+  margin-top: 44px;
+  justify-content: space-between;
+  padding-right: 20px;
+`;
 
 const CheckboxElementContainer = styled.div`
   width: 100%;
@@ -284,9 +307,9 @@ const RegisterCompanyForm = styled.form`
 const Container = styled.div`
   display: flex;
   gap: 22px;
-  margin-top: 44px;
+  
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2.31rem;
   align-items: center;
 
 `;

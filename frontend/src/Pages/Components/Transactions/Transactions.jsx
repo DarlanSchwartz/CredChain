@@ -74,7 +74,7 @@ const List = styled.div`
 
 const Container = styled.div`
     display: flex;
-    max-width: 347px;
+    max-width: 21.6875rem;
     height: 100%;
     max-height: 402px;
     width: 100%;

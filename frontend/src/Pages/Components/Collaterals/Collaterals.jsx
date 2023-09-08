@@ -26,6 +26,7 @@ export default function Collaterals({total_used= 0, assets, show_actions = true 
                   show_actions={show_actions}
                   onStartLoan={ask_loan_start_event}
                   onCheckout={ask_checkout_start_event}
+                  show_used={true}
               />
               )
             })

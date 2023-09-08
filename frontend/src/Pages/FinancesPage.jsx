@@ -36,7 +36,7 @@ export default function FinancesPage() {
 const Main = styled.div`
   display: flex;
   flex-direction: column;
-
+width: 100%;
   max-width: 44.8125rem;
   align-items: center;
 `;

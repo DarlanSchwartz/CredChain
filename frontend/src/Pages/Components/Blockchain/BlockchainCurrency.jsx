@@ -2,7 +2,7 @@ import React from 'react'
 import { styled } from 'styled-components'
 import CollateralSlideBar from '../Collaterals/CollateralSlideBar';
 
-export default function BlockchainCurrency({show_actions=false, name='', image='/placeholder.svg', price=0, units=0, total_value=0,total_used=0,onCheckout,onStartLoan }) {
+export default function BlockchainCurrency({show_used=false ,show_actions=false, name='', image='/placeholder.svg', price=0, units=0, total_value=0,total_used=0,onCheckout,onStartLoan }) {
   return (
     <Container>
       <AssetInfo>
@@ -16,16 +16,20 @@ export default function BlockchainCurrency({show_actions=false, name='', image='
         <p className='total'>{`${'R$ ' + total_value}`}</p>
       </MainInfo>
       </AssetInfo>
-      <Actions>
-            <CollateralSlideBar value={total_used} />
-            {
-              show_actions &&
-              <div className='btns'>
-                <button onClick={()=> onStartLoan({name,image,price,units,total_value,total_used})}>Solicitar Empréstimo</button>
-                <button disabled={total_used == 100} onClick={()=> onCheckout({name,image,price,units,total_value,total_used})}>Sacar</button>
-              </div>
-            }
-          </Actions>
+      {
+        show_used &&
+        <Actions>
+        <CollateralSlideBar value={total_used} />
+       {
+         show_actions &&
+         <div className='btns'>
+           <button onClick={()=> onStartLoan({name,image,price,units,total_value,total_used})}>Solicitar Empréstimo</button>
+           <button disabled={total_used == 100} onClick={()=> onCheckout({name,image,price,units,total_value,total_used})}>Sacar</button>
+         </div>
+       }
+     </Actions>
+      }
+    
     </Container>
   )
 }
@@ -61,13 +65,16 @@ const MainInfo = styled.div`
   }
 
   .price{
-    width: 100px;
+    width: 100%;
+    max-width: 100px;
   }
   .units{
-    width: 100px;
+    max-width: 100px;
+    width: 100%;
   }
   .total{
-    width: 120px;
+    width: 100%;
+    max-width: 120px;
   }
 `;
 
@@ -109,4 +116,5 @@ const Container = styled.div`
   justify-content:center;
   flex-direction: column;
   width: 100%;
+  overflow: hidden;
 `;

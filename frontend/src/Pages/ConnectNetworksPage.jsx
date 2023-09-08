@@ -1,12 +1,19 @@
-import React, { useCallback, useState, useEffect } from 'react'
+
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
 import ConnectedNetworkElement from './Components/ConnectWallet/ConnectedNetworkElement';
 import { MainPurpleColor } from '../Colors';
 import NetworkPlaceholder from './Components/Generic/NetworkPlaceholder';
 import Web3 from 'web3';
+import { LoginContext } from '../Contexts/LoginContext';
+import OpenFinance from './Components/Banners/OpenFinance';
+import RipioBanner from './Components/Banners/RipioBanner';
 
 export default function ConnectNetworksPage() {
+
+  const { isLoged } = useContext(LoginContext);
+
   const [showModalConnect, setShowModalConnect] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('');
@@ -71,8 +78,6 @@ const connectWallet = useCallback(async () => {
   }
 }, []);
 
-
-
 const addLaChain = async () => {
   if (window.ethereum) {
     try {
@@ -108,19 +113,25 @@ const addLaChain = async () => {
 
   return (
     <PageContentWrapper>
-      <Container>
-        <ConnectedNetworks>
-          <h1>Redes Salvas</h1>
-          <SCConnectedNetworksList>
-            <ConnectedNetworkElement name="Ethereum" image={'/images/icons/ETH.svg'} />
-            <ConnectedNetworkElement name="Rede Piloto RD" image={'/images/icons/tesouro.svg'} />
-          </SCConnectedNetworksList>
-        </ConnectedNetworks>
-        <SCConnectNewNetwork>
-          <h1>Salvar nova rede</h1>
-          <button onClick={openModal}>Selecione a blockchain</button>
-        </SCConnectNewNetwork>
-      </Container>
+      <PageContainer>
+        <Container>
+          <ConnectedNetworks>
+            <h1>Redes Salvas</h1>
+            <SCConnectedNetworksList>
+              <ConnectedNetworkElement name="Etherium" image={'/images/icons/ETH.svg'} />
+              <ConnectedNetworkElement name="Rede Piloto RD" image={'/images/icons/tesouro.svg'} />
+            </SCConnectedNetworksList>
+          </ConnectedNetworks>
+          <SCConnectNewNetwork>
+            <h1>Salvar nova rede</h1>
+            <button onClick={openModal}>Selecione a blockhain</button>
+          </SCConnectNewNetwork>
+        </Container>
+        <RightCollumn>
+          <OpenFinance />
+          <RipioBanner />
+        </RightCollumn>
+      </PageContainer>
 
       {/*----------------------------MODAL---------------------------MODAL-------------------*/}
 
@@ -173,6 +184,20 @@ const addLaChain = async () => {
     </PageContentWrapper>
   )
 }
+const RightCollumn = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 2.31rem;
+`;
+
+const PageContainer = styled.div`
+ display: flex;
+  width: 100%;
+  gap: 2.31rem;
+  margin-top: 44px;
+  justify-content: space-between;
+  padding-right: 20px;
+`;
 
 const WalletOrNetworkElement = styled.div`
   display: flex;
@@ -293,8 +318,7 @@ const ConnectedNetworks = styled.div`
     text-align: left;
     width: 100%;
   }
-
-  `;
+`;
 
 const SCConnectNewNetwork = styled.div`
   display: flex;
@@ -355,7 +379,6 @@ const SCConnectedNetworksList = styled.div`
   gap: 2rem;
   width: 100%;
   padding-top: 0.81rem;
-
 `;
 
 
@@ -363,6 +386,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 44px;
   align-items: center;
+  width: 100%;
+  max-width: 45.375rem;
+  
 `;

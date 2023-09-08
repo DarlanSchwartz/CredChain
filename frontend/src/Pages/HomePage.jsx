@@ -16,8 +16,8 @@ export default function HomePage() {
 
         <MenuItems>
           <Buttons>Documentação</Buttons>
-          <Buttons>Cadastre-se</Buttons>
-          <ButtonLogin>Entrar</ButtonLogin>
+          <Buttons onClick={()=> navigate('/signup')}>Cadastre-se</Buttons>
+          <ButtonLogin onClick={()=> navigate('/login')}>Entrar</ButtonLogin>
         </MenuItems>
       </Header>
 
@@ -31,7 +31,7 @@ export default function HomePage() {
           <p>
             Somos o primeiro Birô de Crédito on-chain e multi-chain do Brasil.
           </p>
-          <button>Cadastre-se</button>
+          <button onClick={()=> navigate('/signup')}>Cadastre-se</button>
         </Register>
         <ScoreBackground>
           <img src="/images/pictures/score.png" />
@@ -181,6 +181,12 @@ const ButtonLogin = styled.button`
   background-color: ${MainPurpleColor};
   font-weight: 700;
   margin-right: 80px;
+
+  &:hover {
+    color: ${MainPurpleColor};
+  background-color: #ffffff;
+  border: 1px solid ${MainPurpleColor};
+  }
 `;
 
 const Register = styled.div`
@@ -220,6 +226,11 @@ const Register = styled.div`
     font-size: 20px;
     font-weight: bold;
     color: ${MainPurpleColor};
+
+    &:hover {
+      color: #FFFFFF;
+      background-color: ${MainPurpleColor};
+    }
   }
 `;
 

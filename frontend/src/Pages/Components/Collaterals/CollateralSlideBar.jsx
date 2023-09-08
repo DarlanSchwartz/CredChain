@@ -7,7 +7,7 @@ export default function CollateralSlideBar({ value }) {
             <SliderContainer>
                 <Slider $value={value} />
             </SliderContainer>
-            <p>{value}% colaterizado</p>
+            <p>{value}% ultilizado</p>
         </Container>
     )
 }

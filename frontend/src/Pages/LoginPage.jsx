@@ -1,14 +1,19 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
+import axios from "axios";
+import { useState, useContext } from "react";
 import Logo from "./Components/Logo";
 import { MainPurpleColor } from "../Colors";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
+import UserContext from "../Contexts/LoginContext";
+import { backendroute } from "../routes/routes";
 
 
 export default function LoginPage() {
+
   const [cpf, setCpf] = useState("");
-  //const [disable, setDisable] = useState(false);
+  const [disable, setDisable] = useState(false);
   const [charCount, setCharCount] = useState(0)
   const [mostrando, setMostrando] = useState("display-cpf");
   const [password, setPassword] = useState("");
@@ -36,8 +41,29 @@ export default function LoginPage() {
    // }
   }
 
+function changeDisplay() {
+  setMostrando("display-cpf")
+}
+
   function SignIn(e) {
     e.preventDefault();
+    const newSignIn = {  cpf: cpf.replaceAll('.', '').replaceAll('-', ''), password: password };
+
+    setDisable(true);
+
+    axios
+      .post(backendroute.postLogin, newSignIn)
+      .then((res) => {
+        console.log('res.data do login', res.data)
+        localStorage.setItem("token", res.data.token);
+        navigate("/score");
+        setDisable(false);
+      })
+      .catch((erro) => {
+        alert(erro.response.data);
+        console.log("Erro em postSignIn", erro);
+        setDisable(false);
+      });
   }
 
 
@@ -57,12 +83,12 @@ export default function LoginPage() {
  <input
    type="text"
    autoComplete="cpf"
-   placeholder="CPF"
+   placeholder="CPF   (XXX.XXX.XXX-XX)"
    required
    value={cpf}
    onChange={handleInputChange}
    minLength="11"
-   maxLength="11"
+   maxLength="14"
  />
 
  <div>
@@ -93,9 +119,9 @@ export default function LoginPage() {
     <img src="/images/pictures/user-check.png" alt="Image check user cpf"/>
     <div>
     <h4>CPF</h4>
-    <h6>123.444.555.09</h6>
+    <h6>{cpf}</h6>
     </div>
-    <h5>Trocar</h5>
+    <h5 onClick={changeDisplay}>Trocar</h5>
    </CpfInfo>
  </div>
 
@@ -113,22 +139,30 @@ export default function LoginPage() {
         </DivPassword>
 
  <div>
-   <button 
-   type="submit" 
-   //disabled={disable}
-  // style={{ backgroundColor: disable ? `${MainPurpleColor}` : "#d9d9d9" }}
-   >
-      Entrar
-   </button>
+   <button type="submit" disabled={disable}>
+        <LoadingButtonContent>
+          {disable ? (
+            <ThreeDots
+              type="ThreeDots"
+              color="#FFFFFF"
+              height={20}
+              width={50}
+            />
+          ) : (
+            "Entrar"
+          )}
+          </LoadingButtonContent>
+        </button>
+
 
    <DivRememberPassword>
-    <div>
+    <CheckboxDiv>
       <Checkbox type="checkbox" />
       <h6>Lembrar senha</h6>
-    </div>
-
-   <p>Esqueci a senha</p>
+      </CheckboxDiv>
+      <p>Esqueci a senha</p>
    </DivRememberPassword>
+
  </div>
 </FormPasswordLogin>
 
@@ -322,6 +356,11 @@ h6 {
 h5 {
   color: ${MainPurpleColor};
   font-weight: bold;
+  cursor: pointer;
+ 
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 `;
@@ -343,6 +382,12 @@ const DivPassword = styled.div`
   }
 `;
 
+const LoadingButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const DivRememberPassword = styled.div`
 display: flex;
 flex-direction: row;
@@ -353,29 +398,25 @@ max-height: 26px;
 font-size: 12px;
 color: rgba(168, 168, 168, 1);
 
-div {
-
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-}
-
-h6, p {
-  width: 100%;
-}
-
-h6 {
-  align-self: center;
-}
-
 p {
   align-self: center;
+  width: 40%;
+}
+`;
+
+const CheckboxDiv = styled.div`
+display: flex;
+flex-direction: row;
+width: 100%;
+
+h6 {
+align-self: center;
 }
 `;
 
 const Checkbox = styled.input`
-  width: 100%;
-  height: 100%;
+width: 100%;
+height: 100%;
   max-width: 20px;
   max-height: 20px;
   appearance: none;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper'
 import { styled } from 'styled-components';
 import ConnectWalletFirst from './Components/Generic/ConnectWalletFirst';
@@ -6,41 +6,58 @@ import Collaterals from './Components/Collaterals/Collaterals';
 import InWalletCollateralElement from './Components/CollateralAsset/InWalletCollateralElement';
 import { MainPurpleColor } from '../Colors';
 import Offer from './Components/Collaterals/Offer';
+import { LoginContext } from '../Contexts/LoginContext';
+import OpenFinance from './Components/Banners/OpenFinance';
 
 export default function LoansPage({ connected = true }) {
+
+  const { isLoged } = useContext(LoginContext);
+
   const [isConnected, setIsConnected] = useState(connected);
   const [showModal, setShowModal] = useState(false);
   const [askingForLoans, setAskingForLoans] = useState(false);
+
+  useEffect(() => {
+    isLoged();
+  })
+
   function askForALoan(assets) {
     setAskingForLoans(true);
   }
   return (
     <PageContentWrapper>
-      <Container>
-        {/*-------------NO NETWORKS FOUND--------------- */}
+      <PageContainer>
+        <Container>
+          {/*-------------NO NETWORKS FOUND--------------- */}
 
-        {!isConnected && !askingForLoans && <ConnectWalletFirst />}
+          {!isConnected && !askingForLoans && <ConnectWalletFirst />}
 
-        {/*-------------NETWORKS FOUND AND SHOW COLLATERALS--------------- */}
-
+          {/*-------------NETWORKS FOUND AND SHOW COLLATERALS--------------- */}
+          <Collaterals assets={[1]} ask_loan_start_event={askForALoan} show_actions={!askingForLoans} />
+   
         {isConnected && !askingForLoans &&
           <>
-            <Collaterals assets={[1]} ask_loan_start_event={askForALoan} />
             <InWalletCollaterals >
               <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Ethereum' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} />
             </InWalletCollaterals>
           </>
         }
-      </Container>
+          {askingForLoans &&
 
-      {/*--------------ASKING FOR LOANS--------------- */}
+            <AvailableOffers>
+              <Offer />
+            </AvailableOffers>
+          }
+        </Container>
+        {/*--------------ASKING FOR LOANS--------------- */}
 
-      {askingForLoans &&
 
-        <AvailableOffers>
-          <Offer />
-        </AvailableOffers>
-      }
+        <RightCollumn>
+          <OpenFinance />
+        </RightCollumn>
+      </PageContainer>
+
+
 
       {/*--------------MODAL--------------- */}
 
@@ -96,11 +113,29 @@ export default function LoansPage({ connected = true }) {
   )
 }
 
+
+const RightCollumn = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 2.31rem;
+  width: 100%;
+  max-width:  21.375rem;
+`;
+
+const PageContainer = styled.div`
+ display: flex;
+  width: 100%;
+  gap: 2.31rem;
+  margin-top: 44px;
+  justify-content: space-between;
+  padding-right: 20px;
+`;
+
 const AvailableOffers = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  
+  max-width: 45.375rem;
   gap: 1.56rem;
 `;
 
@@ -264,8 +299,9 @@ const InWalletCollaterals = styled.div`
 const Container = styled.div`
   display: flex;
   gap: 22px;
-  margin-top: 44px;
   flex-direction: column;
   gap: 3.19rem;
+  max-width: 45.375rem;
+  width: 100%;
   align-items: center;
 `;

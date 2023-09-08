@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 import Logo from "./Components/Logo";
 import { MainPurpleColor } from "../Colors";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { backendroute } from "../routes/routes";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function SignUpPage() {
   const [cpf, setCpf] = useState("");
@@ -23,13 +26,27 @@ export default function SignUpPage() {
     e.preventDefault();
 
     const newSignUp = {
-      cpf: cpf,
+      cpf: cpf.replaceAll('.', '').replaceAll('-', ''),
       name: name,
-      date: date,
+      date: date.split('/').reverse().join('-'),
       email: email,
       password: password,
     };
     setDisable(true);
+
+    axios
+    .post(backendroute.postSignUp, newSignUp)
+    .then((res) => {
+      navigate("/login");
+      setDisable(false);
+    })
+    .catch((erro) => {
+      alert(erro.response.data);
+      console.log("Erro em postSignUp", erro);
+      setDisable(false);
+    });
+
+
   }
 
   return (
@@ -44,12 +61,13 @@ export default function SignUpPage() {
         <input
           type="text"
           autoComplete="cpf"
-          placeholder="CPF"
+          placeholder="CPF   (XXX.XXX.XXX-XX)"
           required
           disabled={disable}
           value={cpf}
           onChange={(e) => setCpf(e.target.value)}
-          maxLength="11"
+          minLength="11"
+          maxLength="14"
         />
 
         <input
@@ -65,11 +83,12 @@ export default function SignUpPage() {
         <input
           type="text"
           autoComplete="date"
-          placeholder="Data de nascimento"
+          placeholder="Data de nascimento    (DD-MM-AAAA)"
           required
           disabled={disable}
           value={date}
           onChange={(e) => setDate(e.target.value)}
+          maxLength="10"
         />
 
         <input
@@ -103,8 +122,17 @@ export default function SignUpPage() {
         </DivCheckbox>
 
         <button type="submit" disabled={disable}>
-          <LoadingButtonContent>
-            {disable ? <h1>Carregando...</h1> : "CRIAR CONTA GRÁTIS"}
+        <LoadingButtonContent>
+          {disable ? (
+            <ThreeDots
+              type="ThreeDots"
+              color="#FFFFFF"
+              height={20}
+              width={50}
+            />
+          ) : (
+            "CRIAR CONTA GRÁTIS"
+          )}
           </LoadingButtonContent>
         </button>
 

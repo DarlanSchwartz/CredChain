@@ -132,6 +132,7 @@ const SCHeader = styled.header`
 const Container = styled.div`
   display: flex;
   margin-top: 44px;
+  justify-content: space-between;
 `;
 
 const Main = styled.div`
@@ -146,8 +147,6 @@ const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 717px;
-  margin-right: 20px;
 `;
 
 const InfoUser = styled.div`
@@ -164,7 +163,7 @@ const InfoUser = styled.div`
   border: none;
   border-radius: 100px;
   background-color: #ffffff;
-  margin-right: 2.5rem;
+  margin-right: 20px;
   border-bottom-right-radius: ${(props) => props.$open ? 0 : '100px'};
 
   img {

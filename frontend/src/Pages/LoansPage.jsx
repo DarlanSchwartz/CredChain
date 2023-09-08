@@ -8,7 +8,15 @@ import { MainPurpleColor } from '../Colors';
 import Offer from './Components/Collaterals/Offer';
 import { LoginContext } from '../Contexts/LoginContext';
 import OpenFinance from './Components/Banners/OpenFinance';
-
+const placeholderAssets =[
+  {
+    name:'WstETH',
+     price:'0',
+     units:0,
+     total_value:0,
+     image:'/images/icons/stETH.svg'
+  }
+];
 export default function LoansPage({ connected = true }) {
 
   const { isLoged } = useContext(LoginContext);
@@ -33,15 +41,41 @@ export default function LoansPage({ connected = true }) {
           {!isConnected && !askingForLoans && <ConnectWalletFirst />}
 
           {/*-------------NETWORKS FOUND AND SHOW COLLATERALS--------------- */}
-          <Collaterals assets={[1]} ask_loan_start_event={askForALoan} show_actions={!askingForLoans} />
-   
-        {isConnected && !askingForLoans &&
-          <>
-            <InWalletCollaterals >
-              <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Ethereum' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} />
-            </InWalletCollaterals>
-          </>
-        }
+          {/* Pass here the proper values, assets is an array like:
+                
+                [
+                  {
+                    name:'WstETH',
+                    price:'0',
+                    units:0,
+                    total_value:0,
+                    image:'/images/icons/stETH.svg',
+                    total_used:0
+                  }
+                ]
+                
+            */}
+          <Collaterals assets={[
+                  {
+                    name:'WstETH',
+                    price:'0',
+                    units:0,
+                    total_value:0,
+                    image:'/images/icons/stETH.svg',
+                    total_used:0
+                  }
+                ]} ask_loan_start_event={askForALoan} show_actions={!askingForLoans} />
+          {isConnected && !askingForLoans &&
+            <>
+
+              <InWalletCollaterals >
+                {/* Map here the coins in the user wallet */}
+
+                {/* <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Etherium' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} /> */}
+              </InWalletCollaterals>
+            </>
+          }
+
           {askingForLoans &&
 
             <AvailableOffers>

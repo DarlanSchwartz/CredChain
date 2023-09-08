@@ -1,10 +1,19 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
 import VisualScore from './Components/Score/VisualScore';
 import { MainPurpleColor } from '../Colors';
 import Company from './Components/Score/Company';
+import { useNavigate } from "react-router-dom";
+import { LoginContext } from '../Contexts/LoginContext';
+
+
 export default function ScorePage() {
+
+  const { isLoged } = useContext(LoginContext);
+
+  const navigate = useNavigate();
+
   const [showModalConnect, setShowModalConnect] = useState(false);
   const [canRegister, setCanRegister] = useState(false);
   const [phone, setPhone] = useState('');
@@ -16,6 +25,12 @@ export default function ScorePage() {
   const termsRef = useRef();
   const phoneRef = useRef();
   const responsibleRef = useRef();
+
+
+  useEffect(() => {
+    isLoged();
+  })
+
   function closeModal() {
     setShowModalConnect(false);
   }
@@ -94,7 +109,6 @@ export default function ScorePage() {
       return cpnjText;
     }
   }
-
 
   return (
     <PageContentWrapper>

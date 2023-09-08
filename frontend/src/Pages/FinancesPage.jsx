@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
 import Graph from './Components/Graph/Graph';
 import Transactions from './Components/Transactions/Transactions';
 import BlockchainList from './Components/Blockchain/BlockchainList';
+import { LoginContext } from '../Contexts/LoginContext';
 
 export default function FinancesPage() {
+
+  const { isLoged } = useContext(LoginContext);
+  
+  useEffect(() => {
+    isLoged();
+  })
+
   return (
     <PageContentWrapper>
       <Container>

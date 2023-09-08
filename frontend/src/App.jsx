@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import UserContext from './Contexts/UserContext';
+import React from 'react'
+import {LoginProvider} from './Contexts/LoginContext';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from './Pages/HomePage';
 import ConnectNetworksPage from './Pages/ConnectNetworksPage';
@@ -10,10 +10,10 @@ import SignUpPage from './Pages/SignUpPage';
 import LoginPage from './Pages/LoginPage';
 
 export default function App() {
-    const [user, setUser] = useState(null);
+
     return (
-        <UserContext.Provider value={{ user, setUser }}>
             <BrowserRouter>
+            <LoginProvider>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/signup" element={<SignUpPage />} />
@@ -23,7 +23,7 @@ export default function App() {
                     <Route path="/loans" element={<LoansPage />} />
                     <Route path="/score" element={<ScorePage />} />
                 </Routes>
+                </LoginProvider>
             </BrowserRouter>
-        </UserContext.Provider>
     )
 }

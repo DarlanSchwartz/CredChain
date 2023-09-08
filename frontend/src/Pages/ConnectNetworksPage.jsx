@@ -1,17 +1,26 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
 import ConnectedNetworkElement from './Components/ConnectWallet/ConnectedNetworkElement';
 import { MainPurpleColor } from '../Colors';
 import NetworkPlaceholder from './Components/Generic/NetworkPlaceholder';
 import Web3 from 'web3';
+import { LoginContext } from '../Contexts/LoginContext';
 
 
 export default function ConnectNetworksPage() {
+
+  const { isLoged } = useContext(LoginContext);
+
   const [showModalConnect, setShowModalConnect] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('');
   const [userAddress, setUserAddress] = useState(null);
+  
+  useEffect(() => {
+    isLoged();
+  })
+  
   function closeModal() {
     setShowModalConnect(false);
     setSelectedWallet('');

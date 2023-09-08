@@ -1,12 +1,17 @@
-import joi from "joi";
+import baseJoi from 'joi';
+import joiDate from "@joi/date";
+
+const joi = baseJoi.extend(joiDate) 
 
 export const signupSchema = joi.object({
-    name: joi.string().required(),
-    email: joi.string().email().required(),
-    password: joi.string().required()
+  cpf: joi.string().length(11).pattern(/^[0-9]+$/).required(),
+  name: joi.string().trim().required(),
+  date: joi.date().format("DD-MM-YYYY").required(),
+  email: joi.string().email().trim().required(),
+  password: joi.string().trim().required(),
   });
-
+  
   export const signinSchema = joi.object({
-    email: joi.string().email().required(),
-    password: joi.string().required()
+    cpf: joi.string().length(11).pattern(/^[0-9]+$/).required(),
+    password: joi.string().trim().required()
   });

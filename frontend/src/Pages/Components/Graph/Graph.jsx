@@ -23,7 +23,7 @@ export default function Graph() {
               <circle cx="6" cy="6.5" r="6" fill="#AD00FF" />
             </svg>
             <CoinTexts>
-              <h1>Etherium</h1>
+              <h1>Ethereum</h1>
               <h2>R$ 9.900</h2>
             </CoinTexts>
           </CoinInfo>

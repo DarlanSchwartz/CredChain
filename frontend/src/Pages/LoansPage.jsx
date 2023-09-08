@@ -34,14 +34,14 @@ export default function LoansPage({ connected = true }) {
 
           {/*-------------NETWORKS FOUND AND SHOW COLLATERALS--------------- */}
           <Collaterals assets={[1]} ask_loan_start_event={askForALoan} show_actions={!askingForLoans} />
-          {isConnected && !askingForLoans &&
-            <>
-
-              <InWalletCollaterals >
-                <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Etherium' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} />
-              </InWalletCollaterals>
-            </>
-          }
+   
+        {isConnected && !askingForLoans &&
+          <>
+            <InWalletCollaterals >
+              <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Ethereum' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} />
+            </InWalletCollaterals>
+          </>
+        }
           {askingForLoans &&
 
             <AvailableOffers>

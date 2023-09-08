@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper'
 import { styled } from 'styled-components';
 import ConnectWalletFirst from './Components/Generic/ConnectWalletFirst';
@@ -6,11 +6,20 @@ import Collaterals from './Components/Collaterals/Collaterals';
 import InWalletCollateralElement from './Components/CollateralAsset/InWalletCollateralElement';
 import { MainPurpleColor } from '../Colors';
 import Offer from './Components/Collaterals/Offer';
+import { LoginContext } from '../Contexts/LoginContext';
 
 export default function LoansPage({ connected = true }) {
+
+  const { isLoged } = useContext(LoginContext);
+
   const [isConnected, setIsConnected] = useState(connected);
   const [showModal, setShowModal] = useState(false);
   const [askingForLoans, setAskingForLoans] = useState(false);
+  
+  useEffect(() => {
+    isLoged();
+  })
+  
   function askForALoan(assets) {
     setAskingForLoans(true);
   }

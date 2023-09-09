@@ -185,7 +185,7 @@ const SidebarContainer = styled.div`
   flex-shrink: 0;
   padding: 0px 0px 10px 0px;
 
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
 `;

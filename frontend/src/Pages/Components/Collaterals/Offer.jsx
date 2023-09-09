@@ -1,9 +1,27 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components'
 import { MainPurpleColor } from '../../../Colors';
+import ReactSlider from "react-slider";
 
-export default function Offer({ bank_name = 'Bank name', value = 0, CET = 0, approval_chance = 'Baixa', installments_count=0, installment_value = 0, necessity_wst = 0, necessity_uxd = 0}) {
-  const [currentNecessity,setCurrentNecessity]= useState(necessity_wst);
+const AnualTax = 210; // em porcento
+export default function Offer({ max_value = 5000, bank_name = 'Bank name', value = 0, CET = 0, installments_count = 0, installment_value = 0, necessity_wst = 0, necessity_uxd = 0 }) {
+  const [currentNecessity, setCurrentNecessity] = useState(necessity_wst);
+  const [currentValue, setCurrentValue] = useState(value);
+  const [currentMaxValue, setCurrentMaxValue] = useState(max_value);
+  function myCurrentValue() {
+    return (Number(currentValue) / 100) * Number(currentMaxValue);
+  }
+  function myCurrentValueWithTaxes() {
+    return myCurrentValue() * 2.1;
+  }
+  function monthlyTax(paidValue, installment, amountOfInstallments) {
+    if(paidValue  == 0 || installment == 0  || amountOfInstallments == 0) return 0;
+    var taxaJurosMensal = ((installment / (paidValue / amountOfInstallments)) - 1) * 12;
+    return taxaJurosMensal.toFixed(1);
+  }
+  function myInstallmentPrice(){
+    return Number((myCurrentValueWithTaxes() / 12).toFixed(2));
+  }
   return (
     <Container className='offer'>
       <h1 className='title'>Ofertas disponíveis</h1>
@@ -13,61 +31,94 @@ export default function Offer({ bank_name = 'Bank name', value = 0, CET = 0, app
       </Divider>
       <Content>
         <LeftContent>
-          <h1>R$ {value}</h1>
+
           <h2>Parcelas</h2>
-          <h3>{installments_count} meses de R$ {installment_value}</h3>
+          <h3>{12} meses de R$ {myInstallmentPrice().toString().replace('.',',')}</h3>
           <h4>CET - Custo Efetivo Total</h4>
-          <h5>{CET}% ao mês</h5>
-        </LeftContent>
-        <RightContent>
-          <h2>Chance de aprovação</h2>
-          <FakeButton>{approval_chance}</FakeButton>
-          <h3>Necessidade de colateralzação</h3>
+          <h5>{monthlyTax(myCurrentValue(),myInstallmentPrice(),12).toString().replace('.',',')}% ao mês</h5>
+          <h3>Necessidade de colaterização</h3>
           <Actions>
-              <FakeButton>R$ {currentNecessity}</FakeButton>
-              <img src="/images/icons/lido.svg" onClick={()=> setCurrentNecessity(necessity_wst)} />
-              <img src="/images/icons/uxd.svg"onClick={()=> setCurrentNecessity(necessity_uxd)} />
+            <div className='left'>
+              <p>R$ {currentNecessity}</p>
+              <div className='btns'>
+                <img src="/images/icons/lido.svg" onClick={() => setCurrentNecessity(necessity_wst)} />
+                <img src="/images/icons/uxd.svg" onClick={() => setCurrentNecessity(necessity_uxd)} />
+              </div>
+            </div>
+            <button className='ask-loan-btn'>Solicitar empréstimo</button>
           </Actions>
-        </RightContent>
+        </LeftContent>
+        <Slidebar>
+
+          <ReactSlider
+            className="customSlider"
+            thumbClassName="customSlider-thumb"
+            trackClassName="customSlider-track"
+            markClassName="customSlider-mark"
+            marks={20}
+            min={0}
+            max={100}
+            defaultValue={0}
+            value={currentValue}
+            onChange={(value) => setCurrentValue(value)}
+            renderMark={(props) => {
+              if (props.key < currentValue) {
+                props.className = "customSlider-mark customSlider-mark-before";
+              } else if (props.key === currentValue) {
+                props.className = "customSlider-mark customSlider-mark-active";
+              }
+              return <span {...props} />;
+            }}
+          />
+
+          <h1>R$ {myCurrentValue().toFixed(2).toString().replace('.',',')}</h1>
+        </Slidebar>
       </Content>
-      <button className='ask-loan-btn'>Solicitar empréstimo</button>
+
     </Container>
   )
 }
 
-const FakeButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 5.5625rem;
-  color: #000;
-  text-align: center;
-  font-family: Plus Jakarta Sans;
-  font-size: 0.75rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.5rem; /* 200% */
-  border: 1px solid black;
-  border-radius: 2.5rem;
-`;
-
 const Actions = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
   gap: 0.63rem;
+  width: 100%;
+
+  .left{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    p{
+      color: #000;
+      text-align: center;
+      font-family: Plus Jakarta Sans;
+      font-size: 0.75rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.5rem; /* 200% */
+    }
+  }
 
   img{
     width: 1.25rem;
     height: 1.25rem;
     cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .btns{
+    display: flex;
+    gap: 10px;
   }
 `;
 
 const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
-
+  width: 100%;
   h1{
     color: #0D163A;
     font-family: Plus Jakarta Sans;
@@ -110,37 +161,74 @@ const LeftContent = styled.div`
   }
 `;
 
-
-const RightContent = styled.div`
+const Slidebar = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  h2{
-    color: rgba(42, 42, 42, 0.60);
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  right: 0;
+  h1{
+    color: #0D163A;
     font-family: Plus Jakarta Sans;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-style: normal;
-    font-weight: 400;
-    line-height: 1.5rem; /* 200% */
+    font-weight: 700;
+    line-height: 1.5rem;
+    width: 100px;
+    text-align: right;
   }
 
-  h3{
-    color: rgba(42, 42, 42, 0.60);
-    font-family: Plus Jakarta Sans;
-    font-size: 0.75rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1.5rem; /* 200% */
+  .customSlider{
+    width: 16rem;
+    max-width: 16rem;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .customSlider-thumb{
+    width: 0.75rem;
+    height: 0.75rem;
+    flex-shrink: 0;
+    background-color: #6941c6;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .customSlider-mark.customSlider-mark-before {
+      background-color: ${MainPurpleColor};
+    }
+    
+    .customSlider-mark.customSlider-mark-active {
+      display: none;
+    }
+
+    .customSlider-track-0{
+      background-color: ${MainPurpleColor} !important;
+    }
+
+  .customSlider-track{
+    height: 0.3125rem;
+    background: #BEBEBE;
+    width: 100%;
+  }
+
+  .customSlider-mark {
+      width: 0.75rem;
+      height: 0.75rem;
+      flex-shrink: 0;
+      background-color:#BEBEBE;
+      border-radius: 50%;
   }
 `;
 
 const Content = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding-top: 0.75rem;
   width: 100%;
+  position: relative;
 `;
 
 const Divider = styled.div`

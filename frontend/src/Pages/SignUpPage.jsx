@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,useRef} from "react";
 import axios from "axios";
 import Logo from "./Components/Logo";
 import { MainPurpleColor } from "../Colors";
@@ -14,17 +14,75 @@ export default function SignUpPage() {
   const [date, setDate] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [disable, setDisable] = useState(false);
+  const [disable, setDisable] = useState(true);
+  const [signinUp, setSigninUp] = useState(false);
+
+  const cpfRef = useRef();
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const dateRef = useRef();
+  const passwordRef = useRef();
+  const terms = useRef();
 
   const navigate = useNavigate();
 
   function goToLogin() {
     navigate("/login");
   }
+  function formatarCPF(value) {
+    // Remover caracteres não numéricos
+    var cpf = value.replace(/\D/g, '');
+
+    // Verificar se o CPF está vazio
+    if (cpf === '') {
+      return cpf;
+    }
+
+    // Adicionar a formatação conforme o CPF é digitado
+    if (cpf.length > 3) {
+      cpf = cpf.substring(0, 3) + '.' + cpf.substring(3);
+    }
+    if (cpf.length > 7) {
+      cpf = cpf.substring(0, 7) + '.' + cpf.substring(7);
+    }
+    if (cpf.length > 11) {
+      cpf = cpf.substring(0, 11) + '-' + cpf.substring(11);
+    }
+
+    // Atualizar o valor do campo de entrada
+     return cpf;
+  }
+  function formatarData(inputValue) {
+    // Remove caracteres não numéricos da entrada
+    const cleanedValue = inputValue.replace(/\D/g, '');
+
+    // Formata a data conforme o usuário digita
+    if (cleanedValue.length <= 2) {
+      return cleanedValue;
+    } else if (cleanedValue.length <= 4) {
+      return cleanedValue.slice(0, 2) + '-' + cleanedValue.slice(2);
+    } else {
+      return cleanedValue.slice(0, 2) + '-' + cleanedValue.slice(2, 4) + '-' + cleanedValue.slice(4, 8);
+    }
+  }
+//a@a.com
+  function updateCanRegister() {
+    if (cpfRef.current.value.length == 14
+      && nameRef.current.value.length >= 3
+      && passwordRef.current.value.length >= 3
+      && dateRef.current.value.length >= 10
+      && emailRef.current.value.length >= 7
+      && terms.current.checked) {
+        setDisable(false);
+    }
+    else {
+      setDisable(true);
+    }
+  }
+
 
   function SignUp(e) {
     e.preventDefault();
-
     const newSignUp = {
       cpf: cpf.replaceAll('.', '').replaceAll('-', ''),
       name: name,
@@ -32,6 +90,7 @@ export default function SignUpPage() {
       email: email,
       password: password,
     };
+    setSigninUp(true);
     setDisable(true);
 
     axios
@@ -55,67 +114,92 @@ export default function SignUpPage() {
         <Logo />
       </SizeLogo>
 
-      <FormSignUp onSubmit={SignUp}>
+      <FormSignUp $disabled={disable.toString()} onSubmit={SignUp}>
         <h1>Cadastre-se</h1>
 
         <input
+        ref={cpfRef}
           type="text"
           autoComplete="cpf"
           placeholder="CPF   (XXX.XXX.XXX-XX)"
           required
-          disabled={disable}
+          disabled={signinUp}
           value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
-          minLength="11"
+          onChange={(e) => {
+            setCpf(formatarCPF(e.target.value));
+            updateCanRegister();
+          }}
+          minLength="14"
           maxLength="14"
         />
 
         <input
+          ref={nameRef}
           type="text"
           autoComplete="name"
           placeholder="Nome Completo"
           required
-          disabled={disable}
+          disabled={signinUp}
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          minLength={3}
+          onChange={(e) => {
+            setName(e.target.value);
+            updateCanRegister();
+          }}
         />
 
         <input
+          ref={dateRef}
+          id="date"
+          name="date"
           type="text"
           autoComplete="date"
           placeholder="Data de nascimento    (DD-MM-AAAA)"
           required
-          disabled={disable}
+          disabled={signinUp}
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={(e) => {
+            setDate(formatarData(e.target.value));
+            updateCanRegister();
+          }}
+          minLength={10}
           maxLength="10"
         />
 
         <input
+        ref={emailRef}
           type="email"
           autoComplete="email"
           placeholder="E-mail"
           required
-          disabled={disable}
+          disabled={signinUp}
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            updateCanRegister();
+          }}
         />
 
         <DivPassword>
           <input
+            ref={passwordRef}
             type="password"
             placeholder="Senha"
             autoComplete="password"
             required
-            disabled={disable}
+            disabled={signinUp}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            minLength={3}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              updateCanRegister();
+            }}
           />
           <AiOutlineEyeInvisible className="closed-eye" />
         </DivPassword>
 
         <DivCheckbox>
-          <Checkbox type="checkbox" />
+          <Checkbox type="checkbox" ref={terms} disabled={signinUp} onChange={()=> updateCanRegister()} />
           <p>
             Declaro que li e aceito os <span>termos</span>
           </p>
@@ -123,7 +207,7 @@ export default function SignUpPage() {
 
         <button type="submit" disabled={disable}>
         <LoadingButtonContent>
-          {disable ? (
+          {signinUp ? (
             <ThreeDots
               type="ThreeDots"
               color="#FFFFFF"
@@ -150,6 +234,7 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   * {
     font-family: Plus Jakarta Sans, sans-serif;
@@ -165,7 +250,7 @@ const FormSignUp = styled.form`
   width: 100%;
   height: 100%;
   max-width: 663px;
-  max-height: 700px;
+  max-height: 620px;
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -196,24 +281,31 @@ const FormSignUp = styled.form`
   }
 
   button {
-    background-color: rgba(217, 217, 217, 1);
+    background-color:${(props) => props.$disabled == 'true' ? 'rgba(217, 217, 217, 1)' : 'white'} ;
     border: none;
     width: 100%;
     height: 100%;
     max-width: 350px;
     max-height: 45px;
-    color: #ffffff;
+    border: 1px solid ${(props) => props.$disabled == 'true' ? 'transparent' : MainPurpleColor};
+    color: ${(props) => props.$disabled == 'true' ? 'white' : MainPurpleColor} ;
     font-size: 20px;
     font-weight: bold;
 
-    &:hover {
-      background-color: ${MainPurpleColor};
+    &:enabled{
+      &:hover {
+        color:white;
+        background-color: ${MainPurpleColor};
+      }
+    }
+    &:disabled{
+      background: #D9D9D9;
+      cursor: not-allowed;
     }
   }
 `;
 
 const DivPassword = styled.div`
-  background-color: red;
   position: relative;
   height: 100%;
   max-height: 30px;

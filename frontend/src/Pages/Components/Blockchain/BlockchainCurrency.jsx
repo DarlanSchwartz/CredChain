@@ -1,21 +1,51 @@
 import React from 'react'
 import { styled } from 'styled-components'
+import CollateralSlideBar from '../Collaterals/CollateralSlideBar';
 
-export default function BlockchainCurrency({ name, image, price, units, total_value }) {
+export default function BlockchainCurrency({show_used=false ,show_actions=false, name='', image='/placeholder.svg', price=0, units=0, total_value=0,total_used=0,onCheckout,onStartLoan }) {
   return (
     <Container>
+      <AssetInfo>
       <NameLogo>
-        <img src={image ? image : '/placeholder.svg'} alt={name} />
-        <h1>{name ? name : '-----'}</h1>
+        <img src={image} alt={name} />
+        <h1>{name}</h1>
       </NameLogo>
       <MainInfo>
-        <p className='price'>{`${price ? 'R$ ' + price : '----'}`}</p>
-        <p className='units'>{`${units ? units : '---'}`}</p>
-        <p className='total'>{`${total_value ? 'R$ ' + total_value : '----'}`}</p>
+        <p className='price'>{`${'R$ ' + price}`}</p>
+        <p className='units'>{`${units}`}</p>
+        <p className='total'>{`${'R$ ' + total_value}`}</p>
       </MainInfo>
+      </AssetInfo>
+      {
+        show_used &&
+        <Actions>
+        <CollateralSlideBar value={total_used} />
+       {
+         show_actions &&
+         <div className='btns'>
+           <button onClick={()=> onStartLoan({name,image,price,units,total_value,total_used})}>Solicitar Empréstimo</button>
+           <button disabled={total_used == 100} onClick={()=> onCheckout({name,image,price,units,total_value,total_used})}>Sacar</button>
+         </div>
+       }
+     </Actions>
+      }
+    
     </Container>
   )
 }
+const Actions = styled.nav`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 1.94rem;
+  .btns{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.88rem;
+  }
+`;
 
 const MainInfo = styled.div`
 
@@ -35,13 +65,16 @@ const MainInfo = styled.div`
   }
 
   .price{
-    width: 100px;
+    width: 100%;
+    max-width: 100px;
   }
   .units{
-    width: 100px;
+    max-width: 100px;
+    width: 100%;
   }
   .total{
-    width: 120px;
+    width: 100%;
+    max-width: 120px;
   }
 `;
 
@@ -71,9 +104,17 @@ const NameLogo = styled.div`
   }
 `;
 
-const Container = styled.div`
+const AssetInfo = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
   width: 100%;
+`;
+const Container = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content:center;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
 `;

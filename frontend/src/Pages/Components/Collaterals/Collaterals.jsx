@@ -3,11 +3,8 @@ import { styled } from 'styled-components';
 import IndexBar from '../Blockchain/IndexBar';
 import BlockchainCurrency from '../Blockchain/BlockchainCurrency';
 import { MainPurpleColor } from '../../../Colors';
-import CollateralSlideBar from './CollateralSlideBar';
 
-export default function Collaterals({ assets, show_actions = true ,ask_loan_start_event}) {
-
-
+export default function Collaterals({total_used= 0, assets, show_actions = true ,ask_loan_start_event ,ask_checkout_start_event}) {
   return (
     <SCCollaterals>
       {
@@ -16,17 +13,25 @@ export default function Collaterals({ assets, show_actions = true ,ask_loan_star
         <>
           <h1 className='title'>Colaterais</h1>
           <IndexBar />
-          <BlockchainCurrency name={'WstETH'} price={'9310.00'} units={0.563909} total_value={5250.00} image={'/images/icons/stETH.svg'} />
-          <Actions>
-            <CollateralSlideBar value={80} />
-            {
-              show_actions &&
-              <div className='btns'>
-                <button onClick={()=> ask_loan_start_event(assets)}>Solicitar Empréstimo</button>
-                <button disabled>Sacar</button>
-              </div>
-            }
-          </Actions>
+          {
+            assets?.map((asset) =>{
+              return (
+                <BlockchainCurrency 
+                  name={asset?.name} 
+                  price={asset?.price} 
+                  units={asset?.units} 
+                  total_value={asset?.total_value} 
+                  image={asset?.image}
+                  total_used={total_used}
+                  show_actions={show_actions}
+                  onStartLoan={ask_loan_start_event}
+                  onCheckout={ask_checkout_start_event}
+                  show_used={true}
+              />
+              )
+            })
+          }
+          
         </>
       }
 
@@ -37,19 +42,6 @@ export default function Collaterals({ assets, show_actions = true ,ask_loan_star
   )
 }
 
-const Actions = styled.nav`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  margin-top: 1.94rem;
-  .btns{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.88rem;
-  }
-`;
 
 const SCCollaterals = styled.div`
   width: 100%;

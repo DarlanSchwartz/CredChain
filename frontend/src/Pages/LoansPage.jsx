@@ -11,6 +11,8 @@ import OpenFinance from './Components/Banners/OpenFinance';
 import NetworkPlaceholder from './Components/Generic/NetworkPlaceholder';
 import Web3 from 'web3';
 import { ThreeDots } from 'react-loader-spinner';
+import CollateralSlideBar from './Components/Collaterals/CollateralSlideBar';
+import { Tooltip as ReactTooltip } from "react-tooltip";
 const MOCKdepositedCurrencies = [
   {
     name: 'WstETH',
@@ -69,7 +71,7 @@ export default function LoansPage({ connected = true }) {
   const [askingForLoans, setAskingForLoans] = useState(false);
   const [userCurrencies, setUserCurrencies] = useState(null);
   const [currentTransactionCoin, setCurrentTransactionCoin] = useState(null);
-  const [hasSelectedWalletForDeposit, setHasSelectedWalletForDeposit] = useState(false);
+  const [hasSelectedWalletForDeposit, setHasSelectedWalletForTransaction] = useState(false);
   const [showTransactionWallets, setShowTransactionWallets] = useState(false);
   const [selectedTransactionWallet, setSelectedTransactionWalletName] = useState('');
   const [selectedTransactionNetwork, setSelectedNetwork] = useState('');
@@ -91,12 +93,12 @@ export default function LoansPage({ connected = true }) {
       case "deposit":
         break;
       case "checkout":
-        
+
         break;
     }
     setTimeout(() => {
-      window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank');
-      setShowModal(false);
+      window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
+      closeModal();
     }, 4000);
   }
 
@@ -125,10 +127,11 @@ export default function LoansPage({ connected = true }) {
     setCurrentTransactionCoin(null);
     setSelectedTransactionWalletName('');
     setSelectedNetwork('');
+    setHasSelectedWalletForTransaction(false);
   }
 
   function userSelectedWalletForDeposit(networkAddress, name) {
-    setHasSelectedWalletForDeposit(true);
+    setHasSelectedWalletForTransaction(true);
     setShowTransactionWallets(false);
     setSelectedTransactionNetworkAddress(networkAddress);
     setSelectedTransactionWalletName(name);
@@ -260,11 +263,28 @@ export default function LoansPage({ connected = true }) {
         }}>
           {
             hasSelectedWalletForDeposit ?
-              <ContainerDepositCoin onMouseDown={(e) => e.stopPropagation()}>
+              <ContainerDepositCoin $h={isDepositTransaction ? 237 : 290} onMouseDown={(e) => e.stopPropagation()}>
 
                 {/*----------------------------- */}
 
                 <DepositQuantityContainer>
+                  {
+                    !isDepositTransaction &&
+
+                    <CoinInfoWithdraw>
+                      <ReactTooltip
+                        id="my-tooltip-1"
+                        place="bottom"
+                        content={`Você pode realizar o saque de ${100 - currentTransactionCoin?.total_used}%. pois ${currentTransactionCoin?.total_used}% estão como garantia`}
+                        style={{ background: "#FAFAFA", color: "black" }}
+                      />
+                      <div className='left'>
+                        <img src="/images/icons/lido.svg" alt="" />
+                        <p>wstETH</p>
+                      </div>
+                      <CollateralSlideBar show_tooltip={true} value={currentTransactionCoin?.total_used} />
+                    </CoinInfoWithdraw>
+                  }
                   <h1>Quantidade</h1>
                   <InputBorderBoxContainer>
                     <InputAndMiniValueContainer>
@@ -278,8 +298,10 @@ export default function LoansPage({ connected = true }) {
                     </InputAndMiniValueContainer>
                     <CoinInfoAndMaxValue>
                       <CoinameAndIcon>
-                        <img src={currentTransactionCoin?.image} alt={currentTransactionCoin?.name} />
-                        <p>{currentTransactionCoin?.name}</p>
+                        <img
+                          src={isDepositTransaction ? currentTransactionCoin?.image : '/images/icons/stETH.svg'}
+                          alt={isDepositTransaction ? currentTransactionCoin?.name : 'stETH'} />
+                        <p>{isDepositTransaction ? currentTransactionCoin?.name : 'stETH'}</p>
                       </CoinameAndIcon>
                       <p className='max-amount'>Saldo Máximo: {currentTransactionCoin?.total_value}</p>
                     </CoinInfoAndMaxValue>
@@ -289,7 +311,7 @@ export default function LoansPage({ connected = true }) {
                 {/*----------------------------- */}
 
                 <button
-                  onClick={() => startTransaction(isDepositTransaction ? "deposit" : "checkout",{})}
+                  onClick={() => startTransaction(isDepositTransaction ? "deposit" : "checkout", {})}
                   disabled={Number(transactionQuantity) <= 0 || inTransactionProcess}
                   className='deposit-btn'>
                   {
@@ -354,6 +376,34 @@ export default function LoansPage({ connected = true }) {
     </PageContentWrapper>
   )
 }
+
+const CoinInfoWithdraw = styled.div`
+width: 100%;
+height: 48px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+
+.left{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  img{
+    width: 40px;
+    height: 40px;
+  }
+  p{
+    color: #0D163A;
+    font-family: Plus Jakarta Sans;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+  }
+}
+`;
 
 const SelectWalletFirstBox = styled.div`
   background-color: white;
@@ -466,7 +516,18 @@ const InputAndMiniValueContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  max-width: 6rem;
+  max-width: 19rem;
+  width: 100%;
+  input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number]{
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
   p{
     color: #A8A8A8;
     font-family: Plus Jakarta Sans;
@@ -509,7 +570,7 @@ const InputBorderBoxContainer = styled.div`
 const ContainerDepositCoin = styled.div`
   width: 100%;
   max-width: 33.75rem;
-  height: 237px;
+  height: ${(props) => props.$h + "px"};
   border-radius: 1.25rem;
   background: #FFF;
   display: flex;

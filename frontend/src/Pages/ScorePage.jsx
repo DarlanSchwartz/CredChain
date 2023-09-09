@@ -10,7 +10,8 @@ import RipioBanner from './Components/Banners/RipioBanner';
 import OpenFinance from './Components/Banners/OpenFinance';
 import { backendroute } from '../routes/routes';
 import axios from 'axios';
-import { ThreeDots } from "react-loader-spinner";
+import { MutatingDots, ThreeDots } from "react-loader-spinner";
+import { toast } from 'react-toastify';
 /*
   cpf: joi.string().required(),
   inscription: joi.string().trim().required(),
@@ -36,12 +37,13 @@ export default function ScorePage() {
   const termsRef = useRef();
   const phoneRef = useRef();
   const responsibleRef = useRef();
-  const [myCompanies,setMyCompanies] = useState([]);
+  const [myCompanies,setMyCompanies] = useState(undefined);
   const [isRegistering,setIsRegistering] = useState(false);
   const [loadingCompany,setLoadingCompany] = useState(false);
 
 
   useEffect(() => {
+    
     isLoged();
     if(localStorage.getItem('token')){
       findMyCompanies();
@@ -76,7 +78,6 @@ export default function ScorePage() {
     axios.get(backendroute.getCompanies,{headers:{Authorization:localStorage.getItem('token')}})
     .then(res=>{
       setMyCompanies(res.data);
-      console.log(res.data);
       setLoadingCompany(false);
     }).catch(error =>{
       console.log(error);
@@ -101,9 +102,28 @@ export default function ScorePage() {
       setIsRegistering(false);
       findMyCompanies();
       closeModal();
+      toast.success('Empresa registrada com sucesso!', {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }).catch(error =>{
       setIsRegistering(false);
-      alert(error.response.data);
+      toast.error(`Error: ${error.response.data}`, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     })
   }
 
@@ -166,12 +186,28 @@ export default function ScorePage() {
           <VisualScore />
           <MyEnterprise>
             <h1>Minha Empresa</h1>
-            <button disabled={myCompanies.length >= 1 || loadingCompany} onClick={openModal}>+</button>
+            <button disabled={!myCompanies || myCompanies?.length >= 1 || loadingCompany} onClick={openModal}>+</button>
           </MyEnterprise>
           {
+            myCompanies ? 
+
             myCompanies.map(company =>{
-              return <Company key={company.cnpj} name={"Empresa: "+company.fantasyName} />
+              return <Company key={company.cnpj} name={"Empresa: "+ company.fantasyName} />
             })
+
+            :
+
+            <MutatingDots 
+            height="100"
+            width="100"
+            color={MainPurpleColor}
+            secondaryColor= '#6941c6'
+            radius='12.5'
+            ariaLabel="mutating-dots-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
           }
           {
             showModalConnect &&

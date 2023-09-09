@@ -61,6 +61,7 @@ html, body, span, applet, object, iframe,
     #root{
         min-height: 100%;
 		max-height: fit-content;
+		--toastify-color-success: ${MainPurpleColor} !important;
     }
 
 	.swal2-image{

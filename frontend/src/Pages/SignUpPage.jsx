@@ -230,11 +230,12 @@ export default function SignUpPage() {
 }
 
 const Container = styled.main`
-  height: 100%;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #f7f7fb;
 
   * {
     font-family: Plus Jakarta Sans, sans-serif;

@@ -118,6 +118,7 @@ export default function HomePage() {
 
 const Container = styled.main`
   height: 100%;
+  background-color: #f7f7fb;
 
   * {
     font-family: "Roboto", sans-serif;

@@ -28,6 +28,7 @@ html, body, span, applet, object, iframe,
 	}
 	body {
 		line-height: 1;
+		
 		&::-webkit-scrollbar {
 			width: 10px;
 		}
@@ -52,14 +53,14 @@ html, body, span, applet, object, iframe,
 		border-spacing: 0;
 	}
     body,html{
+		height: 100%;
         min-height: 100% !important;
-        height: 100%;
         background-color: ${BodyBackgroundColor};
     }
 
     #root{
         min-height: 100%;
-        height: 100%;
+		max-height: fit-content;
     }
 
 	.swal2-image{

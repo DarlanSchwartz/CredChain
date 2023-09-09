@@ -176,6 +176,7 @@ export default function Sidebar() {
 const SidebarContainer = styled.div`
   background-color: #ffffff;
   height: 100%;
+  max-height: 100svh;
   width: 100%;
   max-width: 280px;
   display: flex;

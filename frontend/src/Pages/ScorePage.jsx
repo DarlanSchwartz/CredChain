@@ -76,6 +76,7 @@ export default function ScorePage() {
     axios.get(backendroute.getCompanies,{headers:{Authorization:localStorage.getItem('token')}})
     .then(res=>{
       setMyCompanies(res.data);
+      console.log(res.data);
       setLoadingCompany(false);
     }).catch(error =>{
       console.log(error);
@@ -98,6 +99,7 @@ export default function ScorePage() {
     axios.post(backendroute.registerCompany,company,{headers:{Authorization:localStorage.getItem('token')}})
     .then(res=>{
       setIsRegistering(false);
+      findMyCompanies();
       closeModal();
     }).catch(error =>{
       setIsRegistering(false);
@@ -168,7 +170,7 @@ export default function ScorePage() {
           </MyEnterprise>
           {
             myCompanies.map(company =>{
-              return <Company key={company.cnpj} name={company.name} />
+              return <Company key={company.cnpj} name={"Empresa: "+company.fantasyName} />
             })
           }
           {

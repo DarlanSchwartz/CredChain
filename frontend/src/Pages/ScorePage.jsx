@@ -37,18 +37,18 @@ export default function ScorePage() {
   const termsRef = useRef();
   const phoneRef = useRef();
   const responsibleRef = useRef();
-  const [myCompanies,setMyCompanies] = useState(undefined);
-  const [isRegistering,setIsRegistering] = useState(false);
-  const [loadingCompany,setLoadingCompany] = useState(false);
+  const [myCompanies, setMyCompanies] = useState(undefined);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [loadingCompany, setLoadingCompany] = useState(false);
 
 
   useEffect(() => {
-    
+
     isLoged();
-    if(localStorage.getItem('token')){
+    if (localStorage.getItem('token')) {
       findMyCompanies();
     }
-  },[])
+  }, [])
 
   function closeModal() {
     setShowModalConnect(false);
@@ -73,59 +73,59 @@ export default function ScorePage() {
     }
   }
 
-  function findMyCompanies(){
-    if(myCompanies) return;
+  function findMyCompanies() {
+    if (myCompanies) return;
     setLoadingCompany(true);
-    axios.get(backendroute.getCompanies,{headers:{Authorization:localStorage.getItem('token')}})
-    .then(res=>{
-      setMyCompanies(res.data);
-      setLoadingCompany(false);
-    }).catch(error =>{
-      console.log(error);
-     // alert(error.response.data);
-      setLoadingCompany(false);
-    })
+    axios.get(backendroute.getCompanies, { headers: { Authorization: localStorage.getItem('token') } })
+      .then(res => {
+        setMyCompanies(res.data);
+        setLoadingCompany(false);
+      }).catch(error => {
+        console.log(error);
+        // alert(error.response.data);
+        setLoadingCompany(false);
+      })
   }
 
   function register(e) {
     e.preventDefault();
     setIsRegistering(true);
-    
+
     const company = {
-      cnpj:cpnj,
-      inscription:inscricaoRef.current.value,
-      socialReason:razaoRef.current.value,
-      fantasyName:nome_fantasiaRef.current.value,
-      phone:phone.replace(/\D/g, '')
+      cnpj: cpnj,
+      inscription: inscricaoRef.current.value,
+      socialReason: razaoRef.current.value,
+      fantasyName: nome_fantasiaRef.current.value,
+      phone: phone.replace(/\D/g, '')
     };
-    axios.post(backendroute.registerCompany,company,{headers:{Authorization:localStorage.getItem('token')}})
-    .then(res=>{
-      setIsRegistering(false);
-      findMyCompanies();
-      closeModal();
-      toast.success('Empresa registrada com sucesso!', {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }).catch(error =>{
-      setIsRegistering(false);
-      toast.error(`Error: ${error.response.data}`, {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    })
+    axios.post(backendroute.registerCompany, company, { headers: { Authorization: localStorage.getItem('token') } })
+      .then(res => {
+        setIsRegistering(false);
+        findMyCompanies();
+        closeModal();
+        toast.success('Empresa registrada com sucesso!', {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }).catch(error => {
+        setIsRegistering(false);
+        toast.error(`Error: ${error.response.data}`, {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
   }
 
   function formatPhone(value) {
@@ -190,25 +190,25 @@ export default function ScorePage() {
             <button disabled={!myCompanies || myCompanies?.length >= 1 || loadingCompany} onClick={openModal}>+</button>
           </MyEnterprise>
           {
-            myCompanies ? 
+            myCompanies ?
 
-            myCompanies.map(company =>{
-              return <Company key={company.cnpj} name={"Empresa: "+ company.fantasyName} />
-            })
+              myCompanies.map(company => {
+                return <Company key={company.cnpj} name={"Empresa: " + company.fantasyName} />
+              })
 
-            :
+              :
 
-            <MutatingDots 
-            height="100"
-            width="100"
-            color={MainPurpleColor}
-            secondaryColor= '#6941c6'
-            radius='12.5'
-            ariaLabel="mutating-dots-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-          />
+              <MutatingDots
+                height="100"
+                width="100"
+                color={MainPurpleColor}
+                secondaryColor='#6941c6'
+                radius='12.5'
+                ariaLabel="mutating-dots-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
           }
           {
             showModalConnect &&

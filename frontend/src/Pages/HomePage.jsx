@@ -4,6 +4,7 @@ import { MainPurpleColor } from "../Colors";
 import Footer from "./Components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Components/Logo";
+import Comparisson from "./Components/Home/Comparisson";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -37,10 +38,10 @@ export default function HomePage() {
           <img src="/images/pictures/score.png" />
         </ScoreBackground>
       </BackgroundContainer>
-
+      <Comparisson/>
       <ContainerSecondPage>
         <Item>
-          <img src="images/pictures/undraw_ether_re_y7ft.svg" />
+          <img src="images/pictures/lido-ether.png" />
           <h2>Empréstimos com colateral</h2>
           <p>
             Colateralize financiamentos e empréstimos utilizando stETH como stake na Lido Finance para obter crédito junto a bancos comerciais.

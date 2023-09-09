@@ -9,7 +9,11 @@ import Web3 from 'web3';
 import { LoginContext } from '../Contexts/LoginContext';
 import OpenFinance from './Components/Banners/OpenFinance';
 import RipioBanner from './Components/Banners/RipioBanner';
+/*
+name: 'Ethereum',
+image: '/images/icons/nomedoicone.svg'
 
+*/
 export default function ConnectNetworksPage() {
 
   const { isLoged } = useContext(LoginContext);
@@ -17,6 +21,7 @@ export default function ConnectNetworksPage() {
   const [showModalConnect, setShowModalConnect] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('');
+  const [savedNetWorks,setSavedNetworks] = useState(null);
   const [userAddress, setUserAddress] = useState(null);
   const [message, setMessage] = useState('');
   const [connect, setConnect] = useState(false);
@@ -24,7 +29,12 @@ export default function ConnectNetworksPage() {
 
   useEffect(() => {
     isLoged();
+    getMyNetworks();
   },[]);
+
+  function getMyNetworks(){
+    //setSavedNetworks(resposta);
+  }
 
   function closeModal() {
     setShowModalConnect(false);
@@ -122,13 +132,17 @@ const addLaChain = async () => {
           <ConnectedNetworks>
             <h1>Redes Salvas</h1>
             <SCConnectedNetworksList>
-              <ConnectedNetworkElement name="Etherium" image={'/images/icons/ETH.svg'} />
+              {
+                savedNetWorks?.map(net =>{
+                  return <ConnectedNetworkElement name={net.name} image={net.image} />;
+                })
+              }
               <ConnectedNetworkElement name="Rede Piloto RD" image={'/images/icons/tesouro.svg'} />
             </SCConnectedNetworksList>
           </ConnectedNetworks>
           <SCConnectNewNetwork>
             <h1>Salvar nova rede</h1>
-            <button onClick={openModal}>Selecione a blockhain</button>
+            <button onClick={openModal}>Selecione a blockchain</button>
           </SCConnectNewNetwork>
         </Container>
         <RightCollumn>

@@ -5,7 +5,7 @@ import { LinkColor, MainPurpleColor } from '../../../Colors';
 
 export default function Transactions() {
     return (
-        <Container>
+        <Container className='transactions'>
             <Top>
                 <h1>Transações  recentes</h1>
                 <a href="#">Ver mais</a>
@@ -75,7 +75,6 @@ const List = styled.div`
 const Container = styled.div`
     display: flex;
     max-width: 21.6875rem;
-    height: 100%;
     max-height: 402px;
     width: 100%;
     height: 100%;
@@ -86,4 +85,10 @@ const Container = styled.div`
     border-radius: 14px;
     background: #FFF;
     margin-right: 2.5rem;
+
+    @media (max-width: 1000px) {
+
+        max-width: 100%;
+        margin-right:0 ;
+    }
 `;

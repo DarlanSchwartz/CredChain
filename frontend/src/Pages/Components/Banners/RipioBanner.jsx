@@ -36,6 +36,10 @@ const AdBanner = styled.div`
 `;
 
 const BannerContainer = styled.div`
+ @media (max-width: 500px) {
+     width: 100%;
+     max-width: 100%;
+  }
     position: relative;
     display: flex;
     align-items: center;

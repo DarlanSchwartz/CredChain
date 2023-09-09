@@ -259,6 +259,19 @@ const RightCollumn = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2.31rem;
+  @media (max-width: 1000px) {
+      justify-content: center;
+      flex-direction: row;
+      width: 100%;
+  }
+
+  @media (max-width: 500px) {
+     width: 100%;
+     flex-direction: column;
+     justify-content: flex-start;
+     align-items: center;
+  }
+ 
 `;
 
 const PageContainer = styled.main`
@@ -268,6 +281,10 @@ const PageContainer = styled.main`
   margin-top: 44px;
   justify-content: space-between;
   padding-right: 20px;
+  @media (max-width: 1000px) {
+        justify-content: center;
+        flex-direction: column;
+    }
 `;
 
 const CheckboxElementContainer = styled.div`

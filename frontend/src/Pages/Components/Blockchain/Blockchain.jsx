@@ -48,6 +48,12 @@ const Container = styled.div`
   padding-top: 0.63rem;
   padding-bottom: 0.63rem;
 
+  @media (max-width: 1000px) {
+
+    max-width: 100%;
+    border-radius: 0;
+}
+
 .title{
   color: #0D163A;
 font-family: Plus Jakarta Sans;

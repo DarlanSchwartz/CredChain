@@ -192,6 +192,18 @@ const RightCollumn = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2.31rem;
+  @media (max-width: 1000px) {
+      justify-content: center;
+      flex-direction: row;
+      width: 100%;
+  }
+
+  @media (max-width: 500px) {
+     width: 100%;
+     flex-direction: column;
+     justify-content: flex-start;
+     align-items: center;
+  }
 `;
 
 const PageContainer = styled.div`
@@ -201,6 +213,11 @@ const PageContainer = styled.div`
   margin-top: 44px;
   justify-content: space-between;
   padding-right: 20px;
+  @media (max-width: 1000px) {
+      
+      flex-direction: column;
+      width: 100%;
+  }
 `;
 
 const WalletOrNetworkElement = styled.div`
@@ -248,6 +265,13 @@ const WalletAndNetworkList = styled.div`
   display: flex;
   padding: 1.37rem;
   gap: 3.37rem;
+  @media (max-width: 600px) {
+    gap:1rem;
+    align-items: flex-start;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 
 const ConnectWalletContainer = styled.div`
@@ -262,7 +286,15 @@ const ConnectWalletContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
+  @media (max-width: 632px) {
+      max-width: 100%;
+      border-radius: 0;
+  }
+
   h2,h3{
+    @media (max-width: 632px) {
+      width: 100%;
+  }
     width: 32rem;
     color: #0D163A;
     font-family: Plus Jakarta Sans;
@@ -312,6 +344,10 @@ const ConnectedNetworks = styled.div`
   background: #FFF;
   padding: 1.56rem;
   padding-top: 0.63rem;
+  @media (max-width: 1000px) {
+      max-width: 100%;
+  }
+
   h1{
     color: #0D163A;
     font-family: Plus Jakarta Sans;
@@ -335,6 +371,10 @@ const SCConnectNewNetwork = styled.div`
   background: #FFF;
   padding: 1.56rem;
   padding-top: 0.63rem;
+  @media (max-width: 1000px) {
+      max-width: 100%;
+  }
+
 
   h1{
     color: #0D163A;
@@ -393,5 +433,9 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   max-width: 45.375rem;
+  @media (max-width: 1000px) {
+      max-width: 100%;
+  }
+
   
 `;

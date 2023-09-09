@@ -13,7 +13,6 @@ export default function OpenFinance() {
 }
 
 const Container = styled.div`
-    width: 100%;
     width: 21.375rem;
     height: 19.125rem;
     border-radius: 1.25rem;
@@ -23,6 +22,15 @@ const Container = styled.div`
     align-items: center;
     gap: 2rem;
     padding: 3rem;
+
+    @media (max-width: 1000px) {
+      max-width: 19rem;
+  }
+
+  @media (max-width: 500px) {
+     width: 100%;
+     max-width: 100%;
+  }
 
     h1{
         color: #020202;

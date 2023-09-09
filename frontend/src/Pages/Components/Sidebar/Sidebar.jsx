@@ -188,6 +188,10 @@ const SidebarContainer = styled.div`
   position: absolute;
   left: 0;
   top: 0;
+
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 const SizeLogo = styled.div`

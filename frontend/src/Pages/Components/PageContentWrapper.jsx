@@ -25,6 +25,9 @@ const PageWrapper = styled.div`
     padding-left: 300px;
     position: relative;
     background-color: #f7f7fb;
+    @media (max-width: 1000px) {
+        padding-left: 20px;
+    }
 `;
 
 

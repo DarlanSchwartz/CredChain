@@ -79,6 +79,9 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
+  @media (max-width: 450px) {
+        display: none;
+      }
 
   select{
       cursor: pointer;
@@ -96,6 +99,9 @@ const Right = styled.div`
       font-style: normal;
       font-weight: 400;
       line-height: normal;
+      @media (max-width: 600px) {
+        display: none;
+      }
   }
 
 `;
@@ -115,6 +121,9 @@ const Header = styled.div`
     font-weight: 700;
     line-height: normal;
     letter-spacing: -0.0625rem;
+    @media (max-width: 700px) {
+      font-size: 1.5rem;
+      }
   }
 `;
 
@@ -122,6 +131,9 @@ const GraphContainer = styled.div`
     display: flex;
     width: 100%;
     max-width: 717px;
+    @media (max-width: 1000px) {
+    max-width: 100%;
+}
     padding: 20px;
     flex-direction: column;
     align-items: flex-start;

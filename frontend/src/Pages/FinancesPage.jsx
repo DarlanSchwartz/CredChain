@@ -38,6 +38,10 @@ const Main = styled.div`
 width: 100%;
   max-width: 44.8125rem;
   align-items: center;
+
+  @media (max-width: 1000px) {
+    max-width: 100%;
+}
 `;
 
 const RightCollumn = styled.div`
@@ -45,6 +49,21 @@ const RightCollumn = styled.div`
   flex-direction: column;
   gap: 2rem;
   max-width: 21.6875rem;
+
+  @media (max-width: 1000px) {
+      justify-content: center;
+      flex-direction: row;
+      width: 100%;
+      max-width: 100%;
+  }
+
+  @media (max-width: 500px) {
+     width: 100%;
+     max-width: 100%;
+     flex-direction: column;
+     justify-content: flex-start;
+     align-items: center;
+  }
 `;
 
 const Container = styled.div`
@@ -54,4 +73,8 @@ const Container = styled.div`
   padding-right: 20px;
   width: 100%;
   justify-content: space-between;
+  @media (max-width: 1000px) {
+        justify-content: center;
+        flex-direction: column;
+    }
 `;

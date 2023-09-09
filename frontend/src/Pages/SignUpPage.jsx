@@ -69,7 +69,6 @@ export default function SignUpPage() {
   function updateCanRegister() {
     // 12/12/2023
     //[12,12,2023]
-    console.log();
     if (cpfRef.current.value.length == 14
       && nameRef.current.value.length >= 3
       && passwordRef.current.value.length >= 3
@@ -92,11 +91,10 @@ export default function SignUpPage() {
     const newSignUp = {
       cpf: cpf.replaceAll('.', '').replaceAll('-', ''),
       name: name,
-      date: date.split('/').reverse().join('-'),
+      date: date.split('/').join('-'),
       email: email,
       password: password,
     };
-    console.log(newSignUp);
     setSigninUp(true);
     setDisable(true);
 
@@ -301,6 +299,7 @@ const FormSignUp = styled.form`
     color: ${(props) => props.$disabled == 'true' ? 'white' : MainPurpleColor} ;
     font-size: 20px;
     font-weight: bold;
+    border-radius: 45px;
 
     &:enabled{
       &:hover {

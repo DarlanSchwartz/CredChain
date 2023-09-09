@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import Logo from "./Components/Logo";
 import { MainPurpleColor } from "../Colors";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
@@ -11,18 +11,32 @@ import { backendroute } from "../routes/routes";
 
 
 export default function LoginPage() {
-
   const [cpf, setCpf] = useState("");
-  const [disable, setDisable] = useState(false);
+  const cpfRef = useRef();
+  const passwordRef = useRef();
+  const [disable, setDisable] = useState(true);
+  const [loginIn, setLoginIn] = useState(false);
   const [charCount, setCharCount] = useState(0)
   const [mostrando, setMostrando] = useState("display-cpf");
   const [password, setPassword] = useState("");
   const { user, setUser } = useContext(LoginContext);
+  const  [showPassword, setShowPassword]  = useState(false);
   const navigate = useNavigate();
 
   function goToSignUp() {
     navigate("/signup");
+    updateCanRegister();
   }
+
+  function updateCanRegister() {
+      if(mostrando == "display-cpf"){
+        setDisable(cpfRef?.current?.value.length !== 14);
+      }
+      else{
+        setDisable(passwordRef?.current?.value.length < 3);
+      }
+  }
+
 
 
   function SignInCpf(e) {
@@ -34,6 +48,7 @@ export default function LoginPage() {
     const inputText = e.target.value;
     setCpf(formatarCPF(e.target.value));
     setCharCount(inputText.length);
+    updateCanRegister();
   }
 
   function formatarCPF(value) {
@@ -61,14 +76,15 @@ export default function LoginPage() {
   }
 
   function changeDisplay() {
-    setMostrando("display-cpf")
+    setMostrando("display-cpf");
+    updateCanRegister();
   }
 
   function SignIn(e) {
     e.preventDefault();
     const newSignIn = { cpf: cpf.replaceAll('.', '').replaceAll('-', ''), password: password };
 
-    setDisable(true);
+    setLoginIn(true);
 
     axios
       .post(backendroute.postLogin, newSignIn)
@@ -77,12 +93,12 @@ export default function LoginPage() {
         localStorage.setItem("token", res.data.token);
         setUser(res.data.user);
         navigate("/score");
-        setDisable(false);
+        setLoginIn(false);
       })
       .catch((erro) => {
         alert(erro.response.data);
         console.log("Erro em postSignIn", erro);
-        setDisable(false);
+        setLoginIn(false);
       });
   }
 
@@ -103,7 +119,7 @@ export default function LoginPage() {
             <CpfInfo>
               <img src="/images/pictures/user-check.png" alt="Image check user cpf" />
               <div>
-                <h4>CPF</h4>
+                <h2>CPF</h2>
                 <h6>{cpf}</h6>
               </div>
               <h5 onClick={changeDisplay}>Trocar</h5>
@@ -114,14 +130,16 @@ export default function LoginPage() {
         {mostrando === "display-password" &&
           <DivPassword>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Senha"
               autoComplete="password"
               required
+              disabled={loginIn}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              ref={passwordRef}
+              onChange={(e) => {setPassword(e.target.value); updateCanRegister();}}
             />
-            <AiOutlineEyeInvisible className="closed-eye" />
+            <AiOutlineEyeInvisible onClick={() => setShowPassword(!showPassword)} className="closed-eye" />
           </DivPassword>
 
         }
@@ -129,9 +147,9 @@ export default function LoginPage() {
         {
           mostrando === "display-password" &&
           <Actions>
-            <button type="submit" disabled={disable}>
+            <button type="submit"  disabled={loginIn || disable}>
               <LoadingButtonContent>
-                {disable ? (
+                {loginIn ? (
                   <ThreeDots
                     type="ThreeDots"
                     color="#FFFFFF"
@@ -160,6 +178,8 @@ export default function LoginPage() {
           autoComplete="cpf"
           placeholder="CPF   (XXX.XXX.XXX-XX)"
           required
+          disabled={loginIn}
+          ref={cpfRef}
           value={cpf}
           onChange={handleInputChange}
           minLength="11"
@@ -170,7 +190,7 @@ export default function LoginPage() {
         {
           mostrando === "display-cpf" &&
           <Actions>
-            <button type="submit">Continuar</button>
+            <button disabled={disable} type="submit">Continuar</button>
             <DivLink>
               <p>Não possui cadastro?</p>
               <div onClick={goToSignUp}>CRIE SUA CONTA</div>
@@ -209,10 +229,11 @@ const FormCpfLogin = styled.form`
   background-color: #ffffff;
   width: 100%;
   max-width: 400px;
-  max-height: 400px;
+  height: 360px;
   gap: 30px;
   border-radius: 20px;
   padding: 30px;
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -221,7 +242,8 @@ const FormCpfLogin = styled.form`
     font-weight: 700;
     font-size: 20px;
     margin-bottom: 15px;
-    align-self: flex-start;
+    text-align: center;
+    width: 100%;
   }
 
   h3 {
@@ -257,7 +279,18 @@ const FormCpfLogin = styled.form`
     font-weight: bold;
     background-color: ${MainPurpleColor};
     border-radius: 45px;
-    //background-color: ${(props) => props.disabled === true ? '#000000' : ' #d9d9d9'};
+    border: 1px solid transparent;
+    &:enabled{
+      &:hover{
+        background-color: white;
+        border: 1px solid ${MainPurpleColor};
+        color:${MainPurpleColor};
+      }
+    }
+    &:disabled{
+      background-color: #d9d9d9;
+      cursor: not-allowed;
+    }
   }
 `;
 
@@ -339,6 +372,7 @@ const DivPassword = styled.div`
     transform: translateY(-50%);
     color: rgba(168, 168, 168, 1);
     font-size: 25px;
+    cursor: pointer;
   }
 `;
 
@@ -351,8 +385,8 @@ const LoadingButtonContent = styled.div`
 const DivRememberPassword = styled.div`
 display: flex;
 flex-direction: row;
-margin-top: 20px;
-margin-bottom: 20px;
+margin-top: 10px;
+
 width: 100%;
 height: 100%;
 max-height: 26px;
@@ -376,8 +410,8 @@ align-self: center;
 `;
 
 const Checkbox = styled.input`
-width: 100%;
-height: 100%;
+  width: 100%;
+  height: 100%;
   max-width: 20px;
   max-height: 20px;
   appearance: none;

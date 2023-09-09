@@ -128,6 +128,7 @@ export default function SignUpPage() {
 
         <input
         ref={cpfRef}
+        autoFocus
           type="text"
           autoComplete="cpf"
           placeholder="CPF   (XXX.XXX.XXX-XX)"
@@ -260,7 +261,7 @@ const FormSignUp = styled.form`
   width: 100%;
   height: 100%;
   max-width: 663px;
-  max-height: 620px;
+  max-height: 580px;
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -339,7 +340,7 @@ const DivCheckbox = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 20px 0px 60px 0px;
+  margin: 20px 0px 20px 0px;
   height: 100%;
   max-height: 30px;
   color: rgba(168, 168, 168, 1);
@@ -361,6 +362,7 @@ const Checkbox = styled.input`
   appearance: none;
   border: 1px solid rgba(168, 168, 168, 1);
   border-radius: 4px;
+  cursor: pointer;
 
   &:checked {
     background-color: ${MainPurpleColor};

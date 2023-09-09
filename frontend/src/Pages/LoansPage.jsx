@@ -27,8 +27,8 @@ export default function LoansPage({ connected = true }) {
 
   useEffect(() => {
     isLoged();
-  })
-
+  },[])
+  
   function askForALoan(assets) {
     setAskingForLoans(true);
   }

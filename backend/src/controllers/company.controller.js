@@ -5,7 +5,6 @@ export async function registerCompany(req, res) {
     const userId = res.locals.userId;
     try {
         const userHasMoreThanOneCompany = await findCompanies(userId);
-        console.log(userHasMoreThanOneCompany);
         if(userHasMoreThanOneCompany.length >= 1) return res.status(400).send("You cannot register another company!");
         
         const companyIsRegistered = await companyExists(cnpj);
@@ -13,7 +12,6 @@ export async function registerCompany(req, res) {
             return res.status(409).send("This company already exists!");
         }
         
-
         createCompany(userId,cnpj, inscription, socialReason, fantasyName, phone);
         res.status(201).send("Company registered!");
     } catch ({message}) {

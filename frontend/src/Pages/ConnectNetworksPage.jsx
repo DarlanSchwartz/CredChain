@@ -22,6 +22,10 @@ export default function ConnectNetworksPage() {
   const [connect, setConnect] = useState(false);
   const [connect2, setConnect2] = useState(false);
 
+  useEffect(() => {
+    isLoged();
+  },[]);
+
   function closeModal() {
     setShowModalConnect(false);
     setSelectedWallet('');

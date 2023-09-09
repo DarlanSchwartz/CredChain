@@ -7,4 +7,5 @@ export const backendroute = {
     deleteLogout: API_URL + '/logout',
     registerCompany: API_URL + '/register-company',
     getCompanies: API_URL + '/companies',
+    getUser: API_URL + '/user',
 }

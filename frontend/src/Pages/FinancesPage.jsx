@@ -5,7 +5,6 @@ import Graph from './Components/Graph/Graph';
 import Transactions from './Components/Transactions/Transactions';
 import BlockchainList from './Components/Blockchain/BlockchainList';
 import { LoginContext } from '../Contexts/LoginContext';
-import RipioBanner from './Components/Banners/RipioBanner';
 
 export default function FinancesPage() {
 
@@ -13,7 +12,7 @@ export default function FinancesPage() {
 
   useEffect(() => {
     isLoged();
-  })
+  },[])
 
   return (
     <PageContentWrapper>

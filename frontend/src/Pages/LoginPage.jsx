@@ -6,7 +6,7 @@ import { useState, useContext } from "react";
 import Logo from "./Components/Logo";
 import { MainPurpleColor } from "../Colors";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
-import UserContext from "../Contexts/LoginContext";
+import UserContext, { LoginContext } from "../Contexts/LoginContext";
 import { backendroute } from "../routes/routes";
 
 
@@ -17,7 +17,7 @@ export default function LoginPage() {
   const [charCount, setCharCount] = useState(0)
   const [mostrando, setMostrando] = useState("display-cpf");
   const [password, setPassword] = useState("");
-
+  const {user, setUser} = useContext(LoginContext);
   const navigate = useNavigate();
 
   function goToSignUp() {
@@ -73,8 +73,9 @@ export default function LoginPage() {
     axios
       .post(backendroute.postLogin, newSignIn)
       .then((res) => {
-        console.log('res.data do login', res.data)
+        //console.log('res.data do login', res.data)
         localStorage.setItem("token", res.data.token);
+        setUser(res.data.user);
         navigate("/score");
         setDisable(false);
       })

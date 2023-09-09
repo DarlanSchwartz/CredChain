@@ -4,6 +4,10 @@ export async function findUserByCpfDB(cpf) {
   return db.query(`SELECT * FROM users WHERE cpf=$1`, [cpf]);
 }
 
+export async function findUserById(userId) {
+  return db.query(`SELECT * FROM users WHERE id=$1 LIMIT 1`, [userId]);
+}
+
 export async function signupDB(cpf, name, date, email, encryptedPassword) {
   return await db.query(
     `INSERT INTO users (cpf, "name", "date", email, password) VALUES ($1, $2, $3, $4, $5);`,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { GoBell } from "react-icons/go";
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
@@ -6,76 +6,90 @@ import { LuSearch } from "react-icons/lu";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { MainPurpleColor } from "../../../Colors";
+import { LoginContext } from "../../../Contexts/LoginContext";
+import axios from "axios";
+import { backendroute } from "../../../routes/routes";
 
 
 export default function Header() {
   const navigate = useNavigate();
-
+  const { setUser, user } = useContext(LoginContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [arrowUp, setArrowUp] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(false);
   const location = useLocation();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
     setArrowUp(!arrowUp);
-};
-
-useEffect(() => {
-  window.addEventListener('click', listenerOutsiteClick);
-  return () => {
-      window.removeEventListener('click', listenerOutsiteClick);
   };
-}, []);
 
-function listenerOutsiteClick(event) {
-  if (!event.target.classList.contains('menu')) {
-    setMenuOpen(false);
-    setArrowUp(false);
-  }
-}
-function goToScore() {
-  navigate("/score");
-}
+  useEffect(() => {
+    if(user) return;
+    setLoadingUser(true);
+    window.addEventListener('click', listenerOutsiteClick);
+    axios.get(backendroute.getUser, { headers: { Authorization: localStorage.getItem('token') } })
+      .then(res => {
+        setUser(res.data);
+        setLoadingUser(false);
+      }).catch(error => {
+        console.log(error);
+        setLoadingUser(false);
+      })
+    return () => {
+      window.removeEventListener('click', listenerOutsiteClick);
+    };
+  }, []);
 
-function goToFinances() {
-  navigate("/finances");
-}
-
-function goToConnectPage() {
-  navigate("/connect");
-}
-
-function goToLoansPage() {
-  navigate("/loans");
-}
-
-function goToDocumentation() {
-  navigate("/documentation");
-}
-
-function goToHomePage() {
-  navigate("/");
-}
-
-function logout(){
-  Swal.fire({
-    title: `<span style="font-family: Plus Jakarta Sans, sans-serif;font-size: 20px;color:black">Deseja sair?</span>`,
-    showCancelButton: true,
-    confirmButtonColor: '#c9c9c9',
-    cancelButtonColor: `${MainPurpleColor}`,
-    confirmButtonText: 'Sim',
-    cancelButtonText: 'Cancelar',
-    width: 300,
-    heightAuto: false,
-    imageUrl: '/images/pictures/logout.svg',
-    imageWidth: 200,
-}).then((result) => {
-    if (result.isConfirmed) {
-      localStorage.removeItem('token');
-      navigate('/');
+  function listenerOutsiteClick(event) {
+    if (!event.target.classList.contains('menu')) {
+      setMenuOpen(false);
+      setArrowUp(false);
     }
-});
-}
+  }
+  function goToScore() {
+    navigate("/score");
+  }
+
+  function goToFinances() {
+    navigate("/finances");
+  }
+
+  function goToConnectPage() {
+    navigate("/connect");
+  }
+
+  function goToLoansPage() {
+    navigate("/loans");
+  }
+
+  function goToDocumentation() {
+    navigate("/documentation");
+  }
+
+  function goToHomePage() {
+    navigate("/");
+  }
+
+  function logout() {
+    Swal.fire({
+      title: `<span style="font-family: Plus Jakarta Sans, sans-serif;font-size: 20px;color:black">Deseja sair?</span>`,
+      showCancelButton: true,
+      confirmButtonColor: '#c9c9c9',
+      cancelButtonColor: `${MainPurpleColor}`,
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Cancelar',
+      width: 300,
+      heightAuto: false,
+      imageUrl: '/images/pictures/logout.svg',
+      imageWidth: 200,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('token');
+        navigate('/');
+      }
+    });
+  }
 
   return (
     <SCHeader>
@@ -84,39 +98,40 @@ function logout(){
           {
             location.pathname.includes('/loans') &&
             <SearchContainer>
-            <StyledInput placeholder="Pesquise aqui" />
-            <SearchIcon>
-              <LuSearch />
-            </SearchIcon>
-          </SearchContainer>
+              <StyledInput placeholder="Pesquise aqui" />
+              <SearchIcon>
+                <LuSearch />
+              </SearchIcon>
+            </SearchContainer>
           }
         </Main>
 
-        <InfoUser className="menu"  $open={menuOpen}>
+        <InfoUser className="menu" $open={menuOpen}>
           <ButtonBell className="menu" >
             <GoBell className="go-bell-icon" />
           </ButtonBell >
+
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJFiKHbkBQTYhaU1x1TGreeVViDrWp3pPQEf-zcX9Smb80kGgEUkTPeGp95adj2PrIYSI&usqp=CAU"
             alt="User"
           />
-          <p>Nome e Último Nome</p>
+          <p>{loadingUser ? "Loading.." : user ? user.name : ''}</p>
 
-          <div>
-             <ArrowButton className="menu"  onClick={toggleMenu}>
-                    {arrowUp ? <FiChevronUp className="menu"  color="#292D32" size={24} /> : <FiChevronDown className="menu" color="#292D32" size={24} />}
-                </ArrowButton>
-                {menuOpen && (
-                    <DropdownMenu className="menu">
-                        <MenuItem className="menu" onClick={goToScore}>Meu Score</MenuItem>
-                        <MenuItem className="menu" onClick={goToFinances}>Finanças</MenuItem>
-                        <MenuItem className="menu" onClick={goToConnectPage}>Conectar Redes</MenuItem>
-                        <MenuItem className="menu" onClick={goToLoansPage}>Empréstimo</MenuItem>
-                        <MenuItem className="menu" onClick={goToDocumentation}>Documentação</MenuItem>
-                        <MenuItem className="menu" onClick={logout}>Logout</MenuItem>
-                    </DropdownMenu>
-                )}
-          </div>
+          <>
+            <ArrowButton className="menu" onClick={toggleMenu}>
+              {arrowUp ? <FiChevronUp className="menu" color="#292D32" size={24} /> : <FiChevronDown className="menu" color="#292D32" size={24} />}
+            </ArrowButton>
+            {menuOpen && (
+              <DropdownMenu className="menu">
+                <MenuItem className="menu" onClick={goToScore}>Meu Score</MenuItem>
+                <MenuItem className="menu" onClick={goToFinances}>Finanças</MenuItem>
+                <MenuItem className="menu" onClick={goToConnectPage}>Conectar Redes</MenuItem>
+                <MenuItem className="menu" onClick={goToLoansPage}>Empréstimo</MenuItem>
+                <MenuItem className="menu" onClick={goToDocumentation}>Documentação</MenuItem>
+                <MenuItem className="menu" onClick={logout}>Logout</MenuItem>
+              </DropdownMenu>
+            )}
+          </>
         </InfoUser>
       </Container>
     </SCHeader>

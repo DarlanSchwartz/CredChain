@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
-import { findUserByCpfDB, loginDB, logoutDB, signupDB } from "../repositories/userRepository.js";
+import { findUserByCpfDB, findUserById, loginDB, logoutDB, signupDB } from "../repositories/userRepository.js";
 
 
 export async function signup(req, res) {
@@ -40,7 +40,7 @@ export async function login(req, res) {
 
       await loginDB(user.rows[0].id, token)
 
-      res.status(200).send({ token: token });
+      res.status(200).send({ token: token,user:user.rows[0] });
 
     } else {
       res.status(401).send("Senha incorreta!");
@@ -50,6 +50,22 @@ export async function login(req, res) {
     return res.status(500).send(err);
   }
 }
+
+export async function getUser(req, res) {
+  try {
+    const user = await findUserById(res.locals.userId);
+    const response = user && user.rows[0] ? user.rows[0] : null;
+    if(response){
+      delete response.password;
+      delete response.date;
+    }
+    return res.send(response);
+  } catch ({message}) {
+    console.log('Erro em get user', message);
+    return res.status(500).send(message);
+  }
+}
+
 
 
 export async function logout(req, res) {

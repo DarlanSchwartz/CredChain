@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -9,28 +9,30 @@ export function LoginProvider({ children }) {
     const navigate = useNavigate();
 
     const [token, setToken] = useState("");
+    const [user, setUser] = useState(null);
 
+    const isLoged = () => {
+        let token = localStorage.getItem("token");
 
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = token;
+            setToken(token);
+            
+        } else {
+            navigate("/");
+        }
+    }
 
-const isLoged = () => {
-    let token = localStorage.getItem("token");
-
-    if(token){
-        axios.defaults.headers.common['Authorization'] = token;
-        setToken(token);
-    } else {
+    const logout = () => {
+        localStorage.removeItem("token");
+        axios.defaults.headers.common['Authorization'] = "";
         navigate("/");
     }
-}
 
-const logout = () => {
-    localStorage.removeItem("token");
-    axios.defaults.headers.common['Authorization'] = "";
-    navigate("/");
-}
+  
 
     return (
-        <LoginContext.Provider value={{isLoged, logout, token, setToken}}>
+        <LoginContext.Provider value={{ isLoged, logout, token, setToken ,user, setUser}}>
             {children}
         </LoginContext.Provider>
     )

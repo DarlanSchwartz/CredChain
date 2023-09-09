@@ -16,6 +16,8 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
   const [disable, setDisable] = useState(true);
   const [signinUp, setSigninUp] = useState(false);
+  const  [showPassword, setShowPassword]  = useState(false);
+
 
   const cpfRef = useRef();
   const nameRef = useRef();
@@ -190,7 +192,7 @@ export default function SignUpPage() {
         <DivPassword>
           <input
             ref={passwordRef}
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Senha"
             autoComplete="password"
             required
@@ -202,7 +204,7 @@ export default function SignUpPage() {
               updateCanRegister();
             }}
           />
-          <AiOutlineEyeInvisible className="closed-eye" />
+          <AiOutlineEyeInvisible  onClick={() => setShowPassword(!showPassword)} className="closed-eye" />
         </DivPassword>
 
         <DivCheckbox>
@@ -327,6 +329,7 @@ const DivPassword = styled.div`
     transform: translateY(-50%);
     color: rgba(168, 168, 168, 1);
     font-size: 25px;
+    cursor: pointer;
   }
 `;
 

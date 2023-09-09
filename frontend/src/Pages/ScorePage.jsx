@@ -10,6 +10,7 @@ import RipioBanner from './Components/Banners/RipioBanner';
 import OpenFinance from './Components/Banners/OpenFinance';
 import { backendroute } from '../routes/routes';
 import axios from 'axios';
+import { ThreeDots } from "react-loader-spinner";
 /*
   cpf: joi.string().required(),
   inscription: joi.string().trim().required(),
@@ -36,6 +37,8 @@ export default function ScorePage() {
   const phoneRef = useRef();
   const responsibleRef = useRef();
   const [myCompanies,setMyCompanies] = useState([]);
+  const [isRegistering,setIsRegistering] = useState(false);
+  const [loadingCompany,setLoadingCompany] = useState(false);
 
 
   useEffect(() => {
@@ -43,7 +46,7 @@ export default function ScorePage() {
     if(localStorage.getItem('token')){
       findMyCompanies();
     }
-  })
+  },[])
 
   function closeModal() {
     setShowModalConnect(false);
@@ -58,7 +61,7 @@ export default function ScorePage() {
       && inscricaoRef.current.value.length >= 3
       && razaoRef.current.value.length >= 3
       && nome_fantasiaRef.current.value.length >= 3
-      && phone.length == 15
+      && phoneRef.current.value.length == 15
       && termsRef.current.checked
       && responsibleRef.current.checked) {
       setCanRegister(true);
@@ -69,16 +72,22 @@ export default function ScorePage() {
   }
 
   function findMyCompanies(){
+    setLoadingCompany(true);
     axios.get(backendroute.getCompanies,{headers:{Authorization:localStorage.getItem('token')}})
     .then(res=>{
       setMyCompanies(res.data);
+      setLoadingCompany(false);
     }).catch(error =>{
+      console.log(error);
       alert(error.response.data);
+      setLoadingCompany(false);
     })
   }
 
   function register(e) {
     e.preventDefault();
+    setIsRegistering(true);
+    
     const company = {
       cnpj:cpnj,
       inscription:inscricaoRef.current.value,
@@ -88,8 +97,10 @@ export default function ScorePage() {
     };
     axios.post(backendroute.registerCompany,company,{headers:{Authorization:localStorage.getItem('token')}})
     .then(res=>{
-      console.log(res.data);
+      setIsRegistering(false);
+      closeModal();
     }).catch(error =>{
+      setIsRegistering(false);
       alert(error.response.data);
     })
   }
@@ -153,7 +164,7 @@ export default function ScorePage() {
           <VisualScore />
           <MyEnterprise>
             <h1>Minha Empresa</h1>
-            <button onClick={openModal}>+</button>
+            <button disabled={myCompanies.length >= 1 || loadingCompany} onClick={openModal}>+</button>
           </MyEnterprise>
           {
             myCompanies.map(company =>{
@@ -166,23 +177,32 @@ export default function ScorePage() {
               <RegisterCompanyForm onSubmit={register} onMouseDown={(e) => e.stopPropagation()}>
                 <h1 className='title'>Cadastre sua Empresa</h1>
                 <FieldsContainer>
-                  <input value={cpnj} onChange={(e) => { setCnpj(formatCNPJ(e.target.value)); updateCanRegister(); }} minLength={18} maxLength={18} required ref={cpnjRef} type="text" placeholder='CNPJ' id='cnpj' name='cnpj' />
-                  <input onChange={updateCanRegister} minLength={3} required ref={inscricaoRef} type="text" placeholder='Inscrição Estadual' id='inscricao' name='inscricao' />
-                  <input onChange={updateCanRegister} minLength={3} required ref={razaoRef} type="text" placeholder='Razão Social' id='razao' name='razao' />
-                  <input onChange={updateCanRegister} minLength={3} required ref={nome_fantasiaRef} type="text" placeholder='Nome Fantasia' id='nome_fantasia' name='nome_fantasia' />
-                  <input value={phone} onChange={(e) => { setPhone(formatPhone(e.target.value)); updateCanRegister(); }} minLength={15} maxLength={15} required ref={phoneRef} type="text" placeholder='Telefone' id='phone' name='phone' />
+                  <input disabled={isRegistering} value={cpnj} onChange={(e) => { setCnpj(formatCNPJ(e.target.value)); updateCanRegister(); }} minLength={18} maxLength={18} required ref={cpnjRef} type="text" placeholder='CNPJ' id='cnpj' name='cnpj' />
+                  <input disabled={isRegistering} onChange={updateCanRegister} minLength={3} required ref={inscricaoRef} type="text" placeholder='Inscrição Estadual' id='inscricao' name='inscricao' />
+                  <input disabled={isRegistering} onChange={updateCanRegister} minLength={3} required ref={razaoRef} type="text" placeholder='Razão Social' id='razao' name='razao' />
+                  <input disabled={isRegistering} onChange={updateCanRegister} minLength={3} required ref={nome_fantasiaRef} type="text" placeholder='Nome Fantasia' id='nome_fantasia' name='nome_fantasia' />
+                  <input disabled={isRegistering} value={phone} onChange={(e) => { setPhone(formatPhone(e.target.value)); updateCanRegister(); }} minLength={15} maxLength={15} required ref={phoneRef} type="text" placeholder='Telefone' id='phone' name='phone' />
                 </FieldsContainer>
                 <CheckboxesContainer>
                   <CheckboxElementContainer>
-                    <input onChange={updateCanRegister} ref={responsibleRef} type="checkbox" />
+                    <input required onChange={updateCanRegister} ref={responsibleRef} type="checkbox" />
                     <h2>Declaro ser responsável legal pela empresa</h2>
                   </CheckboxElementContainer>
                   <CheckboxElementContainer>
-                    <input onChange={updateCanRegister} ref={termsRef} type="checkbox" />
+                    <input required onChange={updateCanRegister} ref={termsRef} type="checkbox" />
                     <h2>Declaro que li e aceito os <span>termos</span></h2>
                   </CheckboxElementContainer>
                 </CheckboxesContainer>
-                <button disabled={!canRegister} id='cadastrar'>Cadastrar</button>
+                <button disabled={(!canRegister || isRegistering)} id='cadastrar'> {isRegistering ? (
+                  <ThreeDots
+                    type="ThreeDots"
+                    color="#FFFFFF"
+                    height={20}
+                    width={50}
+                  />
+                ) : (
+                  "Cadastrar"
+                )}</button>
               </RegisterCompanyForm>
             </ModalContainer>
           }
@@ -238,7 +258,13 @@ const CheckboxElementContainer = styled.div`
     border-radius: 0.125rem;
     border: 1px solid #999;
     background: #FFF;
-    cursor: pointer;
+    &:enabled{
+      cursor: pointer;
+    }
+    &:disabled{
+      cursor: not-allowed;
+    }
+
   }
 
 `;
@@ -293,6 +319,10 @@ const RegisterCompanyForm = styled.form`
       color: #A8A8A8;
       font-weight: 400;
     }
+    &:disabled{
+      cursor: not-allowed;
+      opacity: 50%;
+    }
   }
 
   .title{
@@ -307,6 +337,9 @@ const RegisterCompanyForm = styled.form`
   }
 
   #cadastrar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #FFF;
     font-family: Plus Jakarta Sans;
     font-size: 1rem;
@@ -376,7 +409,11 @@ const MyEnterprise = styled.div`
     font-size: 2.5rem;
     font-style: normal;
     font-weight: 600;
-    line-height: 1.5rem; 
+    line-height: 1.5rem;
+    &:disabled{
+      cursor: not-allowed;
+      opacity: 50%;
+    }
   }
 `;
 

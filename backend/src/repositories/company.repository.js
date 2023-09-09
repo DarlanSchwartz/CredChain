@@ -1,3 +1,5 @@
+import { db } from "../database/database.js";
+
 export async function createCompany(ownerId,cnpj, inscription, socialReason, fantasyName, phone) {
     const company = await db.query(
       `INSERT INTO companies ("ownerId","cnpj", "inscription", "socialReason", "fantasyName", "phone") VALUES ($1, $2, $3, $4, $5, $6);`,

@@ -32,22 +32,41 @@ export default function LoginPage() {
 
   function handleInputChange(e) {
     const inputText = e.target.value;
-    setCpf(inputText);
+    setCpf(formatarCPF(e.target.value));
     setCharCount(inputText.length);
-    //if(inputText.length === 11) {
-      //  setDisable(true)
-   // } else {
-    //  setDisable(false)
-   // }
   }
 
-function changeDisplay() {
-  setMostrando("display-cpf")
-}
+  function formatarCPF(value) {
+    // Remover caracteres não numéricos
+    var cpf = value.replace(/\D/g, '');
+
+    // Verificar se o CPF está vazio
+    if (cpf === '') {
+      return cpf;
+    }
+
+    // Adicionar a formatação conforme o CPF é digitado
+    if (cpf.length > 3) {
+      cpf = cpf.substring(0, 3) + '.' + cpf.substring(3);
+    }
+    if (cpf.length > 7) {
+      cpf = cpf.substring(0, 7) + '.' + cpf.substring(7);
+    }
+    if (cpf.length > 11) {
+      cpf = cpf.substring(0, 11) + '-' + cpf.substring(11);
+    }
+
+    // Atualizar o valor do campo de entrada
+    return cpf;
+  }
+
+  function changeDisplay() {
+    setMostrando("display-cpf")
+  }
 
   function SignIn(e) {
     e.preventDefault();
-    const newSignIn = {  cpf: cpf.replaceAll('.', '').replaceAll('-', ''), password: password };
+    const newSignIn = { cpf: cpf.replaceAll('.', '').replaceAll('-', ''), password: password };
 
     setDisable(true);
 
@@ -73,100 +92,100 @@ function changeDisplay() {
         <Logo />
       </SizeLogo>
 
-{mostrando === "display-cpf" && (
- <FormCpfLogin onSubmit={SignInCpf}>
- <div>
-   <h1>Entrar na CredChain</h1>
-   <h3>Identifique-se para entrar na CredChain</h3>
- </div>
+      {mostrando === "display-cpf" && (
+        <FormCpfLogin onSubmit={SignInCpf}>
+          <div>
+            <h1>Entrar na CredChain</h1>
+            <h3>Identifique-se para entrar na CredChain</h3>
+          </div>
 
- <input
-   type="text"
-   autoComplete="cpf"
-   placeholder="CPF   (XXX.XXX.XXX-XX)"
-   required
-   value={cpf}
-   onChange={handleInputChange}
-   minLength="11"
-   maxLength="14"
- />
-
- <div>
-   <button 
-   type="submit" 
-   //disabled={disable}
-  // style={{ backgroundColor: disable ? `${MainPurpleColor}` : "#d9d9d9" }}
-   >
-      Continuar
-   </button>
-
-   <DivLink>
-     <p>Não possui cadastro?</p>
-     <div onClick={goToSignUp}>CRIE SUA CONTA</div>
-   </DivLink>
- </div>
-</FormCpfLogin>
-)}
-
-
-
-
-{mostrando === "display-password" && (
- <FormPasswordLogin onSubmit={SignIn}>
- <div>
-   <h1>Entrar na CredChain</h1>
-   <CpfInfo>
-    <img src="/images/pictures/user-check.png" alt="Image check user cpf"/>
-    <div>
-    <h4>CPF</h4>
-    <h6>{cpf}</h6>
-    </div>
-    <h5 onClick={changeDisplay}>Trocar</h5>
-   </CpfInfo>
- </div>
-
-
- <DivPassword>
           <input
-            type="password"
-            placeholder="Senha"
-            autoComplete="password"
+            type="text"
+            autoComplete="cpf"
+            placeholder="CPF   (XXX.XXX.XXX-XX)"
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={cpf}
+            onChange={handleInputChange}
+            minLength="11"
+            maxLength="14"
           />
-          <AiOutlineEyeInvisible className="closed-eye" />
-        </DivPassword>
 
- <div>
-   <button type="submit" disabled={disable}>
-        <LoadingButtonContent>
-          {disable ? (
-            <ThreeDots
-              type="ThreeDots"
-              color="#FFFFFF"
-              height={20}
-              width={50}
+          <div>
+            <button
+              type="submit"
+            //disabled={disable}
+            // style={{ backgroundColor: disable ? `${MainPurpleColor}` : "#d9d9d9" }}
+            >
+              Continuar
+            </button>
+
+            <DivLink>
+              <p>Não possui cadastro?</p>
+              <div onClick={goToSignUp}>CRIE SUA CONTA</div>
+            </DivLink>
+          </div>
+        </FormCpfLogin>
+      )}
+
+
+
+
+      {mostrando === "display-password" && (
+        <FormPasswordLogin onSubmit={SignIn}>
+          <div>
+            <h1>Entrar na CredChain</h1>
+            <CpfInfo>
+              <img src="/images/pictures/user-check.png" alt="Image check user cpf" />
+              <div>
+                <h4>CPF</h4>
+                <h6>{cpf}</h6>
+              </div>
+              <h5 onClick={changeDisplay}>Trocar</h5>
+            </CpfInfo>
+          </div>
+
+
+          <DivPassword>
+            <input
+              type="password"
+              placeholder="Senha"
+              autoComplete="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-          ) : (
-            "Entrar"
-          )}
-          </LoadingButtonContent>
-        </button>
+            <AiOutlineEyeInvisible className="closed-eye" />
+          </DivPassword>
+
+          <div>
+            <button type="submit" disabled={disable}>
+              <LoadingButtonContent>
+                {disable ? (
+                  <ThreeDots
+                    type="ThreeDots"
+                    color="#FFFFFF"
+                    height={20}
+                    width={50}
+                  />
+                ) : (
+                  "Entrar"
+                )}
+              </LoadingButtonContent>
+            </button>
 
 
-   <DivRememberPassword>
-    <CheckboxDiv>
-      <Checkbox type="checkbox" />
-      <h6>Lembrar senha</h6>
-      </CheckboxDiv>
-      <p>Esqueci a senha</p>
-   </DivRememberPassword>
+            <DivRememberPassword>
+              <CheckboxDiv>
+                <Checkbox type="checkbox" />
+                <h6>Lembrar senha</h6>
+              </CheckboxDiv>
+              <p>Esqueci a senha</p>
+            </DivRememberPassword>
 
- </div>
-</FormPasswordLogin>
+          </div>
+        </FormPasswordLogin>
 
-)}
+      )}
     </Container>
   );
 }
@@ -176,6 +195,7 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   * {
     font-family: Plus Jakarta Sans, sans-serif;
@@ -191,7 +211,7 @@ const FormCpfLogin = styled.form`
   width: 100%;
   height: 100%;
   max-width: 400px;
-  max-height: 570px;
+  max-height: 400px;
   border-radius: 20px;
   padding: 30px;
   display: flex;
@@ -238,7 +258,7 @@ const FormCpfLogin = styled.form`
     font-size: 20px;
     font-weight: bold;
     background-color: ${MainPurpleColor};
-    //background-color: ${(props) => props.disabled === true ? '#000000' :' #d9d9d9'};
+    //background-color: ${(props) => props.disabled === true ? '#000000' : ' #d9d9d9'};
   }
 `;
 
@@ -269,7 +289,7 @@ background-color: #ffffff;
 width: 100%;
 height: 100%;
 max-width: 400px;
-max-height: 570px;
+max-height: 400px;
 border-radius: 20px;
 padding: 30px;
 display: flex;
@@ -317,7 +337,7 @@ button {
   font-size: 20px;
   font-weight: bold;
   background-color: ${MainPurpleColor};
-  //background-color: ${(props) => props.disabled === true ? '#000000' :' #d9d9d9'};
+  //background-color: ${(props) => props.disabled === true ? '#000000' : ' #d9d9d9'};
 margin-bottom: 10px;
 }
 `;

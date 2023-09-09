@@ -17,7 +17,7 @@ export default function LoginPage() {
   const [charCount, setCharCount] = useState(0)
   const [mostrando, setMostrando] = useState("display-cpf");
   const [password, setPassword] = useState("");
-  const {user, setUser} = useContext(LoginContext);
+  const { user, setUser } = useContext(LoginContext);
   const navigate = useNavigate();
 
   function goToSignUp() {
@@ -93,48 +93,13 @@ export default function LoginPage() {
         <Logo />
       </SizeLogo>
 
-      {mostrando === "display-cpf" && (
-        <FormCpfLogin onSubmit={SignInCpf}>
-          <div>
-            <h1>Entrar na CredChain</h1>
-            <h3>Identifique-se para entrar na CredChain</h3>
-          </div>
 
-          <input
-            type="text"
-            autoComplete="cpf"
-            placeholder="CPF   (XXX.XXX.XXX-XX)"
-            required
-            value={cpf}
-            onChange={handleInputChange}
-            minLength="11"
-            maxLength="14"
-          />
+      <FormCpfLogin onSubmit={mostrando === "display-cpf" ? SignInCpf : SignIn}>
+        <div>
+          <h1>Entrar na CredChain</h1>
+          {mostrando === "display-cpf" && <h3>Identifique-se para entrar na CredChain</h3>}
+          {mostrando === "display-password" &&
 
-          <div>
-            <button
-              type="submit"
-            //disabled={disable}
-            // style={{ backgroundColor: disable ? `${MainPurpleColor}` : "#d9d9d9" }}
-            >
-              Continuar
-            </button>
-
-            <DivLink>
-              <p>Não possui cadastro?</p>
-              <div onClick={goToSignUp}>CRIE SUA CONTA</div>
-            </DivLink>
-          </div>
-        </FormCpfLogin>
-      )}
-
-
-
-
-      {mostrando === "display-password" && (
-        <FormPasswordLogin onSubmit={SignIn}>
-          <div>
-            <h1>Entrar na CredChain</h1>
             <CpfInfo>
               <img src="/images/pictures/user-check.png" alt="Image check user cpf" />
               <div>
@@ -143,9 +108,10 @@ export default function LoginPage() {
               </div>
               <h5 onClick={changeDisplay}>Trocar</h5>
             </CpfInfo>
-          </div>
+          }
+        </div>
 
-
+        {mostrando === "display-password" &&
           <DivPassword>
             <input
               type="password"
@@ -158,7 +124,11 @@ export default function LoginPage() {
             <AiOutlineEyeInvisible className="closed-eye" />
           </DivPassword>
 
-          <div>
+        }
+
+        {
+          mostrando === "display-password" &&
+          <Actions>
             <button type="submit" disabled={disable}>
               <LoadingButtonContent>
                 {disable ? (
@@ -183,13 +153,40 @@ export default function LoginPage() {
               <p>Esqueci a senha</p>
             </DivRememberPassword>
 
-          </div>
-        </FormPasswordLogin>
+          </Actions>
+        }
+        {mostrando === "display-cpf" && <input
+          type="text"
+          autoComplete="cpf"
+          placeholder="CPF   (XXX.XXX.XXX-XX)"
+          required
+          value={cpf}
+          onChange={handleInputChange}
+          minLength="11"
+          maxLength="14"
+        />}
 
-      )}
+
+        {
+          mostrando === "display-cpf" &&
+          <Actions>
+            <button type="submit">Continuar</button>
+            <DivLink>
+              <p>Não possui cadastro?</p>
+              <div onClick={goToSignUp}>CRIE SUA CONTA</div>
+            </DivLink>
+          </Actions>
+        }
+      </FormCpfLogin>
     </Container>
   );
 }
+
+const Actions = styled.div`
+
+height: fit-content;
+
+`;
 
 const Container = styled.main`
   height: 100svh;
@@ -211,14 +208,14 @@ const SizeLogo = styled.div`
 const FormCpfLogin = styled.form`
   background-color: #ffffff;
   width: 100%;
-  height: 100%;
   max-width: 400px;
   max-height: 400px;
+  gap: 30px;
   border-radius: 20px;
   padding: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 
   h1 {
     font-weight: 700;
@@ -232,9 +229,8 @@ const FormCpfLogin = styled.form`
     color: rgba(168, 168, 168, 1);
   }
 
-  input {
-    height: 100%;
-    max-height: 50px;
+  input[type=password] ,input[type=text]{
+    height: 50px;
     width: 100%;
     max-width: 400px;
     border: 1px solid rgba(168, 168, 168, 1);
@@ -260,6 +256,7 @@ const FormCpfLogin = styled.form`
     font-size: 20px;
     font-weight: bold;
     background-color: ${MainPurpleColor};
+    border-radius: 45px;
     //background-color: ${(props) => props.disabled === true ? '#000000' : ' #d9d9d9'};
   }
 `;
@@ -284,66 +281,6 @@ const DivLink = styled.div`
   }
 `;
 
-
-
-const FormPasswordLogin = styled.form`
-background-color: #ffffff;
-width: 100%;
-height: 100%;
-max-width: 400px;
-max-height: 400px;
-border-radius: 20px;
-padding: 30px;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-
-h1 {
-  font-weight: 700;
-  font-size: 25px;
-  margin-bottom: 15px;
-  align-self: flex-start;
-  margin-bottom: 20px;
-}
-
-h3 {
-  align-self: flex-start;
-  color: rgba(168, 168, 168, 1);
-}
-
-input:not([type="checkbox"]) {
-  height: 100%;
-  max-height: 50px;
-  width: 100%;
-  max-width: 400px;
-  border: 1px solid rgba(168, 168, 168, 1);
-  border-radius: 20px;
-  padding-left: 20px;
-  font-size: 18px;
-  align-self: center;
-
-  outline: none;
-
-  &::placeholder {
-    color: rgba(168, 168, 168, 1);
-  }
-}
-
-button {
-  border: none;
-  width: 100%;
-  height: 100%;
-  max-width: 350px;
-  max-height: 45px;
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: ${MainPurpleColor};
-  //background-color: ${(props) => props.disabled === true ? '#000000' : ' #d9d9d9'};
-margin-bottom: 10px;
-}
-`;
-
 const CpfInfo = styled.div`
 border: 1px solid #CFCFCF;
 border-radius: 20px;
@@ -352,6 +289,7 @@ display: flex;
 flex-direction: row;
 justify-content: space-between;
 align-items: center;
+
 
 img {
   width: 100%;
@@ -413,7 +351,8 @@ const LoadingButtonContent = styled.div`
 const DivRememberPassword = styled.div`
 display: flex;
 flex-direction: row;
-margin-bottom: 40px;
+margin-top: 20px;
+margin-bottom: 20px;
 width: 100%;
 height: 100%;
 max-height: 26px;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
-import { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import Logo from "./Components/Logo";
 import { MainPurpleColor } from "../Colors";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
@@ -23,25 +23,36 @@ export default function LoginPage() {
   const  [showPassword, setShowPassword]  = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if(password.length <3 && mostrando == "display-password"){
+      setDisable(true);
+    }else if(cpf.length !== 14 && mostrando == "display-cpf"){
+      setDisable(true);
+    }
+
+  }, [mostrando])
+  
+
   function goToSignUp() {
     navigate("/signup");
-    updateCanRegister();
   }
 
   function updateCanRegister() {
+    
       if(mostrando == "display-cpf"){
+        if(!cpfRef.current) return;
         setDisable(cpfRef?.current?.value.length !== 14);
       }
       else{
+        if(!passwordRef.current) return;
+
         setDisable(passwordRef?.current?.value.length < 3);
       }
   }
 
-
-
   function SignInCpf(e) {
     e.preventDefault();
-    setMostrando("display-password")
+    setMostrando("display-password");
   }
 
   function handleInputChange(e) {
@@ -77,7 +88,6 @@ export default function LoginPage() {
 
   function changeDisplay() {
     setMostrando("display-cpf");
-    updateCanRegister();
   }
 
   function SignIn(e) {
@@ -134,6 +144,7 @@ export default function LoginPage() {
               placeholder="Senha"
               autoComplete="password"
               required
+              autoFocus
               disabled={loginIn}
               value={password}
               ref={passwordRef}
@@ -179,6 +190,7 @@ export default function LoginPage() {
           placeholder="CPF   (XXX.XXX.XXX-XX)"
           required
           disabled={loginIn}
+          autoFocus
           ref={cpfRef}
           value={cpf}
           onChange={handleInputChange}

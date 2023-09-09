@@ -12,7 +12,7 @@ export default function InWalletCollateralCurrency({ onClick, name ='name', imag
       <MainInfo>
         <p className='units'>{units}</p>
         <p className='total'>R$ {total_value}</p>
-        <button onClick={onClick} disabled={Number(total_value) <= 0}>Depositar</button>
+        <button onClick={() => onClick({ name , image, units , total_value })} disabled={Number(total_value) <= 0}>Depositar</button>
       </MainInfo>
     </Container>
   )

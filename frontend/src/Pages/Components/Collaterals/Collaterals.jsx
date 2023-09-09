@@ -5,7 +5,7 @@ import BlockchainCurrency from '../Blockchain/BlockchainCurrency';
 import { MainPurpleColor } from '../../../Colors';
 import { v4 as uuidv4 } from 'uuid';
 
-export default function Collaterals({total_used= 0, assets, show_actions = true ,ask_loan_start_event ,ask_checkout_start_event}) {
+export default function Collaterals({ assets, show_actions = true ,ask_loan_start_event ,ask_checkout_start_event}) {
   return (
     <SCCollaterals>
       {
@@ -24,7 +24,7 @@ export default function Collaterals({total_used= 0, assets, show_actions = true 
                   units={asset?.units} 
                   total_value={asset?.total_value} 
                   image={asset?.image}
-                  total_used={total_used}
+                  total_used={asset?.used}
                   show_actions={show_actions}
                   onStartLoan={ask_loan_start_event}
                   onCheckout={ask_checkout_start_event}

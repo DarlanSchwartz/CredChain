@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper'
 import { styled } from 'styled-components';
 import ConnectWalletFirst from './Components/Generic/ConnectWalletFirst';
@@ -8,15 +8,58 @@ import { MainPurpleColor } from '../Colors';
 import Offer from './Components/Collaterals/Offer';
 import { LoginContext } from '../Contexts/LoginContext';
 import OpenFinance from './Components/Banners/OpenFinance';
-const placeholderAssets =[
+import NetworkPlaceholder from './Components/Generic/NetworkPlaceholder';
+import Web3 from 'web3';
+import { ThreeDots } from 'react-loader-spinner';
+const MOCKdepositedCurrencies = [
   {
-    name:'WstETH',
-     price:'0',
-     units:0,
-     total_value:0,
-     image:'/images/icons/stETH.svg'
+    name: 'WstETH',
+    price: '500',
+    units: 50,
+    total_value: 200,
+    image: '/images/icons/lido.svg',
+    used: 0
   }
 ];
+
+const MOCKinUserWalletCurrencies = [
+  {
+    name: 'Ethereum',
+    currencies: [
+      {
+        name: 'stETH',
+        units: 0,
+        totalValue: 0,
+        image: '/images/icons/stETH.svg',
+      },
+      {
+        name: 'ETH',
+        units: 0,
+        totalValue: 0,
+        image: '/images/icons/ETH.svg',
+      },
+      {
+        name: 'wstETH',
+        units: 0,
+        totalValue: 0,
+        image: '/images/icons/wst.svg',
+      }
+    ]
+  },
+  {
+    name: 'Lachain',
+    currencies: [
+      {
+        name: 'UXD',
+        units: 0,
+        totalValue: 10,
+        image: '/images/icons/uxd.svg',
+      }
+    ]
+  }
+];
+
+//
 export default function LoansPage({ connected = true }) {
 
   const { isLoged } = useContext(LoginContext);
@@ -24,14 +67,144 @@ export default function LoansPage({ connected = true }) {
   const [isConnected, setIsConnected] = useState(connected);
   const [showModal, setShowModal] = useState(false);
   const [askingForLoans, setAskingForLoans] = useState(false);
+  const [userCurrencies, setUserCurrencies] = useState(null);
+  const [currentTransactionCoin, setCurrentTransactionCoin] = useState(null);
+  const [hasSelectedWalletForDeposit, setHasSelectedWalletForDeposit] = useState(false);
+  const [showTransactionWallets, setShowTransactionWallets] = useState(false);
+  const [selectedTransactionWallet, setSelectedTransactionWalletName] = useState('');
+  const [selectedTransactionNetwork, setSelectedNetwork] = useState('');
+  const [selectedTransactionWalletAddress, setSelectedTransactionWalletAddress] = useState('');
+  const [selectedTransactionNetworkAddres, setSelectedTransactionNetworkAddress] = useState('');
+  const [transactionQuantity, setTransactionQuantity] = useState('0');
+  const transactionQuantityInputRef = useRef();
+  const [inTransactionProcess, setInTransactionProcess] = useState(false);
+  const [isDepositTransaction, setIsDepositTransaction] = useState(false);
 
   useEffect(() => {
     isLoged();
-  },[])
-  
-  function askForALoan(assets) {
+    setUserCurrencies(MOCKinUserWalletCurrencies);
+  }, []);
+
+  function startTransaction(type = "deposit", transaction) {
+    setInTransactionProcess(true);
+    switch (type) {
+      case "deposit":
+        break;
+      case "checkout":
+        
+        break;
+    }
+    setTimeout(() => {
+      window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank');
+      setShowModal(false);
+    }, 4000);
+  }
+
+  function startDepositProcess(asset) {
+    setCurrentTransactionCoin(asset);
+    setShowModal(true);
+    getWalletAddress();
+    setIsDepositTransaction(true);
+    //console.log(asset);
+  }
+
+  function startCheckoutProcess(asset) {
+    setCurrentTransactionCoin(asset);
+    setIsDepositTransaction(false);
+    setShowModal(true);
+    getWalletAddress();
+    //console.log(asset);
+  }
+
+  function askForALoan(asset) {
     setAskingForLoans(true);
   }
+
+  function closeModal() {
+    setShowModal(false);
+    setCurrentTransactionCoin(null);
+    setSelectedTransactionWalletName('');
+    setSelectedNetwork('');
+  }
+
+  function userSelectedWalletForDeposit(networkAddress, name) {
+    setHasSelectedWalletForDeposit(true);
+    setShowTransactionWallets(false);
+    setSelectedTransactionNetworkAddress(networkAddress);
+    setSelectedTransactionWalletName(name);
+  }
+  async function getWalletAddress() {
+    if (window.ethereum) {
+      try {
+        window.web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+        const accounts = await window.web3.eth.getAccounts();
+        if (accounts.length > 0) setSelectedTransactionWalletAddress(accounts[0]);
+        console.log(accounts[0]);
+      } catch (error) {
+        console.error("Erro ao conectar à Ethereum:", error);
+      }
+    } else {
+      alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
+    }
+  }
+  const addEthereum = async () => {
+    if (window.ethereum) {
+      try {
+        const ethereum = window.ethereum;
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x1',
+              chainName: 'Ethereum Mainnet',
+              nativeCurrency: {
+                name: 'Ether',
+                symbol: 'ETH',
+                decimals: 18
+              },
+              rpcUrls: ['https://mainnet.infura.io/v3/604ad354539a45f5b33ff874e90fd3d7'],
+              blockExplorerUrls: ['https://etherscan.io/']
+            },
+          ],
+        });
+        userSelectedWalletForDeposit('0x1', 'Ethereum Mainnet');
+
+      } catch (error) {
+        console.error("Erro ao conectar à Ethereum:", error);
+      }
+    } else {
+      alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
+    }
+  }
+  const addLaChain = async () => {
+    if (window.ethereum) {
+      try {
+        const ethereum = window.ethereum;
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x112', // ID da rede LaChain
+              chainName: 'LaChain',
+              nativeCurrency: {
+                name: 'LaCoin',
+                symbol: 'LAC',
+                decimals: 18,
+              },
+              rpcUrls: ['https://rpc1.mainnet.lachain.network/'], // URL RPC da LaChain
+              blockExplorerUrls: ['https://explorer.lachain.network/'], // URL do explorador de blocos
+            },
+          ],
+        });
+        userSelectedWalletForDeposit('0x112', 'LaChain');
+      } catch (error) {
+        console.error("Erro ao conectar à LaChain:", error);
+      }
+    } else {
+
+    }
+  };
   return (
     <PageContentWrapper>
       <PageContainer>
@@ -40,44 +213,31 @@ export default function LoansPage({ connected = true }) {
 
           {!isConnected && !askingForLoans && <ConnectWalletFirst />}
 
-          {/*-------------NETWORKS FOUND AND SHOW COLLATERALS--------------- */}
-          {/* Pass here the proper values, assets is an array like:
-                
-                [
-                  {
-                    name:'WstETH',
-                    price:'0',
-                    units:0,
-                    total_value:0,
-                    image:'/images/icons/stETH.svg',
-                    total_used:0
-                  }
-                ]
-                
-            */}
-          <Collaterals assets={[
-                  {
-                    name:'WstETH',
-                    price:'0',
-                    units:0,
-                    total_value:0,
-                    image:'/images/icons/stETH.svg',
-                    total_used:0
-                  }
-                ]} ask_loan_start_event={askForALoan} show_actions={!askingForLoans} />
+          {/*-------------NETWORKS FOUND AND SHOW COLLATERALS-- CHECK line 25------------- */}
+
+          <Collaterals
+            assets={MOCKdepositedCurrencies}
+            ask_loan_start_event={askForALoan}
+            show_actions={!askingForLoans}
+            ask_checkout_start_event={startCheckoutProcess}
+          />
           {isConnected && !askingForLoans &&
-            <>
-
-              <InWalletCollaterals >
-                {/* Map here the coins in the user wallet */}
-
-                {/* <InWalletCollateralElement deposit_btn_click={() => setShowModal(true)} name='Etherium' currency={{ name: 'Something', units: 5000, totalValue: 500.00 }} /> */}
-              </InWalletCollaterals>
-            </>
+            <InWalletCollaterals >
+              {/* Map here the coins in the user wallet */}
+              {userCurrencies?.map(chain => {
+                return (
+                  <InWalletCollateralElement
+                    key={chain.name}
+                    deposit_btn_click={startDepositProcess}
+                    name={chain.name}
+                    currencies={chain.currencies}
+                  />
+                );
+              })}
+            </InWalletCollaterals>
           }
 
           {askingForLoans &&
-
             <AvailableOffers>
               <Offer />
             </AvailableOffers>
@@ -85,68 +245,166 @@ export default function LoansPage({ connected = true }) {
         </Container>
         {/*--------------ASKING FOR LOANS--------------- */}
 
-
         <RightCollumn>
           <OpenFinance />
         </RightCollumn>
       </PageContainer>
 
-
-
       {/*--------------MODAL--------------- */}
 
       {showModal && !askingForLoans &&
-        <ModalDepositCollateral onMouseDown={() => setShowModal(false)}>
-          <ContainerDepositCoin onMouseDown={(e) => e.stopPropagation()}>
+        <ModalDepositCollateral onMouseDown={() => {
+          if (!inTransactionProcess) {
+            closeModal();
+          }
+        }}>
+          {
+            hasSelectedWalletForDeposit ?
+              <ContainerDepositCoin onMouseDown={(e) => e.stopPropagation()}>
 
-            {/*----------------------------- */}
+                {/*----------------------------- */}
 
-            <DepositQuantityContainer>
-              <h1>Quantidade</h1>
-              <InputBorderBoxContainer>
-                <InputAndMiniValueContainer>
-                  <input type="number" placeholder='00.00' />
-                  <p>R$ 00,00</p>
-                </InputAndMiniValueContainer>
-                <CoinInfoAndMaxValue>
-                  <CoinameAndIcon>
-                    <img src="/images/icons/stETH.svg" alt="" />
-                    <p>stETH</p>
-                  </CoinameAndIcon>
-                  <p className='max-amount'>Saldo Máximo: 1,0012</p>
-                </CoinInfoAndMaxValue>
-              </InputBorderBoxContainer>
-            </DepositQuantityContainer>
+                <DepositQuantityContainer>
+                  <h1>Quantidade</h1>
+                  <InputBorderBoxContainer>
+                    <InputAndMiniValueContainer>
+                      <input
+                        disabled={inTransactionProcess}
+                        max={currentTransactionCoin?.total_value}
+                        value={transactionQuantity}
+                        onChange={(e) => setTransactionQuantity(e.target.value)}
+                        ref={transactionQuantityInputRef} type="number" placeholder='00.00' />
+                      <p>R$ {Number(transactionQuantity).toFixed(2).toString().replace('.', ',')}</p>
+                    </InputAndMiniValueContainer>
+                    <CoinInfoAndMaxValue>
+                      <CoinameAndIcon>
+                        <img src={currentTransactionCoin?.image} alt={currentTransactionCoin?.name} />
+                        <p>{currentTransactionCoin?.name}</p>
+                      </CoinameAndIcon>
+                      <p className='max-amount'>Saldo Máximo: {currentTransactionCoin?.total_value}</p>
+                    </CoinInfoAndMaxValue>
+                  </InputBorderBoxContainer>
+                </DepositQuantityContainer>
 
-            {/*----------------------------- */}
+                {/*----------------------------- */}
 
-            <DepositQuantityContainer>
-              <InputBorderBoxContainer>
-                <InputAndMiniValueContainer>
-                  <input disabled type="number" placeholder='00.00' />
-                  <p>R$ 00,00</p>
-                </InputAndMiniValueContainer>
-                <CoinInfoAndMaxValue>
-                  <CoinameAndIcon>
-                    <img src="/images/icons/wstETH.svg" alt="" />
-                    <p>wstETH</p>
-                  </CoinameAndIcon>
-                  <p className='max-amount'></p>
-                </CoinInfoAndMaxValue>
-              </InputBorderBoxContainer>
-            </DepositQuantityContainer>
+                <button
+                  onClick={() => startTransaction(isDepositTransaction ? "deposit" : "checkout",{})}
+                  disabled={Number(transactionQuantity) <= 0 || inTransactionProcess}
+                  className='deposit-btn'>
+                  {
+                    inTransactionProcess ?
+                      <ThreeDots
+                        type="ThreeDots"
+                        color="#FFFFFF"
+                        height={20}
+                        width={50}
+                      /> : <>{isDepositTransaction ? "Depositar" : "Sacar"}</>
+                  }
+                </button>
 
-            {/*----------------------------- */}
+              </ContainerDepositCoin>
 
-            <button disabled className='deposit-btn'>Depositar</button>
+              : showTransactionWallets ?
 
-          </ContainerDepositCoin>
+
+                <ConnectWalletContainer onMouseDown={(e) => e.stopPropagation()}>
+                  <h2>Selecione sua carteira</h2>
+                  <WalletAndNetworkList>
+                    <WalletOrNetworkElement onClick={() => setSelectedTransactionWalletName('metamask')} $selected={(selectedTransactionWallet == 'metamask').toString()}>
+                      <img src="/images/icons/metamask.svg" alt="" />
+                      <p>Metamask</p>
+                    </WalletOrNetworkElement>
+                    <WalletOrNetworkElement onClick={() => setSelectedTransactionWalletName('ripio')} $selected={(selectedTransactionWallet == 'ripio').toString()}>
+                      <img src="/images/icons/ripio.svg" alt="" />
+                      <p>Ripio Wallet</p>
+                    </WalletOrNetworkElement>
+                    <NetworkPlaceholder />
+                  </WalletAndNetworkList>
+
+                  <h3>Selecione a rede</h3>
+                  <WalletAndNetworkList>
+                    <WalletOrNetworkElement onClick={() => setSelectedNetwork('ethereum')} $selected={(selectedTransactionNetwork == 'ethereum').toString()}>
+                      <img src="/images/icons/etherium.svg" alt="" />
+                      <p>Ethereum</p>
+                    </WalletOrNetworkElement>
+                    <WalletOrNetworkElement onClick={() => setSelectedNetwork('LaChain')} $selected={(selectedTransactionNetwork == 'LaChain').toString()}>
+                      <img src="/images/icons/lachain.svg" alt="" />
+                      <p>LaChain</p>
+                    </WalletOrNetworkElement>
+                    <NetworkPlaceholder />
+                  </WalletAndNetworkList>
+                  {selectedTransactionWallet === 'metamask' && selectedTransactionNetwork === 'ethereum' &&
+                    <button onClick={addEthereum} disabled={selectedTransactionWallet == '' || selectedTransactionNetwork == ''}>Conectar</button>
+                  }
+                  {selectedTransactionWallet === 'metamask' && selectedTransactionNetwork === 'LaChain' &&
+                    <button onClick={addLaChain} disabled={selectedTransactionWallet == '' || selectedTransactionNetwork == ''}>Conectar</button>
+                  }
+                </ConnectWalletContainer>
+                :
+                <SelectWalletFirstBox onMouseDown={(e) => e.stopPropagation()}>
+                  <h1>Para {isDepositTransaction ? "depositar" : "sacar"} seu colateral, conecte sua carteira!</h1>
+                  <button onClick={() => setShowTransactionWallets(true)}>Conectar</button>
+                </SelectWalletFirstBox>
+
+
+          }
         </ModalDepositCollateral>
       }
     </PageContentWrapper>
   )
 }
 
+const SelectWalletFirstBox = styled.div`
+  background-color: white;
+  height: 237px;
+  max-width: 33.75rem;
+  width: 100%;
+  padding: 20px;
+  border-radius: 1.25rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5rem;
+
+  h1{
+    color: #A8A8A8;
+    text-align: center;
+    font-family: Plus Jakarta Sans;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.5rem;
+  }
+  
+  button{
+    color: #FFF;
+    font-family: Plus Jakarta Sans;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.5rem;
+    margin-top: 1.62rem;
+    border: 0;
+    width: 100%;
+    max-width: 11.8125rem;
+    min-height: 2rem;
+    border-radius: 12rem;
+    border: 1px solid transparent;
+
+    &:enabled{
+      background-color: ${MainPurpleColor};
+      &:hover{
+        background-color: white;
+        color: ${MainPurpleColor};
+        border: 1px solid ${MainPurpleColor}
+      }
+    }
+
+  }
+`;
 
 const RightCollumn = styled.main`
   display: flex;
@@ -251,15 +509,18 @@ const InputBorderBoxContainer = styled.div`
 const ContainerDepositCoin = styled.div`
   width: 100%;
   max-width: 33.75rem;
-  min-height: 20.4375rem;
+  height: 237px;
   border-radius: 1.25rem;
   background: #FFF;
   display: flex;
   flex-direction: column;
-  padding: 4.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
   gap: 0.8rem;
   padding-top: 2.31rem;
   padding-bottom: 2.31rem;
+  
 
   .deposit-btn{
     color: #FFF;
@@ -271,10 +532,12 @@ const ContainerDepositCoin = styled.div`
     margin-top: 1.62rem;
     border: 0;
     width: 100%;
-    max-width: 25.625rem;
     min-height: 3.25rem;
     border-radius: 12rem;
     border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:enabled{
       background-color: ${MainPurpleColor};
@@ -294,7 +557,7 @@ const ContainerDepositCoin = styled.div`
 
 const DepositQuantityContainer = styled.div`
   
-
+width: 100%;
   h1{
     color: #A8A8A8;
     font-family: Plus Jakarta Sans;
@@ -338,4 +601,102 @@ const Container = styled.div`
   max-width: 45.375rem;
   width: 100%;
   align-items: center;
+`;
+
+const WalletOrNetworkElement = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #F3F3F3;
+  width: 8.25rem;
+  height: 8.25rem;
+  flex-shrink: 0;
+  border-radius: 1.25rem;
+  border: 3px solid ${(props) => props.$selected == 'true' ? MainPurpleColor : 'transparent'};
+  background: #F3F3F3;
+  cursor: pointer;
+  overflow: hidden;
+  img{
+    width: 4.5rem;
+    height: 4.5rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  p{
+    color: #0D163A;
+    font-family: Plus Jakarta Sans;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.5rem;
+    padding-top: 0.5rem;
+  }
+
+  &:hover{
+    border: 3px solid ${(props) => props.$selected == 'true' ? MainPurpleColor : 'black'};;
+  }
+
+  h1{
+    color: #ad00ff;
+    font-size: 0.800rem;
+  }
+`;
+
+const WalletAndNetworkList = styled.div`
+  display: flex;
+  padding: 1.37rem;
+  gap: 3.37rem;
+`;
+
+const ConnectWalletContainer = styled.div`
+  width: 100%;
+  max-width: 40.5rem;
+  min-height: 20rem;
+  max-height: 32.75rem;
+  border-radius: 1.25rem;
+  background: #FFF;
+  padding: 2.05rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2,h3{
+    width: 32rem;
+    color: #0D163A;
+    font-family: Plus Jakarta Sans;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.5rem; /* 150% */
+  }
+
+  button{
+    width: 100%;
+    max-width: 8.25rem;
+    min-height: 2.375rem;
+    border-radius: 1.25rem;
+    background-color: ${MainPurpleColor};
+    border: 1px solid transparent;
+    color: #FFF;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.5rem;
+    align-self: center;
+
+    &:enabled{
+      &:hover{
+      color: ${MainPurpleColor};
+      border: 1px solid ${MainPurpleColor};
+      background-color: #FFF;
+      }
+    }
+
+    &:disabled{
+      cursor: not-allowed;
+      opacity: 50%;
+    }
+  }
 `;

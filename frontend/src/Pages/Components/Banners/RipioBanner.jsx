@@ -3,16 +3,16 @@ import styled from 'styled-components'
 import { MainPurpleColor } from '../../../Colors';
 
 export default function RipioBanner() {
-  return (
-    <BannerContainer>
-        <img src="/images/pictures/ripio-card.svg" alt="" />
-        <h1>Ripio Card: o cartão com cashback em cripto!</h1>
-        <button>Peça já o seu</button>
-        <AdBanner>
-        Anúncio
-        </AdBanner>
-    </BannerContainer>
-  )
+    return (
+        <BannerContainer>
+            <img src="/images/pictures/ripio-card.svg" alt="" />
+            <h1>Ripio Card: o cartão com cashback em cripto!</h1>
+            <a href='https://www.ripio.com/br/ripio-card/' target='_blank'>Peça já o seu</a>
+            <AdBanner>
+                Anúncio
+            </AdBanner>
+        </BannerContainer>
+    )
 }
 
 
@@ -65,8 +65,9 @@ const BannerContainer = styled.div`
     }
 
 
-    button{
+    a{
         margin-top: 0.5rem;
+        text-decoration: none;
         width: 100%;
         max-width: 11.9375rem;
         min-height: 2.375rem;
@@ -79,13 +80,16 @@ const BannerContainer = styled.div`
         font-weight: 700;
         line-height: 1.5rem;
         align-self: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
 
-        &:enabled{
-            &:hover{
-                color: ${MainPurpleColor};
-                border: 1px solid ${MainPurpleColor};
-                background-color: #FFF;
-            }
+        &:hover{
+            color: ${MainPurpleColor};
+            border: 1px solid ${MainPurpleColor};
+            background-color: #FFF;
+            text-decoration: underline;
         }
     }
 `;

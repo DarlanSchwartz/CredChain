@@ -216,9 +216,9 @@ export default function ScorePage() {
                 <h1 className='title'>Cadastre sua Empresa</h1>
                 <FieldsContainer>
                   <input disabled={isRegistering} value={cpnj} onChange={(e) => { setCnpj(formatCNPJ(e.target.value)); updateCanRegister(); }} minLength={18} maxLength={18} required ref={cpnjRef} type="text" placeholder='CNPJ' id='cnpj' name='cnpj' />
-                  <input disabled={isRegistering} onChange={updateCanRegister} minLength={3} required ref={inscricaoRef} type="text" placeholder='Inscrição Estadual' id='inscricao' name='inscricao' />
-                  <input disabled={isRegistering} onChange={updateCanRegister} minLength={3} required ref={razaoRef} type="text" placeholder='Razão Social' id='razao' name='razao' />
-                  <input disabled={isRegistering} onChange={updateCanRegister} minLength={3} required ref={nome_fantasiaRef} type="text" placeholder='Nome Fantasia' id='nome_fantasia' name='nome_fantasia' />
+                  <input disabled={isRegistering} onChange={updateCanRegister} minLength={3} maxLength={50} required ref={inscricaoRef} type="text" placeholder='Inscrição Estadual' id='inscricao' name='inscricao' />
+                  <input disabled={isRegistering} onChange={updateCanRegister} minLength={3} maxLength={50} required ref={razaoRef} type="text" placeholder='Razão Social' id='razao' name='razao' />
+                  <input disabled={isRegistering} onChange={updateCanRegister} minLength={3} maxLength={50} required ref={nome_fantasiaRef} type="text" placeholder='Nome Fantasia' id='nome_fantasia' name='nome_fantasia' />
                   <input disabled={isRegistering} value={phone} onChange={(e) => { setPhone(formatPhone(e.target.value)); updateCanRegister(); }} minLength={15} maxLength={15} required ref={phoneRef} type="text" placeholder='Telefone' id='phone' name='phone' />
                 </FieldsContainer>
                 <CheckboxesContainer>

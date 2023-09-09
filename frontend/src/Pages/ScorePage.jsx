@@ -74,6 +74,7 @@ export default function ScorePage() {
   }
 
   function findMyCompanies(){
+    if(myCompanies) return;
     setLoadingCompany(true);
     axios.get(backendroute.getCompanies,{headers:{Authorization:localStorage.getItem('token')}})
     .then(res=>{
@@ -81,7 +82,7 @@ export default function ScorePage() {
       setLoadingCompany(false);
     }).catch(error =>{
       console.log(error);
-      alert(error.response.data);
+     // alert(error.response.data);
       setLoadingCompany(false);
     })
   }

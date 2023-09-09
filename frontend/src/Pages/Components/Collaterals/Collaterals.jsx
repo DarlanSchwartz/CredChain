@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import IndexBar from '../Blockchain/IndexBar';
 import BlockchainCurrency from '../Blockchain/BlockchainCurrency';
 import { MainPurpleColor } from '../../../Colors';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Collaterals({total_used= 0, assets, show_actions = true ,ask_loan_start_event ,ask_checkout_start_event}) {
   return (
@@ -17,6 +18,7 @@ export default function Collaterals({total_used= 0, assets, show_actions = true 
             assets?.map((asset) =>{
               return (
                 <BlockchainCurrency 
+                  key={uuidv4()}
                   name={asset?.name} 
                   price={asset?.price} 
                   units={asset?.units} 

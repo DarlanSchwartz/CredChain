@@ -25,17 +25,18 @@ export default function Header() {
   };
 
   useEffect(() => {
-    if(user) return;
-    setLoadingUser(true);
     window.addEventListener('click', listenerOutsiteClick);
-    axios.get(backendroute.getUser, { headers: { Authorization: localStorage.getItem('token') } })
-      .then(res => {
-        setUser(res.data);
-        setLoadingUser(false);
-      }).catch(error => {
-        console.log(error);
-        setLoadingUser(false);
-      })
+    if (!user) {
+      setLoadingUser(true);
+      axios.get(backendroute.getUser, { headers: { Authorization: localStorage.getItem('token') } })
+        .then(res => {
+          setUser(res.data);
+          setLoadingUser(false);
+        }).catch(error => {
+          console.log(error);
+          setLoadingUser(false);
+        })
+    }
     return () => {
       window.removeEventListener('click', listenerOutsiteClick);
     };
@@ -114,11 +115,13 @@ export default function Header() {
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJFiKHbkBQTYhaU1x1TGreeVViDrWp3pPQEf-zcX9Smb80kGgEUkTPeGp95adj2PrIYSI&usqp=CAU"
             alt="User"
+            onClick={toggleMenu}
+            className="menu"
           />
-          <p>{loadingUser ? "Loading.." : user ? user.name : ''}</p>
+          <p className="menu" onClick={toggleMenu}>{loadingUser ? "Loading.." : user ? (user.name.length > 18 ? user.name.substring(0,15) + '...' : user.name) : ''}</p>
 
           <>
-            <ArrowButton className="menu" onClick={toggleMenu}>
+            <ArrowButton onClick={toggleMenu} className="menu" >
               {arrowUp ? <FiChevronUp className="menu" color="#292D32" size={24} /> : <FiChevronDown className="menu" color="#292D32" size={24} />}
             </ArrowButton>
             {menuOpen && (
@@ -172,7 +175,7 @@ const InfoUser = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
   border: none;
@@ -188,10 +191,12 @@ const InfoUser = styled.div`
     max-height: 48px;
     border-radius: 50%;
     margin-right: 10px;
+    cursor: pointer;
   }
 
   p {
     margin-right: 10px;
+    cursor: pointer;
   }
 `;
 
@@ -249,8 +254,8 @@ const ArrowButton = styled.div`
 
 const DropdownMenu = styled.div`
     position: absolute;
-    top: 6.4rem;
-    right: 2.5rem;
+    top: 105px;
+    right: 20px;
     z-index: 1;
     padding-top: 1rem;
 

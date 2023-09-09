@@ -20,12 +20,13 @@ const PageWrapper = styled.div`
     display: flex;
     width: 100%;
     min-height: 100svh;
-    max-width: 1366px;
+    max-width: 1440px;
     flex-direction: column;
     padding-left: 300px;
     position: relative;
     background-color: #f7f7fb;;
 `;
+// small viewport height
 
 
 const Wrapper = styled.div`

@@ -60,19 +60,25 @@ export default function SignUpPage() {
     if (cleanedValue.length <= 2) {
       return cleanedValue;
     } else if (cleanedValue.length <= 4) {
-      return cleanedValue.slice(0, 2) + '-' + cleanedValue.slice(2);
+      return cleanedValue.slice(0, 2) + '/' + cleanedValue.slice(2);
     } else {
-      return cleanedValue.slice(0, 2) + '-' + cleanedValue.slice(2, 4) + '-' + cleanedValue.slice(4, 8);
+      return cleanedValue.slice(0, 2) + '/' + cleanedValue.slice(2, 4) + '/' + cleanedValue.slice(4, 8);
     }
   }
 //a@a.com
   function updateCanRegister() {
+    // 12/12/2023
+    //[12,12,2023]
+    console.log();
     if (cpfRef.current.value.length == 14
       && nameRef.current.value.length >= 3
       && passwordRef.current.value.length >= 3
       && dateRef.current.value.length >= 10
       && emailRef.current.value.length >= 7
-      && terms.current.checked) {
+      && terms.current.checked
+      && Number(dateRef.current.value.split('/')[2]) < new Date().getFullYear()
+      && Number(dateRef.current.value.split('/')[1]) <= 12
+      ) {
         setDisable(false);
     }
     else {
@@ -90,6 +96,7 @@ export default function SignUpPage() {
       email: email,
       password: password,
     };
+    console.log(newSignUp);
     setSigninUp(true);
     setDisable(true);
 
@@ -98,11 +105,13 @@ export default function SignUpPage() {
     .then((res) => {
       navigate("/login");
       setDisable(false);
+      setSigninUp(false);
     })
     .catch((erro) => {
       alert(erro.response.data);
       console.log("Erro em postSignUp", erro);
       setDisable(false);
+      setSigninUp(false);
     });
 
 

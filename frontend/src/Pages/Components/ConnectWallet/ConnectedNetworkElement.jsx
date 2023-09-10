@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BiTrashAlt } from 'react-icons/bi';
 import { styled } from 'styled-components';
 import Swal from 'sweetalert2';
 import { MainPurpleColor } from '../../../Colors';
+import axios from 'axios';
+import { backendroute } from '../../../routes/routes';
 
-export default function ConnectedNetworkElement({image,name}) {
+export default function ConnectedNetworkElement({image,name, id}) {
+
+  const [isDeleting, setIsDeleting] = useState(false);
 
   function removeNetwork(){
     Swal.fire({
       title: `<span style="font-family: Plus Jakarta Sans, sans-serif;font-size: 20px;color:black">Remover ${name} das redes salvas?</span>`,
       showCancelButton: true,
-      confirmButtonColor: '#c9c9c9',
+      confirmButtonColor: '#000000',
       cancelButtonColor: `${MainPurpleColor}`,
       confirmButtonText: 'Sim',
       cancelButtonText: 'Cancelar',
@@ -18,16 +22,33 @@ export default function ConnectedNetworkElement({image,name}) {
       heightAuto: false,
       imageUrl:image,
       imageWidth: 200,
-  }).then((result) => {
-    //TODO: REMOVER A REDE
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        setIsDeleting(true);
+        const identifier = id;
+
+        const token = localStorage.getItem("token");
+        const config = {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        }
+
+        await axios.delete(`${backendroute.deleteNetwork + identifier}`, config);
+        window.location.reload();
+      } catch (error) {
+        console.error("Erro ao excluir a rede:", error);
+      }
+    }
   });
-  }
+}
 
   return (
     <SCConnectedNWElement>
       <img src={image} alt={name} />
       <h1>{name}</h1>
-      {!name.includes('Piloto') &&  <BiTrashAlt className='icon' onClick={removeNetwork}/>}
+      {!name.includes('Piloto') && !isDeleting && <BiTrashAlt className='icon' onClick={removeNetwork} />}
     </SCConnectedNWElement>
   )
 }

@@ -5,8 +5,9 @@ import {
   removeNetworkDB,
 } from "../repositories/networkRepository.js";
 
-export async function postNetwork(req, res)  {
+export async function postNetwork(req, res) {
   const { name, image, chainId } = req.body;
+  const userId = res.locals.userId; // Obtém o ID do usuário da sessão
 
   try {
     const existingNetwork = await existNetworkDB(chainId);
@@ -14,7 +15,7 @@ export async function postNetwork(req, res)  {
     if (existingNetwork.rowCount > 0) {
       res.status(200).send(existingNetwork);
     } else {
-      const newNetwork = await postNetworkDB(name, image, chainId);
+      const newNetwork = await postNetworkDB(name, image, chainId, userId); // Passa o userId como argumento
       res.status(201).send(newNetwork);
     }
   } catch (error) {
@@ -23,9 +24,12 @@ export async function postNetwork(req, res)  {
 }
 
 
+
 export async function getNetwork(req, res) {
+  const userId = res.locals.userId; // Obtém o ID do usuário da sessão
+
   try {
-    const data = await getNetworkDB();
+    const data = await getNetworkDB(userId); // Passa o userId como argumento
     return res.send(data.rows);
   } catch (error) {
     console.log("Erro em getNetwork:", error);

@@ -10,6 +10,8 @@ export default function FinancesPage() {
 
   const { isLoged } = useContext(LoginContext);
 
+  //testando
+
   useEffect(() => {
     isLoged();
   },[])

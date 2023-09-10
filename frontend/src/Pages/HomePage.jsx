@@ -7,6 +7,7 @@ import Logo from "./Components/Logo";
 import Comparisson from "./Components/Home/Comparisson";
 
 export default function HomePage() {
+  //testeeee
   const navigate = useNavigate();
   return (
     <Container>

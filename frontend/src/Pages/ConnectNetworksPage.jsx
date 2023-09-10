@@ -1,4 +1,3 @@
-
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PageContentWrapper from './Components/PageContentWrapper';
 import { styled } from 'styled-components';
@@ -9,6 +8,8 @@ import Web3 from 'web3';
 import { LoginContext } from '../Contexts/LoginContext';
 import OpenFinance from './Components/Banners/OpenFinance';
 import RipioBanner from './Components/Banners/RipioBanner';
+import axios from 'axios';
+import { backendroute } from '../routes/routes';
 /*
 name: 'Ethereum',
 image: '/images/icons/nomedoicone.svg'
@@ -21,20 +22,35 @@ export default function ConnectNetworksPage() {
   const [showModalConnect, setShowModalConnect] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('');
-  const [savedNetWorks,setSavedNetworks] = useState(null);
+  const [savedNetWorks,setSavedNetworks] = useState([]);
   const [userAddress, setUserAddress] = useState(null);
   const [message, setMessage] = useState('');
   const [connect, setConnect] = useState(false);
   const [connect2, setConnect2] = useState(false);
 
+
   useEffect(() => {
     isLoged();
-    getMyNetworks();
-  },[]);
 
-  function getMyNetworks(){
-    //setSavedNetworks(resposta);
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+          Authorization: "Bearer " + token
+      }
   }
+
+  const promise = axios.get(backendroute.getNetworks, config);
+
+    promise.then((resposta) => {
+      setSavedNetworks(resposta.data);
+      console.log(resposta.data, "lista");
+    })
+
+    promise.catch((erro) => {
+      console.log(erro.response.data);
+    })
+  },[]);
 
   function closeModal() {
     setShowModalConnect(false);
@@ -60,6 +76,7 @@ export default function ConnectNetworksPage() {
     }
   }
 
+
 const connectWallet = useCallback(async () => {
   if (window.ethereum) {
     try {
@@ -80,9 +97,38 @@ const connectWallet = useCallback(async () => {
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: desiredNetworkId }]
       });
+
+
+      const networkData = {
+        name: 'Ethereum',
+        image: '/images/icons/etherium.svg',
+        chainId: '0x1', // Substitua pelo endereço real se necessário
+      }
+     
+        const token = localStorage.getItem("token");
+
+        const config = {
+          headers: {
+              Authorization: "Bearer " + token
+          }
+      }
+
+        axios
+        .post(backendroute.postNetwork, networkData, config)
+        .then((resposta) => {
+        console.log('resposta do postNetwork ETHEREUM no front:',resposta)
+        window.location.reload();
+      })
+        .catch((erro) => {
+          alert(erro.response.data);
+          console.log("Erro do postNetwork no front", erro);
+        }); 
+
       setShowModalConnect(false); 
       setConnect(true);
       setConnect2(false);
+
+
     } catch (error) {
       console.error("Erro ao conectar à Ethereum:", error);
       setConnect(false);
@@ -91,6 +137,7 @@ const connectWallet = useCallback(async () => {
     alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
   }
 }, []);
+
 
 const addLaChain = async () => {
   if (window.ethereum) {
@@ -112,6 +159,32 @@ const addLaChain = async () => {
           },
         ],
       });
+
+      const networkData = {
+        name: 'LaChain',
+        image: '/images/icons/lachain.svg',
+        chainId: '0x112', // Substitua pelo endereço real se necessário
+      }
+     
+        const token = localStorage.getItem("token");
+
+        const config = {
+          headers: {
+              Authorization: "Bearer " + token
+          }
+      }
+
+        axios
+        .post(backendroute.postNetwork, networkData, config)
+        .then((resposta) => {
+          window.location.reload();
+        console.log('resposta do postNetwork no front:',resposta)
+        })
+        .catch((erro) => {
+          alert(erro.response.data);
+          console.log("Erro do postNetwork no front", erro);
+        }); 
+
       setMessage('LaChain foi adicionada com sucesso.');
       setShowModalConnect(false);
       setConnect(false);
@@ -134,7 +207,7 @@ const addLaChain = async () => {
             <SCConnectedNetworksList>
               {
                 savedNetWorks?.map(net =>{
-                  return <ConnectedNetworkElement name={net.name} image={net.image} />;
+                  return <ConnectedNetworkElement key={net.id} name={net.name} image={net.image} id={net.id} />;
                 })
               }
               <ConnectedNetworkElement name="Rede Piloto RD" image={'/images/icons/tesouro.svg'} />
@@ -450,6 +523,4 @@ const Container = styled.div`
   @media (max-width: 1000px) {
       max-width: 100%;
   }
-
-  
 `;

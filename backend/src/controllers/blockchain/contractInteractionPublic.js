@@ -72,22 +72,5 @@ export const getBalanceOfTokensLockedByUser = async (
     }
 }
 
-export const getUsedCollateral = async (
-    privateKey,
-    providerUrl,
-    contractAddress,
-    tokenAddress,
-    user
-) => {
-    try {
-        const contract = getContract(privateKey, providerUrl, contractAddress, abi)
-        const usedCollateral = await contract.getCollateral(tokenAddress, user);
 
-        return usedCollateral
-
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
 

@@ -55,8 +55,8 @@ const MOCKinUserWalletCurrencies = [
     currencies: [
       {
         name: 'UXD',
-        units: 0,
-        totalValue: 0,
+        units: 1,
+        totalValue: 10,
         image: '/images/icons/uxd.svg',
       }
     ]
@@ -65,23 +65,34 @@ const MOCKinUserWalletCurrencies = [
 
 //
 export default function LoansPage({ connected = true }) {
-
+  // Check if the user is logged-in
   const { isLoged } = useContext(LoginContext);
-
+  const transactionQuantityInputRef = useRef();
+  // Not functional, needs to be updated in the future?!
   const [isConnected, setIsConnected] = useState(connected);
   const [showModal, setShowModal] = useState(false);
+  // User is looking at offers page
   const [askingForLoans, setAskingForLoans] = useState(false);
+  // In user's wallet currencies
   const [userCurrencies, setUserCurrencies] = useState(null);
+  // Its for showing purposes on deposit/withdraw modal
   const [currentTransactionCoin, setCurrentTransactionCoin] = useState(null);
+  // User balance in our possession
   const [userDepositedBalance, setUserDepositedBalance] = useState(null);
+  // User selected a wallet in the wallet modal
   const [hasSelectedWalletForDeposit, setHasSelectedWalletForTransaction] = useState(false);
+  // Show modal transaction wallets
   const [showTransactionWallets, setShowTransactionWallets] = useState(false);
-  const [selectedTransactionWallet, setSelectedTransactionWalletName] = useState('');
+  //Just the wallet name
+  const [selectedTransactionWalletName, setSelectedTransactionWalletName] = useState('');
+  //Network id, like 0x1
   const [selectedTransactionNetwork, setSelectedNetwork] = useState('');
+
   const [selectedTransactionWalletAddress, setSelectedTransactionWalletAddress] = useState('');
   const [selectedTransactionNetworkAddres, setSelectedTransactionNetworkAddress] = useState('');
+  // Amount to deposit or withdraw
   const [transactionQuantity, setTransactionQuantity] = useState('0');
-  const transactionQuantityInputRef = useRef();
+
   // User is requesting a transaction for the API
   const [inTransactionProcess, setInTransactionProcess] = useState(false);
   // Differentiate the modal window elements
@@ -119,9 +130,10 @@ export default function LoansPage({ connected = true }) {
 
   function startTransaction(type = "deposit", transaction) {
     setInTransactionProcess(true);
+    getWalletAddress();
     switch (type) {
       case "deposit":
-        // REQUEST DEPOSIT BODY
+        // TODO: Deposit coins on user wallet
         // const depositBody = {
         //   amount: Number(transaction.amount),
         //   token: '',
@@ -136,7 +148,7 @@ export default function LoansPage({ connected = true }) {
         break;
       case "checkout":
         const withdrawBody = {};
-        // STILL NEEDS A WITHDRAW ENDPOINT
+        // TODO: Needs a Withdraw endpoint
         // axios.post(API,withdrawBody,{headers:{Authorization:localStorage.getItem('token')}})
         // .then((res) =>{
 
@@ -150,7 +162,6 @@ export default function LoansPage({ connected = true }) {
   function startDepositProcess(asset) {
     setCurrentTransactionCoin(asset);
     setShowModal(true);
-    getWalletAddress();
     setIsDepositTransaction(true);
     //console.log(asset);
   }
@@ -159,7 +170,6 @@ export default function LoansPage({ connected = true }) {
     setCurrentTransactionCoin(asset);
     setIsDepositTransaction(false);
     setShowModal(true);
-    getWalletAddress();
     //console.log(asset);
   }
 
@@ -177,7 +187,7 @@ export default function LoansPage({ connected = true }) {
   
   */
   function viewShowOffers(asset) {
-    
+
     setAskingForLoans(true);
   }
 
@@ -271,7 +281,7 @@ export default function LoansPage({ connected = true }) {
     <PageContentWrapper>
       <PageContainer>
         <Container>
-          {/*-------------NO NETWORKS FOUND--------------- */}
+          {/*Maybe remove later?! -------------NO NETWORKS FOUND--------------- */}
 
           {!isConnected && !askingForLoans && <ConnectWalletFirst />}
 
@@ -392,34 +402,37 @@ export default function LoansPage({ connected = true }) {
                 <ConnectWalletContainer onMouseDown={(e) => e.stopPropagation()}>
                   <h2>Selecione sua carteira</h2>
                   <WalletAndNetworkList>
-                    <WalletOrNetworkElement onClick={() => setSelectedTransactionWalletName('metamask')} $selected={(selectedTransactionWallet == 'metamask').toString()}>
+                    <WalletOrNetworkElement $disabled={'false'} onClick={() => setSelectedTransactionWalletName('metamask')} $selected={(selectedTransactionWalletName == 'metamask').toString()}>
                       <img src="/images/icons/metamask.svg" alt="" />
                       <p>Metamask</p>
                     </WalletOrNetworkElement>
-                    <WalletOrNetworkElement onClick={() => setSelectedTransactionWalletName('ripio')} $selected={(selectedTransactionWallet == 'ripio').toString()}>
+                    <WalletOrNetworkElement $disabled={'true'} $selected={'false'}>
                       <img src="/images/icons/ripio.svg" alt="" />
                       <p>Ripio Wallet</p>
+                      <div className='overlay'>
+                        <p>Em breve</p>
+                      </div>
                     </WalletOrNetworkElement>
                     <NetworkPlaceholder />
                   </WalletAndNetworkList>
 
                   <h3>Selecione a rede</h3>
                   <WalletAndNetworkList>
-                    <WalletOrNetworkElement onClick={() => setSelectedNetwork('ethereum')} $selected={(selectedTransactionNetwork == 'ethereum').toString()}>
+                    <WalletOrNetworkElement $disabled={'false'} onClick={() => setSelectedNetwork('ethereum')} $selected={(selectedTransactionNetwork == 'ethereum').toString()}>
                       <img src="/images/icons/etherium.svg" alt="" />
                       <p>Ethereum</p>
                     </WalletOrNetworkElement>
-                    <WalletOrNetworkElement onClick={() => setSelectedNetwork('LaChain')} $selected={(selectedTransactionNetwork == 'LaChain').toString()}>
+                    <WalletOrNetworkElement $disabled={'false'} onClick={() => setSelectedNetwork('LaChain')} $selected={(selectedTransactionNetwork == 'LaChain').toString()}>
                       <img src="/images/icons/lachain.svg" alt="" />
                       <p>LaChain</p>
                     </WalletOrNetworkElement>
                     <NetworkPlaceholder />
                   </WalletAndNetworkList>
-                  {selectedTransactionWallet === 'metamask' && selectedTransactionNetwork === 'ethereum' &&
-                    <button onClick={addEthereumWallet} disabled={selectedTransactionWallet == '' || selectedTransactionNetwork == ''}>Conectar</button>
+                  {selectedTransactionWalletName === 'metamask' && selectedTransactionNetwork === 'ethereum' &&
+                    <button onClick={addEthereumWallet} disabled={selectedTransactionWalletName == '' || selectedTransactionNetwork == ''}>Conectar</button>
                   }
-                  {selectedTransactionWallet === 'metamask' && selectedTransactionNetwork === 'LaChain' &&
-                    <button onClick={addLaChainWallet} disabled={selectedTransactionWallet == '' || selectedTransactionNetwork == ''}>Conectar</button>
+                  {selectedTransactionWalletName === 'metamask' && selectedTransactionNetwork === 'LaChain' &&
+                    <button onClick={addLaChainWallet} disabled={selectedTransactionWalletName == '' || selectedTransactionNetwork == ''}>Conectar</button>
                   }
                 </ConnectWalletContainer>
                 :
@@ -735,8 +748,26 @@ const WalletOrNetworkElement = styled.div`
   border-radius: 1.25rem;
   border: 3px solid ${(props) => props.$selected == 'true' ? MainPurpleColor : 'transparent'};
   background: #F3F3F3;
-  cursor: pointer;
+  cursor: ${(props) => props.$disabled == 'false' ? 'pointer' : 'not-allowed'};
   overflow: hidden;
+  position: relative;
+  .overlay{
+    width: 100%;
+    height: 100%;
+    border-radius: 1.25rem;
+    background-color: rgba(255,255,255,0.8);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p{
+      color: ${MainPurpleColor};
+      font-family: Plus Jakarta Sans;
+      font-size: 20px;
+    }
+  }
   img{
     width: 4.5rem;
     height: 4.5rem;
@@ -755,7 +786,7 @@ const WalletOrNetworkElement = styled.div`
   }
 
   &:hover{
-    border: 3px solid ${(props) => props.$selected == 'true' ? MainPurpleColor : 'black'};;
+    border: 3px solid ${(props) => props.$selected == 'true' && props.$disabled == 'false' ? MainPurpleColor : props.$disabled == 'false' ? 'black' : 'transparent'};;
   }
 
   h1{

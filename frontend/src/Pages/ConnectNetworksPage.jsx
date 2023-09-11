@@ -233,27 +233,30 @@ const addLaChain = async () => {
           <ConnectWalletContainer onMouseDown={(e) => e.stopPropagation()}>
             <h2>Selecione sua carteira</h2>
             <WalletAndNetworkList>
-              <WalletOrNetworkElement onClick={() => setSelectedWallet('metamask')} $selected={(selectedWallet == 'metamask').toString()}>
+              <WalletOrNetworkElement  $disabled={'false'} onClick={() => setSelectedWallet('metamask')} $selected={(selectedWallet == 'metamask').toString()}>
                 <img src="/images/icons/metamask.svg" alt="" />
                 <p>Metamask</p>
               </WalletOrNetworkElement>
-              <WalletOrNetworkElement onClick={() => setSelectedWallet('ripio')} $selected={(selectedWallet == 'ripio').toString()}>
+              <WalletOrNetworkElement $disabled={'true'} $selected={'false'}>
                 <img src="/images/icons/ripio.svg" alt="" />
                 <p>Ripio Wallet</p>
+                <div className='overlay'>
+                  <p>Em breve</p>
+                </div>
               </WalletOrNetworkElement>
               <NetworkPlaceholder />
             </WalletAndNetworkList>
 
             <h3>Selecione a rede</h3>
             <WalletAndNetworkList>
-              <WalletOrNetworkElement onClick={() => setSelectedNetwork('ethereum')} $selected={(selectedNetwork == 'ethereum').toString()}>
+              <WalletOrNetworkElement  $disabled={'false'} onClick={() => setSelectedNetwork('ethereum')} $selected={(selectedNetwork == 'ethereum').toString()}>
                 <img src="/images/icons/etherium.svg" alt="" />
                 <p>Ethereum</p>
                 {connect &&
                 <h1>conectado</h1>
                 }
               </WalletOrNetworkElement>
-              <WalletOrNetworkElement onClick={() => setSelectedNetwork('LaChain')} $selected={(selectedNetwork == 'LaChain').toString()}>
+              <WalletOrNetworkElement  $disabled={'false'} onClick={() => setSelectedNetwork('LaChain')} $selected={(selectedNetwork == 'LaChain').toString()}>
                 <img src="/images/icons/lachain.svg" alt="" />
                 <p>LaChain</p>
                 {connect2 &&
@@ -319,8 +322,26 @@ const WalletOrNetworkElement = styled.div`
   border-radius: 1.25rem;
   border: 3px solid ${(props) => props.$selected == 'true' ? MainPurpleColor : 'transparent'};
   background: #F3F3F3;
-  cursor: pointer;
+  cursor: ${(props) => props.$disabled == 'false' ? 'pointer' : 'not-allowed'};
   overflow: hidden;
+  position: relative;
+  .overlay{
+    width: 100%;
+    height: 100%;
+    border-radius: 1.25rem;
+    background-color: rgba(255,255,255,0.8);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p{
+      color: ${MainPurpleColor};
+      font-family: Plus Jakarta Sans;
+      font-size: 20px;
+    }
+  }
   img{
     width: 4.5rem;
     height: 4.5rem;
@@ -339,7 +360,7 @@ const WalletOrNetworkElement = styled.div`
   }
 
   &:hover{
-    border: 3px solid ${(props) => props.$selected == 'true' ? MainPurpleColor : 'black'};;
+    border: 3px solid ${(props) => props.$selected == 'true' && props.$disabled == 'false' ? MainPurpleColor : props.$disabled == 'false' ? 'black' : 'transparent'};;
   }
 
   h1{

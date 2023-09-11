@@ -9,7 +9,7 @@ import { LoginContext } from '../Contexts/LoginContext';
 import OpenFinance from './Components/Banners/OpenFinance';
 import RipioBanner from './Components/Banners/RipioBanner';
 import axios from 'axios';
-import { backendroute } from '../routes/routes';
+import { API } from '../routes/routes';
 /*
 name: 'Ethereum',
 image: '/images/icons/nomedoicone.svg'
@@ -40,11 +40,11 @@ export default function ConnectNetworksPage() {
       }
   }
 
-  const promise = axios.get(backendroute.getNetworks, config);
+  const promise = axios.get(API.getNetworks, config);
 
     promise.then((resposta) => {
       setSavedNetworks(resposta.data);
-      console.log(resposta.data, "lista");
+      // console.log(resposta.data, "lista");
     })
 
     promise.catch((erro) => {
@@ -114,7 +114,7 @@ const connectWallet = useCallback(async () => {
       }
 
         axios
-        .post(backendroute.postNetwork, networkData, config)
+        .post(API.postNetwork, networkData, config)
         .then((resposta) => {
         console.log('resposta do postNetwork ETHEREUM no front:',resposta)
         window.location.reload();
@@ -175,7 +175,7 @@ const addLaChain = async () => {
       }
 
         axios
-        .post(backendroute.postNetwork, networkData, config)
+        .post(API.postNetwork, networkData, config)
         .then((resposta) => {
           window.location.reload();
         console.log('resposta do postNetwork no front:',resposta)

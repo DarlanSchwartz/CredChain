@@ -4,10 +4,14 @@ import { MainPurpleColor } from '../../../Colors';
 import ReactSlider from "react-slider";
 
 const AnualTax = 210; // em porcento
-export default function Offer({ max_value = 5000, bank_name = 'Bank name', value = 0, CET = 0, installments_count = 0, installment_value = 0, necessity_wst = 0, necessity_uxd = 0 }) {
+const  necessity_wst = 4;
+const  necessity_uxd = 5;
+export default function Offer({ max_value = 50000, bank_name = 'Bank name'}) {
   const [currentNecessity, setCurrentNecessity] = useState(necessity_wst);
-  const [currentValue, setCurrentValue] = useState(value);
+  const [currentValue, setCurrentValue] = useState( 0);
   const [currentMaxValue, setCurrentMaxValue] = useState(max_value);
+  const [currentCoin, setCurrentCoin] = useState('stETH');
+
   function myCurrentValue() {
     return (Number(currentValue) / 100) * Number(currentMaxValue);
   }
@@ -15,12 +19,31 @@ export default function Offer({ max_value = 5000, bank_name = 'Bank name', value
     return myCurrentValue() * 2.1;
   }
   function monthlyTax(paidValue, installment, amountOfInstallments) {
-    if(paidValue  == 0 || installment == 0  || amountOfInstallments == 0) return 0;
+    if (paidValue == 0 || installment == 0 || amountOfInstallments == 0) return 0;
     var taxaJurosMensal = ((installment / (paidValue / amountOfInstallments)) - 1) * 12;
     return taxaJurosMensal.toFixed(1);
   }
-  function myInstallmentPrice(){
+  function myInstallmentPrice() {
     return Number((myCurrentValueWithTaxes() / 12).toFixed(2));
+  }
+  function askForALoan() {
+
+  }
+
+  function neededCollateralizationDepositAmount(){
+    // console.log(myCurrentValueWithTaxes());
+    // console.log(currentNecessity);
+    return myCurrentValueWithTaxes() / currentNecessity;
+  }
+
+  function changeCoin(coin) {
+    if (coin == 'stETH') {
+      setCurrentCoin('stETH');
+      setCurrentNecessity(necessity_wst);
+    } else {
+      setCurrentCoin('UXD');
+      setCurrentNecessity(necessity_uxd);
+    }
   }
   return (
     <Container className='offer'>
@@ -33,19 +56,19 @@ export default function Offer({ max_value = 5000, bank_name = 'Bank name', value
         <LeftContent>
 
           <h2>Parcelas</h2>
-          <h3>{12} meses de R$ {myInstallmentPrice().toString().replace('.',',')}</h3>
+          <h3>{12} meses de R$ {myInstallmentPrice().toString().replace('.', ',')}</h3>
           <h4>CET - Custo Efetivo Total</h4>
-          <h5>{monthlyTax(myCurrentValue(),myInstallmentPrice(),12).toString().replace('.',',')}% ao mês</h5>
+          <h5>{monthlyTax(myCurrentValue(), myInstallmentPrice(), 12).toString().replace('.', ',')}% ao mês</h5>
           <h3>Necessidade de colaterização</h3>
-          <Actions>
+          <Actions $coin ={currentCoin}>
             <div className='left'>
-              <p>R$ {currentNecessity}</p>
+              <p>{currentCoin} : {neededCollateralizationDepositAmount().toFixed(2).toString().replace('.', ',')}</p>
               <div className='btns'>
-                <img src="/images/icons/lido.svg" onClick={() => setCurrentNecessity(necessity_wst)} />
-                <img src="/images/icons/uxd.svg" onClick={() => setCurrentNecessity(necessity_uxd)} />
+                <CoinImg $active={currentCoin =='stETH'} src="/images/icons/lido.svg" onClick={() => changeCoin('stETH')} />
+                <CoinImg $active={currentCoin =='UXD'} src="/images/icons/uxd.svg" onClick={() => changeCoin('UXD')} />
               </div>
             </div>
-            <button className='ask-loan-btn'>Solicitar empréstimo</button>
+            <button onClick={() => askForALoan()} className='ask-loan-btn'>Solicitar empréstimo</button>
           </Actions>
         </LeftContent>
         <Slidebar>
@@ -71,14 +94,21 @@ export default function Offer({ max_value = 5000, bank_name = 'Bank name', value
             }}
           />
 
-          <h1>R$ {myCurrentValue().toFixed(2).toString().replace('.',',')}</h1>
+          <h1>R$ {myCurrentValue().toFixed(2).toString().replace('.', ',')}</h1>
         </Slidebar>
       </Content>
 
     </Container>
   )
 }
-
+const CoinImg = styled.img`
+border: 2px solid ${(props) => props.$active ? MainPurpleColor :'transparent'};
+width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+`;
 const Actions = styled.div`
   display: flex;
   align-items: center;
@@ -101,17 +131,10 @@ const Actions = styled.div`
     }
   }
 
-  img{
-    width: 1.25rem;
-    height: 1.25rem;
-    cursor: pointer;
-    border-radius: 50%;
-    overflow: hidden;
-  }
-
   .btns{
     display: flex;
     gap: 10px;
+    margin-left: 20px;
   }
 `;
 

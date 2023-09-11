@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import { MainPurpleColor } from "../../../Colors";
 import Swal from "sweetalert2";
 import Logo from "../Logo";
+import { DocumentationLink } from "../../../routes/routes";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ export default function Sidebar() {
   }
 
   function goToDocumentation() {
-    navigate("/documentation");
+    window.open(DocumentationLink,'_blank');
   }
 
   const isScoreActive = location.pathname === "/score";
@@ -176,7 +177,6 @@ export default function Sidebar() {
 const SidebarContainer = styled.div`
   background-color: #ffffff;
   height: 100%;
-  max-height: 100svh;
   width: 100%;
   max-width: 280px;
   display: flex;

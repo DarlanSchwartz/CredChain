@@ -3,19 +3,19 @@ import dotenv from 'dotenv';
 import {
   setAcceptedTokens,
   releaseLockedTokens
-} from "./blockchain/contractInteractionPublic";
+} from "./blockchain/contractInteractionPublic.js";
 
 import {
   depositPvt,
   requestCredit,
   payCredit,
-  getBalanceOfTokensLockedByUser,
+  getBalanceOfTokensAvailable,
   getUsedCollateral,
-} from "./blockchain/contractInteractionPvt";
+} from "./blockchain/contractInteractionPvt.js";
 
 dotenv.config({ path: './.env' });
 
-export const setAcceptedTokens = async (
+export const setAcceptedTokensMethod = async (
   tokenAddress,
   isAccepted
 ) => {
@@ -30,7 +30,7 @@ export const setAcceptedTokens = async (
   return ret;
 }
 
-export const releaseLockedTokens = async(
+export const releaseLockedTokensMethod = async(
   tokenAddress,
   recipient,
   user,
@@ -49,11 +49,11 @@ export const releaseLockedTokens = async(
   return ret;
 }
 
-export const getBalanceOfTokensLockedByUser = async (
+export const getBalanceOfTokensLockedByUserMethod = async (
   user,
   tokenAddress
 ) => {
-  const ret = await getBalanceOfTokensLockedByUser(
+  const ret = await getBalanceOfTokensAvailable(
     process.env.PRIVATE_KEY,
     process.env.PUBLIC_CHAIN_PROVIDER_URL,
     process.env.CREDCHAIN_ADDRESS,
@@ -64,7 +64,7 @@ export const getBalanceOfTokensLockedByUser = async (
   return ret;
 }
 
-export const getUsedCollateral = async (
+export const getUsedCollateralMethod = async (
   user,
   tokenAddress
 ) => {
@@ -79,7 +79,7 @@ export const getUsedCollateral = async (
   return ret;
 }
 
-export const depositPvt = async (
+export const depositPvtMethod = async (
   amount,
   token,
   user
@@ -96,7 +96,7 @@ export const depositPvt = async (
   return ret;
 }
 
-export const requestCredit = async (
+export const requestCreditMethodMethod = async (
   creditOrderDto
 ) => {
   const ret = await requestCredit(
@@ -109,7 +109,7 @@ export const requestCredit = async (
   return ret;
 }
 
-export const payCredit = async (
+export const payCreditMethod = async (
   orderId,
   user,
   isPaid
@@ -124,7 +124,7 @@ export const payCredit = async (
   );
 }
 
-export const getBalanceOfTokensAvailable = async (
+export const getBalanceOfTokensAvailableMethod = async (
   user,
   tokenAddress
 ) => {

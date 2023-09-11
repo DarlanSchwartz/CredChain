@@ -1,6 +1,6 @@
-import { getContract } from './utils';
-import * as credChainPvtAbi from "../abis/credchainAbiPvt.json"
-import * as creditorAbi from "../abis/creditorAbi.json"
+import { getContract } from './utils.js';
+import * as credChainPvtAbi from "../abis/credchainAbiPvt.json" assert { type: "json" };
+import * as creditorAbi from "../abis/creditorAbi.json" assert { type: "json" };
 
 export const depositPvt = async (
     privateKey,
@@ -24,7 +24,7 @@ export const depositPvt = async (
 
     } catch (error) {
         console.log(error);
-        throw error;
+        return null;
 
     }
 }
@@ -49,7 +49,7 @@ export const requestCredit = async (
 
     } catch (error) {
         console.log(error);
-        throw error;
+        return null;
     }
 }
 
@@ -76,7 +76,7 @@ export const payCredit = async (
 
     } catch (error) {
         console.log(error);
-        throw error;
+        return null;
     }
 }
 
@@ -95,7 +95,7 @@ export const getBalanceOfTokensAvailable = async (
 
     } catch (error) {
         console.log(error);
-        throw error;
+        return null;
     }
 }
 
@@ -114,7 +114,7 @@ export const getUsedCollateral = async (
 
     } catch (error) {
         console.log(error);
-        throw error;
+        return null;
     }
 }
 

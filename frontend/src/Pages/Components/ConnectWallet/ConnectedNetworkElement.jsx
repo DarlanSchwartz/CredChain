@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import Swal from 'sweetalert2';
 import { MainPurpleColor } from '../../../Colors';
 import axios from 'axios';
-import { backendroute } from '../../../routes/routes';
+import { API } from '../../../routes/routes';
 
 export default function ConnectedNetworkElement({image,name, id}) {
 
@@ -35,7 +35,7 @@ export default function ConnectedNetworkElement({image,name, id}) {
           }
         }
 
-        await axios.delete(`${backendroute.deleteNetwork + identifier}`, config);
+        await axios.delete(`${API.deleteNetwork + identifier}`, config);
         window.location.reload();
       } catch (error) {
         console.error("Erro ao excluir a rede:", error);

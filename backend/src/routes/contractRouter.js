@@ -1,20 +1,20 @@
-import { express } from "express";
-const router = express.Router();
+import { Router } from "express";
 import {
-  setAcceptedTokens,
-  releaseLockedTokens,
-  getBalanceOfTokensLockedByUser,
-  getUsedCollateral,
-  depositPvt,
-  requestCredit,
-  payCredit,
-  getBalanceOfTokensAvailable
-} from "../controllers/contractInteractionController";
+  setAcceptedTokensMethod,
+  releaseLockedTokensMethod,
+  getBalanceOfTokensLockedByUserMethod,
+  getUsedCollateralMethod,
+  depositPvtMethod,
+  requestCreditMethodMethod,
+  payCreditMethod,
+  getBalanceOfTokensAvailableMethod
+} from "../controllers/contractInteractionController.js";
 
+const contractRouter = Router();
 
-router.post("/set-accepted-token", (req, res) => {
+contractRouter.post("/set-accepted-token", (req, res) => {
   const { tokenAddress, isAccepted } = req.body;
-  setAcceptedTokens(
+  setAcceptedTokensMethod(
     tokenAddress,
     isAccepted
   ).then((ret) => {
@@ -22,13 +22,13 @@ router.post("/set-accepted-token", (req, res) => {
   }
   ).catch((err) => {
     console.log(err);
-    throw err;
+    return res.status(500).send(err.message);
   });
 });
 
-router.post("/release-locked-tokens", (req, res) => {
+contractRouter.post("/release-locked-tokens", (req, res) => {
   const { tokenAddress, recipient, user, amount } = req.body;
-  releaseLockedTokens(
+  releaseLockedTokensMethod(
     tokenAddress,
     recipient,
     user,
@@ -38,13 +38,13 @@ router.post("/release-locked-tokens", (req, res) => {
   }
   ).catch((err) => {
     console.log(err);
-    throw err;
+    return res.status(500).send(err.message);
   });
 });
 
-router.net("/get-balance-of-tokens-locked-by-user", (req, res) => {
+contractRouter.post("/get-balance-of-tokens-locked-by-user", (req, res) => {
   const { user, tokenAddress } = req.body;
-  getBalanceOfTokensLockedByUser(
+  getBalanceOfTokensLockedByUserMethod(
     user,
     tokenAddress
   ).then((ret) => {
@@ -52,13 +52,13 @@ router.net("/get-balance-of-tokens-locked-by-user", (req, res) => {
   }
   ).catch((err) => {
     console.log(err);
-    throw err;
+    return res.status(500).send(err.message);
   });
 });
 
-router.get("/get-used-collateral", (req, res) => {
+contractRouter.post("/get-used-collateral", (req, res) => {
   const { user, tokenAddress } = req.body;
-  getUsedCollateral(
+  getUsedCollateralMethod(
     user,
     tokenAddress
   ).then((ret) => {
@@ -66,17 +66,17 @@ router.get("/get-used-collateral", (req, res) => {
   }
   ).catch((err) => {
     console.log(err);
-    throw err;
+    return res.status(500).send(err.message);
   });
 });
 
-router.post("/deposit-pvt", (req, res) => {
+contractRouter.post("/deposit-pvt", (req, res) => {
   const {
     amount,
     token,
     user
   } = req.body;
-  depositPvt(
+  depositPvtMethod(
     amount,
     token,
     user
@@ -85,32 +85,32 @@ router.post("/deposit-pvt", (req, res) => {
   }
   ).catch((err) => {
     console.log(err);
-    throw err;
+    return res.status(500).send(err.message);
   });
 });
 
-router.post("/request-credit", (req, res) => {
+contractRouter.post("/request-credit", (req, res) => {
   const {
     creditOrderDto,
   } = req.body;
-  requestCredit(
+  requestCreditMethodMethod(
     creditOrderDto,
   ).then((ret) => {
     res.send(ret);
   }
   ).catch((err) => {
     console.log(err);
-    throw err;
+    return res.status(500).send(err.message);
   });
 });
 
-router.post("/pay-credit", (req, res) => {
+contractRouter.post("/pay-credit", (req, res) => {
   const {
     orderId,
     user,
     isPaid
   } = req.body;
-  payCredit(
+  payCreditMethod(
     orderId,
     user,
     isPaid
@@ -119,13 +119,13 @@ router.post("/pay-credit", (req, res) => {
   }
   ).catch((err) => {
     console.log(err);
-    throw err;
+    return res.status(500).send(err.message);
   });
 });
 
-router.get("/get-balance-of-tokens-available", (req, res) => {
+contractRouter.post("/get-balance-of-tokens-available", (req, res) => {
   const { user, tokenAddress } = req.body;
-  getBalanceOfTokensAvailable(
+  getBalanceOfTokensAvailableMethod(
     user,
     tokenAddress
   ).then((ret) => {
@@ -133,8 +133,9 @@ router.get("/get-balance-of-tokens-available", (req, res) => {
   }
   ).catch((err) => {
     console.log(err);
-    throw err;
+    return res.status(500).send(err.message);
   });
 });
 
 
+export default contractRouter;

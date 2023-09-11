@@ -83,6 +83,9 @@ const OverallNoteContainer = styled.div`
     font-weight: 700;
     line-height: normal;
     white-space: nowrap;
+    @media (max-width: 1300px) {
+      font-size: 1.5rem;
+  }
   }
 `;
 
@@ -103,7 +106,15 @@ const Note = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media (max-width: 1300px) {
+      width: 1.5rem;
+      height:1.5rem;
+      font-size: 1rem;
+    }
   }
+
+  
 `;
 
 const MyCompany = styled.div`
@@ -127,4 +138,9 @@ const MyCompany = styled.div`
     font-weight: 600;
     line-height: 1.5rem; /* 100% */
   }
+
+  
+  @media (max-width: 1300px) {
+       min-height: auto;
+    }
 `;

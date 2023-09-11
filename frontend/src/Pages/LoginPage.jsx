@@ -7,7 +7,7 @@ import Logo from "./Components/Logo";
 import { MainPurpleColor } from "../Colors";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import UserContext, { LoginContext } from "../Contexts/LoginContext";
-import { backendroute } from "../routes/routes";
+import { API } from "../routes/routes";
 
 
 export default function LoginPage() {
@@ -97,7 +97,7 @@ export default function LoginPage() {
     setLoginIn(true);
 
     axios
-      .post(backendroute.postLogin, newSignIn)
+      .post(API.postLogin, newSignIn)
       .then((res) => {
         //console.log('res.data do login', res.data)
         localStorage.setItem("token", res.data.token);

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginContext } from '../Contexts/LoginContext';
 import RipioBanner from './Components/Banners/RipioBanner';
 import OpenFinance from './Components/Banners/OpenFinance';
-import { backendroute } from '../routes/routes';
+import { API } from '../routes/routes';
 import axios from 'axios';
 import { MutatingDots, ThreeDots } from "react-loader-spinner";
 import { toast } from 'react-toastify';
@@ -76,7 +76,7 @@ export default function ScorePage() {
   function findMyCompanies() {
     if (myCompanies) return;
     setLoadingCompany(true);
-    axios.get(backendroute.getCompanies, { headers: { Authorization: localStorage.getItem('token') } })
+    axios.get(API.getCompanies, { headers: { Authorization: localStorage.getItem('token') } })
       .then(res => {
         setMyCompanies(res.data);
         setLoadingCompany(false);
@@ -98,7 +98,7 @@ export default function ScorePage() {
       fantasyName: nome_fantasiaRef.current.value,
       phone: phone.replace(/\D/g, '')
     };
-    axios.post(backendroute.registerCompany, company, { headers: { Authorization: localStorage.getItem('token') } })
+    axios.post(API.registerCompany, company, { headers: { Authorization: localStorage.getItem('token') } })
       .then(res => {
         setIsRegistering(false);
         findMyCompanies();
@@ -458,14 +458,26 @@ const MyEnterprise = styled.div`
   }
 
   button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: 0;
+    padding-bottom: 10px;
+    margin: 0;
+
     border: 0;
-    background: 0;
     color: #020202;
     font-family: Plus Jakarta Sans;
-    font-size: 2.5rem;
+    font-size: 40px;
     font-style: normal;
     font-weight: 600;
-    line-height: 1.5rem;
+  
+   
+    background-color: ${MainPurpleColor};
+    border-radius: 50%;
     &:disabled{
       cursor: not-allowed;
       opacity: 50%;

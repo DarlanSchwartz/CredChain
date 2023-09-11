@@ -5,6 +5,7 @@ import Footer from "./Components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Components/Logo";
 import Comparisson from "./Components/Home/Comparisson";
+import { DocumentationLink } from "../routes/routes";
 
 export default function HomePage() {
   //testeeee
@@ -17,7 +18,7 @@ export default function HomePage() {
         </SizeLogo>
 
         <MenuItems>
-          <Buttons>Documentação</Buttons>
+          <Buttons onClick={()=> window.open(DocumentationLink,'_blank')}>Documentação</Buttons>
           <Buttons onClick={()=> navigate('/signup')}>Cadastre-se</Buttons>
           <ButtonLogin onClick={()=> navigate('/login')}>Entrar</ButtonLogin>
         </MenuItems>

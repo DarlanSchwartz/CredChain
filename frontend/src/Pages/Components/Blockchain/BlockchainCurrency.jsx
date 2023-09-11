@@ -23,7 +23,7 @@ export default function BlockchainCurrency({show_used=false ,show_actions=false,
        {
          show_actions &&
          <div className='btns'>
-           <button onClick={()=> onStartLoan({name,image,price,units,total_value,total_used})}>Solicitar Empréstimo</button>
+           <button onClick={()=> onStartLoan({name:name,image:image,price:price,units:units,total_value:total_value,total_used:total_used})}>Solicitar Empréstimo</button>
            <button disabled={total_used == 100} onClick={()=> onCheckout({name,image,price,units,total_value,total_used})}>Sacar</button>
          </div>
        }

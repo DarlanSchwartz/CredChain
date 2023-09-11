@@ -5,7 +5,7 @@ import axios from "axios";
 import Logo from "./Components/Logo";
 import { MainPurpleColor } from "../Colors";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
-import { backendroute } from "../routes/routes";
+import { API } from "../routes/routes";
 import { ThreeDots } from "react-loader-spinner";
 
 export default function SignUpPage() {
@@ -101,7 +101,7 @@ export default function SignUpPage() {
     setDisable(true);
 
     axios
-    .post(backendroute.postSignUp, newSignUp)
+    .post(API.postSignUp, newSignUp)
     .then((res) => {
       navigate("/login");
       setDisable(false);

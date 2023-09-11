@@ -13,12 +13,14 @@ import Web3 from 'web3';
 import { ThreeDots } from 'react-loader-spinner';
 import CollateralSlideBar from './Components/Collaterals/CollateralSlideBar';
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import axios from 'axios';
+import { API } from '../routes/routes';
 const MOCKdepositedCurrencies = [
   {
     name: 'WstETH',
-    price: '500',
-    units: 50,
-    total_value: 200,
+    price: '0',
+    units: 0,
+    total_value: 0,
     image: '/images/icons/lido.svg',
     used: 0
   }
@@ -54,7 +56,7 @@ const MOCKinUserWalletCurrencies = [
       {
         name: 'UXD',
         units: 0,
-        totalValue: 10,
+        totalValue: 0,
         image: '/images/icons/uxd.svg',
       }
     ]
@@ -71,6 +73,7 @@ export default function LoansPage({ connected = true }) {
   const [askingForLoans, setAskingForLoans] = useState(false);
   const [userCurrencies, setUserCurrencies] = useState(null);
   const [currentTransactionCoin, setCurrentTransactionCoin] = useState(null);
+  const [userDepositedBalance, setUserDepositedBalance] = useState(null);
   const [hasSelectedWalletForDeposit, setHasSelectedWalletForTransaction] = useState(false);
   const [showTransactionWallets, setShowTransactionWallets] = useState(false);
   const [selectedTransactionWallet, setSelectedTransactionWalletName] = useState('');
@@ -79,27 +82,69 @@ export default function LoansPage({ connected = true }) {
   const [selectedTransactionNetworkAddres, setSelectedTransactionNetworkAddress] = useState('');
   const [transactionQuantity, setTransactionQuantity] = useState('0');
   const transactionQuantityInputRef = useRef();
+  // User is requesting a transaction for the API
   const [inTransactionProcess, setInTransactionProcess] = useState(false);
+  // Differentiate the modal window elements
   const [isDepositTransaction, setIsDepositTransaction] = useState(false);
 
   useEffect(() => {
     isLoged();
-    setUserCurrencies(MOCKinUserWalletCurrencies);
+    getUserInWalletCurrencies();
+    getUserBalance();
+    // TODO: check if user is connected via metamask, THEN -> setIsConnected( false or true);
   }, []);
+
+  function getUserBalance() {
+    const responseData = MOCKdepositedCurrencies;
+    // TODO: Get user balance
+    // const userBody = {
+    //   user: '',
+    //   tokenAddress: ''
+    // };
+
+    // axios.post(API.getBalanceOfTokensLockedByUser, userBody, { headers: { Authorization: localStorage.getItem('token') } })
+    //   .then((res) => {
+
+    //   }).catch(error => {
+    //     console.log(error);
+    //   });
+    setUserDepositedBalance(responseData);
+  }
+
+  function getUserInWalletCurrencies() {
+    // TODO: Get user currencies
+    const responseData = MOCKinUserWalletCurrencies;
+    setUserCurrencies(responseData);
+  }
 
   function startTransaction(type = "deposit", transaction) {
     setInTransactionProcess(true);
     switch (type) {
       case "deposit":
+        // REQUEST DEPOSIT BODY
+        // const depositBody = {
+        //   amount: Number(transaction.amount),
+        //   token: '',
+        //   user: ''
+        // };
+        // axios.post(API.depositPvt, depositBody, { headers: { Authorization: localStorage.getItem('token') } })
+        //   .then((res) => {
+
+        //   }).catch(error => {
+        //     console.log(error);
+        //   });
         break;
       case "checkout":
+        const withdrawBody = {};
+        // STILL NEEDS A WITHDRAW ENDPOINT
+        // axios.post(API,withdrawBody,{headers:{Authorization:localStorage.getItem('token')}})
+        // .then((res) =>{
 
+        // }).catch(error =>{
+        //   console.log(error);
+        // });
         break;
     }
-    setTimeout(() => {
-      window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
-      closeModal();
-    }, 4000);
   }
 
   function startDepositProcess(asset) {
@@ -118,7 +163,21 @@ export default function LoansPage({ connected = true }) {
     //console.log(asset);
   }
 
-  function askForALoan(asset) {
+  // asset =>
+
+  /*
+  {
+    image:"/images/icons/lido.svg",
+    name: "WstETH",
+    price: "0",
+    total_used: 0,
+    total_value: 0,
+    units: 0
+  }
+  
+  */
+  function viewShowOffers(asset) {
+    
     setAskingForLoans(true);
   }
 
@@ -151,7 +210,7 @@ export default function LoansPage({ connected = true }) {
       alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
     }
   }
-  const addEthereum = async () => {
+  const addEthereumWallet = async () => {
     if (window.ethereum) {
       try {
         const ethereum = window.ethereum;
@@ -180,7 +239,7 @@ export default function LoansPage({ connected = true }) {
       alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
     }
   }
-  const addLaChain = async () => {
+  const addLaChainWallet = async () => {
     if (window.ethereum) {
       try {
         const ethereum = window.ethereum;
@@ -219,8 +278,8 @@ export default function LoansPage({ connected = true }) {
           {/*-------------NETWORKS FOUND AND SHOW COLLATERALS-- CHECK line 25------------- */}
 
           <Collaterals
-            assets={MOCKdepositedCurrencies}
-            ask_loan_start_event={askForALoan}
+            assets={userDepositedBalance}
+            ask_loan_start_event={viewShowOffers}
             show_actions={!askingForLoans}
             ask_checkout_start_event={startCheckoutProcess}
           />
@@ -311,7 +370,7 @@ export default function LoansPage({ connected = true }) {
                 {/*----------------------------- */}
 
                 <button
-                  onClick={() => startTransaction(isDepositTransaction ? "deposit" : "checkout", {})}
+                  onClick={() => startTransaction(isDepositTransaction ? "deposit" : "checkout", { amount: transactionQuantityInputRef.current.value })}
                   disabled={Number(transactionQuantity) <= 0 || inTransactionProcess}
                   className='deposit-btn'>
                   {
@@ -357,10 +416,10 @@ export default function LoansPage({ connected = true }) {
                     <NetworkPlaceholder />
                   </WalletAndNetworkList>
                   {selectedTransactionWallet === 'metamask' && selectedTransactionNetwork === 'ethereum' &&
-                    <button onClick={addEthereum} disabled={selectedTransactionWallet == '' || selectedTransactionNetwork == ''}>Conectar</button>
+                    <button onClick={addEthereumWallet} disabled={selectedTransactionWallet == '' || selectedTransactionNetwork == ''}>Conectar</button>
                   }
                   {selectedTransactionWallet === 'metamask' && selectedTransactionNetwork === 'LaChain' &&
-                    <button onClick={addLaChain} disabled={selectedTransactionWallet == '' || selectedTransactionNetwork == ''}>Conectar</button>
+                    <button onClick={addLaChainWallet} disabled={selectedTransactionWallet == '' || selectedTransactionNetwork == ''}>Conectar</button>
                   }
                 </ConnectWalletContainer>
                 :

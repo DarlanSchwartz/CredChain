@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { MainPurpleColor } from "../../../Colors";
 import { LoginContext } from "../../../Contexts/LoginContext";
 import axios from "axios";
-import { backendroute } from "../../../routes/routes";
+import { DocumentationLink, API } from "../../../routes/routes";
 
 
 export default function Header() {
@@ -28,7 +28,7 @@ export default function Header() {
     window.addEventListener('click', listenerOutsiteClick);
     if (!user) {
       setLoadingUser(true);
-      axios.get(backendroute.getUser, { headers: { Authorization: localStorage.getItem('token') } })
+      axios.get(API.getUser, { headers: { Authorization: localStorage.getItem('token') } })
         .then(res => {
           setUser(res.data);
           setLoadingUser(false);
@@ -65,7 +65,7 @@ export default function Header() {
   }
 
   function goToDocumentation() {
-    navigate("/documentation");
+    window.open(DocumentationLink,'_blank');
   }
 
   function goToHomePage() {

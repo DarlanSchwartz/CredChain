@@ -27,8 +27,19 @@ const RatingComponent = styled.div`
         text-align: center;
         font-family: Plus Jakarta Sans;
         line-height: 1.2rem;
+
+        @media (max-width: 1300px) {
+            font-size:10px;
+            line-height: 12px;
+        }
     }
     img{
         width: 100%;
+    }
+
+    @media (max-width: 1300px) {
+        max-width: 5rem;
+        height: 7rem;
+        border-radius: 1rem;
     }
 `;

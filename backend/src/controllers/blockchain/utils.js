@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 const getSigner = async (privateKey, providerUrl) => {
     try {
         const provider = new ethers.providers.JsonRpcProvider(providerUrl);

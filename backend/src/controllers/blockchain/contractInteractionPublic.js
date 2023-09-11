@@ -1,5 +1,7 @@
-import { getContract } from './utils';
-import { abi } from "../abis/credchainAbi.json"
+import { getContract } from './utils.js';
+import credchainAbi  from "../abis/credchainAbi.json" assert { type: "json" };
+
+const abi = credchainAbi.abi;
 
 export const setAcceptedTokens = async (
     privateKey,

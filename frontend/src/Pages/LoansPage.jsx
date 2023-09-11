@@ -15,6 +15,209 @@ import CollateralSlideBar from './Components/Collaterals/CollateralSlideBar';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import axios from 'axios';
 import { API } from '../routes/routes';
+import {ethers} from 'ethers';
+const ABI = {
+  "abi": [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "name": "Deposit",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "bool",
+                "name": "isEth",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct DepositDto",
+            "name": "depositDto",
+            "type": "tuple"
+          }
+        ],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_user",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          }
+        ],
+        "name": "getBalanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "isAcceptedToken",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_user",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "releaseLockedTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "name": "setAcceptedToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ]
+};
+
 const MOCKdepositedCurrencies = [
   {
     name: 'WstETH',
@@ -121,6 +324,27 @@ export default function LoansPage({ connected = true }) {
     //   });
     setUserDepositedBalance(responseData);
   }
+  async function makeDeposit(tokenAddress, amount, isEth) {
+    let provider = new ethers.providers.Web3Provider(window.ethereum);
+    let signer = provider.getSigner();
+    const depositDto = {
+      token: tokenAddress,
+      amount: amount,
+      isEth: isEth
+    };
+    try {
+      const contract = new ethers.Contract("0xF7713Ef80DCe2DA67548c25c2B581D6c7acf3537", ABI.abi, signer);
+      console.log(contract);
+      const tx = await contract.deposit(depositDto);
+      console.log(`Transaction hash: ${tx.hash}`);
+      
+      const ret = await tx.wait();  // Wait for transaction confirmation
+      console.log(ret.status);
+      console.log('Transaction has been confirmed!');
+    } catch (error) {
+      console.error(`Failed to send transaction: ${error.message}`);
+    }
+  }
 
   function getUserInWalletCurrencies() {
     // TODO: Get user currencies
@@ -128,11 +352,24 @@ export default function LoansPage({ connected = true }) {
     setUserCurrencies(responseData);
   }
 
-  function startTransaction(type = "deposit", transaction) {
+  async function startTransaction(type = "deposit", transaction) {
     setInTransactionProcess(true);
     getWalletAddress();
     switch (type) {
       case "deposit":
+        console.log('sad');
+        if (window.ethereum) {
+          window.web3 = new Web3(window.ethereum);
+          await window.ethereum.enable();
+          const accounts = await window.web3.eth.getAccounts();
+          if (accounts.length > 0) setSelectedTransactionWalletAddress(accounts[2]);
+          console.log(accounts[0]);
+        } else {
+          alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');
+        }
+        makeDeposit('0x65774858b7dC5b2E6A8ebD69a1Cd495b82e235f4',10000000000,false);
+    return;
+
         // TODO: Deposit coins on user wallet
         // const depositBody = {
         //   amount: Number(transaction.amount),
@@ -266,6 +503,35 @@ export default function LoansPage({ connected = true }) {
               },
               rpcUrls: ['https://rpc1.mainnet.lachain.network/'], // URL RPC da LaChain
               blockExplorerUrls: ['https://explorer.lachain.network/'], // URL do explorador de blocos
+            },
+          ],
+        });
+        userSelectedWalletForDeposit('0x112', 'LaChain');
+      } catch (error) {
+        console.error("Erro ao conectar à LaChain:", error);
+      }
+    } else {
+
+    }
+  };
+
+  const addMumbaiWallet = async () => {
+    if (window.ethereum) {
+      try {
+        const ethereum = window.ethereum;
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x13881', // ID da rede LaChain
+              chainName: 'Mumbai',
+              nativeCurrency: {
+                name: 'Matic',
+                symbol: 'MATIC',
+                decimals: 18,
+              },
+              rpcUrls: ['https://rpc-mumbai.maticvigil.com'], // URL RPC da LaChain
+              blockExplorerUrls: ['https://mumbai.polygonscan.com'], // URL do explorador de blocos
             },
           ],
         });
@@ -429,7 +695,7 @@ export default function LoansPage({ connected = true }) {
                     <NetworkPlaceholder />
                   </WalletAndNetworkList>
                   {selectedTransactionWalletName === 'metamask' && selectedTransactionNetwork === 'ethereum' &&
-                    <button onClick={addEthereumWallet} disabled={selectedTransactionWalletName == '' || selectedTransactionNetwork == ''}>Conectar</button>
+                    <button onClick={addMumbaiWallet} disabled={selectedTransactionWalletName == '' || selectedTransactionNetwork == ''}>Conectar</button>
                   }
                   {selectedTransactionWalletName === 'metamask' && selectedTransactionNetwork === 'LaChain' &&
                     <button onClick={addLaChainWallet} disabled={selectedTransactionWalletName == '' || selectedTransactionNetwork == ''}>Conectar</button>

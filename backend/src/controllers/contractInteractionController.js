@@ -1,53 +1,141 @@
-import { ethers } from "ethers"; //biblioteca JavaScript para interagir com a etherium
-import * as credchainAbi from "./abis/credchainAbi.json"; //A ABI descreve como interagir com o contrato inteligente.
-import * as creditorAbi from "./abis/creditorAbi.json";
-import * as credchainAbiPvt from "./abis/credchainAbiPvt.json";
+// setting dotenv
+import dotenv from 'dotenv';
+import {
+  setAcceptedTokens,
+  releaseLockedTokens
+} from "./blockchain/contractInteractionPublic";
 
-const getSigner = async (privateKey, providerUrl) => {
-  try {
-    const provider = new ethers.providers.JsonRpcProvider(providerUrl);
+import {
+  depositPvt,
+  requestCredit,
+  payCredit,
+  getBalanceOfTokensLockedByUser,
+  getUsedCollateral,
+} from "./blockchain/contractInteractionPvt";
 
-    const wallet = new ethers.Wallet(privateKey, provider);
+dotenv.config({ path: './.env' });
 
-    const signer = wallet.connect(provider);
+export const setAcceptedTokens = async (
+  tokenAddress,
+  isAccepted
+) => {
+  const ret = await setAcceptedTokens(
+    process.env.PRIVATE_KEY,
+    process.env.PUBLIC_CHAIN_PROVIDER_URL,
+    process.env.CREDCHAIN_ADDRESS,
+    tokenAddress,
+    isAccepted
+  );
 
-    return signer;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+  return ret;
+}
 
+export const releaseLockedTokens = async(
+  tokenAddress,
+  recipient,
+  user,
+  amount
+) => {
+  const ret = await releaseLockedTokens(
+    process.env.PRIVATE_KEY,
+    process.env.PUBLIC_CHAIN_PROVIDER_URL,
+    process.env.CREDCHAIN_ADDRESS,
+    tokenAddress,
+    recipient,
+    user,
+    amount
+  );
 
-const getContract = async (privateKey, providerUrl, contractAddress, abi) => {
-  try {
-    const signer = await getSigner(privateKey, providerUrl);
-    const contract = new ethers.Contract(contractAddress, abi, signer);
+  return ret;
+}
 
-    return contract;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+export const getBalanceOfTokensLockedByUser = async (
+  user,
+  tokenAddress
+) => {
+  const ret = await getBalanceOfTokensLockedByUser(
+    process.env.PRIVATE_KEY,
+    process.env.PUBLIC_CHAIN_PROVIDER_URL,
+    process.env.CREDCHAIN_ADDRESS,
+    user,
+    tokenAddress
+  );
 
+  return ret;
+}
 
-const requestCredit = async (creditOrderDto, privateKey, providerUrl, contractAddress) => {
-  try {
+export const getUsedCollateral = async (
+  user,
+  tokenAddress
+) => {
+  const ret = await getUsedCollateral(
+    process.env.PRIVATE_KEY_FOR_PVT_CHAIN,
+    process.env.PRIVATE_CHAIN_PROVIDER_URL,
+    process.env.CREDCHAIN_PVT_ADDRESS,
+    user,
+    tokenAddress
+  );
 
-    const contract = await getContract(privateKey, providerUrl, contractAddress, creditorAbi.Abi)
-    const tx = await contract.requestCredit(creditOrderDto);
-    const receipt = await tx.wait();
+  return ret;
+}
 
-    const returnObject = {
-        "hash": tx.hash,
-        "status": receipt.status
-    }
+export const depositPvt = async (
+  amount,
+  token,
+  user
+) => {
+  const ret = await depositPvt(
+    process.env.PRIVATE_KEY_FOR_PVT_CHAIN,
+    process.env.PRIVATE_CHAIN_PROVIDER_URL,
+    process.env.CREDCHAIN_PVT_ADDRESS,
+    amount,
+    token,
+    user
+  );
 
-    return returnObject
+  return ret;
+}
 
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+export const requestCredit = async (
+  creditOrderDto
+) => {
+  const ret = await requestCredit(
+    creditOrderDto,
+    process.env.PRIVATE_KEY_FOR_PVT_CHAIN,
+    process.env.PRIVATE_CHAIN_PROVIDER_URL,
+    process.env.CREDITOR_ADDRESS
+  );
+
+  return ret;
+}
+
+export const payCredit = async (
+  orderId,
+  user,
+  isPaid
+) => {
+  const ret = await payCredit(
+    orderId,
+    user,
+    isPaid,
+    process.env.PRIVATE_KEY_FOR_PVT_CHAIN,
+    process.env.PRIVATE_CHAIN_PROVIDER_URL,
+    process.env.CREDITOR_ADDRESS
+  );
+}
+
+export const getBalanceOfTokensAvailable = async (
+  user,
+  tokenAddress
+) => {
+  const ret = await getBalanceOfTokensAvailable(
+    process.env.PRIVATE_KEY_FOR_PVT_CHAIN,
+    process.env.PRIVATE_CHAIN_PROVIDER_URL,
+    process.env.CREDCHAIN_PVT_ADDRESS,
+    user,
+    tokenAddress
+  );
+
+  return ret;
+}
+

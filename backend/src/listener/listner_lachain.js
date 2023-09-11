@@ -1,5 +1,5 @@
-const { ethers } = require('ethers');
-const axios = require('axios');
+import { ethers }  from 'ethers';
+import axios from 'axios';
 
 const credChainAbi = [
     {
@@ -201,7 +201,7 @@ const credChainAbi = [
     }
 ]
 
-const run = async () => {
+const runListenerLachain = async () => {
 
 
     const provider = new ethers.providers.WebSocketProvider('wss://lachain.linkpool.io/ws');
@@ -232,4 +232,4 @@ const run = async () => {
     console.log('Monitoring Deposit events...');
 }
 
-run(); 
+export default runListenerLachain;

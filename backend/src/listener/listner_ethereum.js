@@ -1,5 +1,5 @@
-const { ethers } = require('ethers');
-const axios = require('axios');
+import { ethers }  from 'ethers';
+import axios from 'axios';
 
 const credChainAbi = [
     {
@@ -201,7 +201,7 @@ const credChainAbi = [
     }
 ]
 
-const run = async () => {
+const runListenerEther = async () => {
 
     const provider = new ethers.providers.WebSocketProvider('wss://polygon-mumbai.g.alchemy.com/v2/ZxUGyyKjeAEUHdngMi-v-j1xWFxpvaSq');
     const contractAddress = '0xF7713Ef80DCe2DA67548c25c2B581D6c7acf3537';
@@ -230,5 +230,4 @@ const run = async () => {
 
     console.log('Monitoring Deposit events...');
 }
-
-run(); 
+export default runListenerEther;

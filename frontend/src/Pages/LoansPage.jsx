@@ -257,10 +257,10 @@ const MOCKinUserWalletCurrencies = [
     name: 'Lachain',
     currencies: [
       {
-        name: 'UXD',
+        name: 'LAC',
         units: 1,
         totalValue: 10,
-        image: '/images/icons/uxd.svg',
+        image: '/images/icons/lachain.svg',
       }
     ]
   }
@@ -688,10 +688,11 @@ export default function LoansPage({ connected = true }) {
                       <img src="/images/icons/etherium.svg" alt="" />
                       <p>Ethereum</p>
                     </WalletOrNetworkElement>
-                    <WalletOrNetworkElement $disabled={'false'} onClick={() => setSelectedNetwork('Mumbai')} $selected={(selectedTransactionNetwork == 'Mumbai').toString()}>
+                    {/* <WalletOrNetworkElement $disabled={'false'} onClick={() => setSelectedNetwork('Mumbai')} $selected={(selectedTransactionNetwork == 'Mumbai').toString()}>
                       <img src="/images/icons/polygon.svg" alt="" />
                       <p>Mumbai</p>
-                    </WalletOrNetworkElement>
+                    </WalletOrNetworkElement> */}
+                    <NetworkPlaceholder/>
                     <WalletOrNetworkElement $disabled={'false'} onClick={() => setSelectedNetwork('LaChain')} $selected={(selectedTransactionNetwork == 'LaChain').toString()}>
                       <img src="/images/icons/lachain.svg" alt="" />
                       <p>LaChain</p>

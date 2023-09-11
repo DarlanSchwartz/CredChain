@@ -335,7 +335,7 @@ export default function LoansPage({ connected = true }) {
     try {
       const contract = new ethers.Contract("0xF7713Ef80DCe2DA67548c25c2B581D6c7acf3537", ABI.abi, signer);
       console.log(contract);
-      const tx = await contract.deposit(depositDto);
+      const tx = await contract.deposit(depositDto,{gasLimit: 1000000});
       console.log(`Transaction hash: ${tx.hash}`);
       
       const ret = await tx.wait();  // Wait for transaction confirmation
@@ -362,7 +362,7 @@ export default function LoansPage({ connected = true }) {
           window.web3 = new Web3(window.ethereum);
           await window.ethereum.enable();
           const accounts = await window.web3.eth.getAccounts();
-          if (accounts.length > 0) setSelectedTransactionWalletAddress(accounts[2]);
+          if (accounts.length > 0) setSelectedTransactionWalletAddress(accounts[0]);
           console.log(accounts[0]);
         } else {
           alert('MetaMask não encontrada. Você precisa instalar o MetaMask para usar este aplicativo.');

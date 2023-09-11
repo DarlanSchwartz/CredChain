@@ -21,4 +21,4 @@ export const API = {
     requestCredit: API_URL + '/request-credit'
 }
 
-export const DocumentationLink = 'https://www.google.com';
+export const DocumentationLink = 'https://docs.google.com/document/d/1YyEb-M9KqqFOmwrARIljKqkO8iHLSctyIYucsDRaTd4/edit';

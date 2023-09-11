@@ -688,17 +688,24 @@ export default function LoansPage({ connected = true }) {
                       <img src="/images/icons/etherium.svg" alt="" />
                       <p>Ethereum</p>
                     </WalletOrNetworkElement>
+                    <WalletOrNetworkElement $disabled={'false'} onClick={() => setSelectedNetwork('Mumbai')} $selected={(selectedTransactionNetwork == 'Mumbai').toString()}>
+                      <img src="/images/icons/polygon.svg" alt="" />
+                      <p>Mumbai</p>
+                    </WalletOrNetworkElement>
                     <WalletOrNetworkElement $disabled={'false'} onClick={() => setSelectedNetwork('LaChain')} $selected={(selectedTransactionNetwork == 'LaChain').toString()}>
                       <img src="/images/icons/lachain.svg" alt="" />
                       <p>LaChain</p>
                     </WalletOrNetworkElement>
-                    <NetworkPlaceholder />
+                    
                   </WalletAndNetworkList>
                   {selectedTransactionWalletName === 'metamask' && selectedTransactionNetwork === 'ethereum' &&
-                    <button onClick={addMumbaiWallet} disabled={selectedTransactionWalletName == '' || selectedTransactionNetwork == ''}>Conectar</button>
+                    <button onClick={addEthereumWallet} disabled={selectedTransactionWalletName == '' || selectedTransactionNetwork == ''}>Conectar</button>
                   }
                   {selectedTransactionWalletName === 'metamask' && selectedTransactionNetwork === 'LaChain' &&
                     <button onClick={addLaChainWallet} disabled={selectedTransactionWalletName == '' || selectedTransactionNetwork == ''}>Conectar</button>
+                  }
+                  {selectedTransactionWalletName === 'metamask' && selectedTransactionNetwork === 'Mumbai' &&
+                    <button onClick={addMumbaiWallet} disabled={selectedTransactionWalletName == '' || selectedTransactionNetwork == ''}>Conectar</button>
                   }
                 </ConnectWalletContainer>
                 :

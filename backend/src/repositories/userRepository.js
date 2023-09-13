@@ -9,16 +9,16 @@ export async function findUserById(userId) {
 }
 
 export async function signupDB(cpf, name, date, email, encryptedPassword) {
-  return await db.query(
+  return  db.query(
     `INSERT INTO users (cpf, "name", "date", email, password) VALUES ($1, $2, $3, $4, $5);`,
     [cpf, name, date, email, encryptedPassword]
   );
 }
 
 export async function loginDB(userId, token) {
-  return await db.query(`INSERT INTO sessions ("userId", token) VALUES ($1, $2)`, [userId, token]);
+  return  db.query(`INSERT INTO sessions ("userId", token) VALUES ($1, $2)`, [userId, token]);
 }
 
 export async function logoutDB(token) {
-  return await db.query(`DELETE FROM sessions WHERE token =$1`, [token]);
+  return  db.query(`DELETE FROM sessions WHERE token =$1`, [token]);
 }

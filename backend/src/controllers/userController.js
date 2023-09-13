@@ -14,7 +14,7 @@ export async function signup(req, res) {
 
     const encryptedPassword = bcrypt.hashSync(password, 10);
     
-    signupDB(cpf, name, date, email, encryptedPassword)
+   await signupDB(cpf, name, date, email, encryptedPassword)
 
     res.status(201).send("Usuário Cadastrado");
   } catch (err) {
